@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monetary Economics Portal • AlmaU</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { background: radial-gradient(circle at top right, #0f172a 0%, #020617 100%); font-family: 'Inter', sans-serif; color: #f1f5f9; }
+        .neon-card { background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 16px; transition: all 0.3s; }
+        .neon-card:hover { border-color: rgba(99, 102, 241, 0.5); box-shadow: 0 0 20px rgba(99, 102, 241, 0.2); transform: translateY(-5px); }
+    </style>
+</head>
+<body class="p-8">
+    <div class="max-w-6xl mx-auto">
+        <header class="mb-12 border-b border-slate-800 pb-8">
+            <h1 class="text-3xl font-black text-white uppercase tracking-tight">Monetary Economics Hub</h1>
+            <p class="text-slate-400 text-sm mt-2">AlmaU • School of Digital Technologies & Economics</p>
+        </header>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <!-- Ваши кнопки -->
+            <button onclick="window.location.href='syllabus.html'" class="neon-card p-6 flex flex-col items-center text-center">
+                <img src="pic-book.png" class="w-16 h-16 mb-4" onerror="this.src='https://placehold.co/64x64/334155/white?text=Syll'">
+                <span class="font-bold text-sm">Syllabus</span>
+            </button>
+
+            <button onclick="window.location.href='lectures.html'" class="neon-card p-6 flex flex-col items-center text-center">
+                <img src="pic-lectures.png" class="w-16 h-16 mb-4" onerror="this.src='https://placehold.co/64x64/334155/white?text=Lec'">
+                <span class="font-bold text-sm">Lectures</span>
+            </button>
+
+            <button onclick="window.location.href='qpm-kz-en.html'" class="neon-card p-6 flex flex-col items-center text-center">
+                <img src="pic-sim-qpm.png" class="w-16 h-16 mb-4" onerror="this.src='https://placehold.co/64x64/334155/white?text=QPM'">
+                <span class="font-bold text-sm">QPM Simulator</span>
+            </button>
+
+            <!-- ГЛАВНАЯ КНОПКА ЭКЗАМЕНА -->
+            <button onclick="window.open('me-exam-final.html', '_blank')" class="neon-card p-6 flex flex-col items-center text-center border-emerald-500/50 shadow-[0_0_15px_rgba(16,185,129,0.2)]">
+                <img src="pic-exam-me.png" class="w-16 h-16 mb-4" onerror="this.src='https://placehold.co/64x64/064e3b/white?text=Exam'">
+                <span class="font-bold text-sm text-emerald-400">FINAL EXAM</span>
+            </button>
+        </div>
+    </div>
+</body>
+</html>
