@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEF 1313: Monetary Economics Portal • AlmaU</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap');
+        
+        body {
+            background: radial-gradient(circle at top right, #0f172a 0%, #020617 100%);
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            color: #f1f5f9;
+        }
+
+        .neon-card {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(16px);
+        }
+
+        /* Pure image buttons - no text, white background, no crop */
+        .tile-btn {
+            background-color: #ffffff; /* White background as requested */
+            border-radius: 0.75rem;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            border: 3px solid transparent;
+        }
+        .tile-btn:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px -5px rgba(99, 102, 241, 0.4);
+            border-color: #6366f1;
+        }
+        /* Specific red border for the first button */
+        .tile-btn-red {
+            border-color: #ef4444;
+        }
+        .tile-btn-red:hover {
+            border-color: #dc2626;
+            box-shadow: 0 10px 25px -5px rgba(239, 68, 68, 0.4);
+        }
+
+        .active-tile {
+            border-color: #4f46e5 !important;
+            box-shadow: 0 0 20px rgba(79, 70, 229, 0.5);
+        }
+
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-radius: 4px; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between custom-scrollbar">
+
+    <div class="w-full max-w-[1500px] mx-auto p-4 md:p-8 space-y-8">
+        
+        <!-- HEADER -->
+        <header class="neon-card rounded-2xl border-t-2 border-t-indigo-500/50 relative overflow-hidden">
+            <div class="p-6 md:p-8 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
+                <div class="flex items-center gap-4">
+                    <div class="border-r border-slate-800 pr-6 hidden sm:block">
+                        <span class="text-indigo-400 font-extrabold tracking-widest text-sm uppercase block">Almaty Management University</span>
+                        <span class="text-[10px] text-slate-500 uppercase font-black tracking-widest block">School of Digital Technologies & Economics</span>
+                    </div>
+                    <div>
+                        <h1 class="text-xl md:text-2xl font-black tracking-tight text-white uppercase flex items-center gap-2">
+                            <i class="fas fa-university text-indigo-500"></i> SEF 1313: Monetary Economics
+                        </h1>
+                        <p class="text-xs text-slate-400 mt-1">Interactive Learning Hub • Course designed by Professor Dmitriy Ogay</p>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- GRID OF 10 BUTTONS (5 columns x 2 rows on desktop) -->
+        <section class="grid grid-cols-2 md:grid-cols-5 gap-4 md:gap-5">
+            
+            <!-- 1. SYLLABUS (Red Border, Internal Tab) -->
+            <button id="btn-mod-syllabus" onclick="activateModule('mod-syllabus')" class="tile-btn tile-btn-red focus:outline-none flex flex-col">
+                <img src="https://raw.githubusercontent.com/ogaydv-prog/Monetary-economics-almau/main/pic-me2026.png" class="w-full h-auto object-contain block" alt="Syllabus">
+            </button>
+
+            <!-- 2. LECTURES (Internal Tab) -->
+            <button id="btn-mod-lectures" onclick="activateModule('mod-lectures')" class="tile-btn focus:outline-none flex flex-col">
+                <img src="https://raw.githubusercontent.com/ogaydv-prog/Monetary-economics-almau/main/pic-lectures.png" class="w-full h-auto object-contain block" alt="Lectures">
+            </button>
+
+            <!-- 3. CANVA SLIDES (External Link) -->
+            <button onclick="window.open('https://www.canva.com/design/DAHOfdoZUdY/iuHXiukIJDZ9NdFe9MvG_w/view?utm_content=DAHOfdoZUdY&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h582a2c5837', '_blank')" class="tile-btn focus:outline-none flex flex-col">
+                <img src="https://raw.githubusercontent.com/ogaydv-prog/Monetary-economics-almau/main/pic-preza-me.png" class="w-full h-auto object-contain block" alt="Canva Slides">
+            </button>
+
+            <!-- 4. TEXTBOOK (External Link) -->
+            <button onclick="window.open('mishkin_textbook.pdf', '_blank')" class="tile-btn focus:outline-none flex flex-col">
+                <img src="https://raw.githubusercontent.com/ogaydv-prog/Monetary-economics-almau/main/pic-book.png" class="w-full h-auto object-contain block" alt="Textbook">
+            </button>
+
+            <!-- 5. VIDEOS (Internal Tab) -->
+            <button id="btn-mod-videos" onclick="activateModule('mod-videos')" class="tile-btn focus:outline-none flex flex-col">
+                <img src="https://raw.githubusercontent.com/ogaydv-prog/Monetary-economics-almau/main/pic-videos.png" class="w-full h-auto object-contain block" alt="Videos">
+            </button>
+
+            <!-- 6. READINGS (Internal Tab) -->
+            <button id="btn-mod-readings" onclick="activateModule('mod-readings')" class="tile-btn focus:outline-none flex flex-col">
+                <img src="https://raw.githubusercontent.com/ogaydv-prog/Monetary-economics-almau/main/pic-reading.png" class="w-full h-auto object-contain block" alt="Readings">
+            </button>
+
+            <!-- 7. TASKS (Internal Tab) -->
+            <button id="btn-mod-tasks" onclick="activateModule('mod-tasks')" class="tile-btn focus:outline-none flex flex-col">
+                <img src="https://raw.githubusercontent.com/ogaydv-prog/Monetary-economics-almau/main/pic-tasks.png" class="w-full h-auto object-contain block" alt="Tasks">
+            </button>
+
+            <!-- 8. GLOSSARY (Internal Tab) -->
+            <button id="btn-mod-glossary" onclick="activateModule('mod-glossary')" class="tile-btn focus:outline-none flex flex-col">
+                <img src="https://raw.githubusercontent.com/ogaydv-prog/Monetary-economics-almau/main/pic-glossary.png" class="w-full h-auto object-contain block" alt="Glossary">
+            </button>
+
+            <!-- 9. QPM SIMULATOR (External Link) -->
+            <button onclick="window.open('qpm-kz-en.html', '_blank')" class="tile-btn focus:outline-none flex flex-col">
+                <img src="https://raw.githubusercontent.com/ogaydv-prog/Monetary-economics-almau/main/pic-sim-qpm.png" class="w-full h-auto object-contain block" alt="QPM Simulator">
+            </button>
+
+            <!-- 10. FINAL EXAM (External Link) -->
+            <button onclick="window.open('me-exam-final.html', '_blank')" class="tile-btn focus:outline-none flex flex-col">
+                <img src="https://raw.githubusercontent.com/ogaydv-prog/Monetary-economics-almau/main/pic-exam-me.png" class="w-full h-auto object-contain block" alt="Final Exam">
+            </button>
+
+        </section>
+
+        <!-- MAIN VIEWPORT FOR INTERNAL CONTENT -->
+        <main id="viewport" class="neon-card p-6 md:p-8 rounded-2xl min-h-[500px] mt-4 border-t-4 border-indigo-500/50">
+            
+            <!-- WELCOME SCREEN -->
+            <div id="welcome-message" class="flex flex-col items-center justify-center text-center h-[400px] space-y-4">
+                <div class="p-4 bg-indigo-500/10 rounded-full border border-indigo-500/20 text-indigo-400">
+                    <i class="fas fa-university text-4xl"></i>
+                </div>
+                <h2 class="text-xl font-bold uppercase text-white tracking-wide">Monetary Economics: Interactive Hub</h2>
+                <p class="text-xs text-slate-400 max-w-lg leading-relaxed">Select a module from the grid above to access the syllabus, lecture notes, interactive tasks, or external simulators.</p>
+            </div>
+
+            <!-- MODULE: SYLLABUS -->
+            <section id="mod-syllabus" class="module-content hidden space-y-6">
+                <h2 class="text-lg font-black uppercase text-red-400 border-b border-slate-800 pb-3">Course Syllabus</h2>
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 text-xs text-slate-300">
+                    <div class="lg:col-span-2 space-y-4 leading-relaxed">
+                        <p class="text-sm font-semibold text-white">SEF 1313: Monetary Economics (5 ECTS)</p>
+                        <p>Monetary Economics is a branch of economics that studies various theories of money: it provides a basis for analyzing the money supply and considers its functions, as well as international aspects related to the circulation and exchange of foreign currency for international trade.</p>
+                        <h4 class="font-bold text-slate-100 uppercase text-[10px] tracking-wider mt-4">Course Learning Outcomes (LOs):</h4>
+                        <ul class="list-disc list-inside space-y-2 pl-2">
+                            <li><strong>LO1:</strong> Understand the role of money in the economy and how central banks use monetary policy instruments to stabilize the economy.</li>
+                            <li><strong>LO2:</strong> Explain the causes of inflation and deflation and propose potential control measures.</li>
+                            <li><strong>LO3:</strong> Analyze how changes in monetary policy affect macroeconomic indicators such as GDP and employment.</li>
+                            <li><strong>LO4:</strong> Evaluate the interaction between fiscal and monetary policies.</li>
+                            <li><strong>LO5:</strong> Understand the impact of monetary policy on global processes (Impossible Trilemma).</li>
+                        </ul>
+                    </div>
+                    <div class="bg-slate-900/60 p-4 rounded-xl border border-slate-800 h-fit space-y-3">
+                        <span class="text-[9px] text-slate-500 uppercase font-bold tracking-widest block border-b border-slate-800 pb-2">Course Information</span>
+                        <div class="flex justify-between border-b border-slate-800 pb-1.5"><span>Prerequisites:</span><span class="text-indigo-400 font-bold">Macroeconomics</span></div>
+                        <div class="flex justify-between border-b border-slate-800 pb-1.5"><span>Contact Hours:</span><span class="text-slate-300">45 hours</span></div>
+                        <div class="flex justify-between pb-1.5"><span>Instructor:</span><span class="text-emerald-400 font-bold">Prof. D. Ogay</span></div>
+                        <div class="pt-4 text-center">
+                            <a href="syllabus.pdf" target="_blank" class="bg-red-600 hover:bg-red-500 text-white font-bold py-2 px-4 rounded text-[10px] uppercase transition block"><i class="fas fa-file-pdf mr-1"></i> Download PDF Syllabus</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- MODULE: LECTURES -->
+            <section id="mod-lectures" class="module-content hidden space-y-6">
+                <h2 class="text-lg font-black uppercase text-indigo-400 border-b border-slate-800 pb-3">Lecture Notes (F. Mishkin Framework)</h2>
+                <div class="flex flex-col lg:flex-row gap-6">
+                    <div class="lg:w-1/4 flex flex-col gap-2 border-r border-slate-800/80 pr-4">
+                        <span class="text-[9px] text-slate-500 font-bold uppercase tracking-widest mb-2 block">Weekly Index</span>
+                        <button onclick="showLecture(1)" id="btn-lec-1" class="lec-tab-btn text-left px-3 py-2 rounded-lg text-xs font-semibold transition bg-indigo-600/20 text-white border border-indigo-500/30">Week 1: Money & Payments</button>
+                        <button onclick="showLecture(2)" id="btn-lec-2" class="lec-tab-btn text-left px-3 py-2 rounded-lg text-xs font-semibold transition bg-slate-900 text-slate-400 hover:bg-slate-800">Week 2: Interest Rates</button>
+                        <button onclick="showLecture(3)" id="btn-lec-3" class="lec-tab-btn text-left px-3 py-2 rounded-lg text-xs font-semibold transition bg-slate-900 text-slate-400 hover:bg-slate-800">Week 3: Bonds & Yields</button>
+                        <button onclick="showLecture(4)" id="btn-lec-4" class="lec-tab-btn text-left px-3 py-2 rounded-lg text-xs font-semibold transition bg-slate-900 text-slate-400 hover:bg-slate-800">Week 4: Money Supply Process</button>
+                        <button onclick="showLecture(5)" id="btn-lec-5" class="lec-tab-btn text-left px-3 py-2 rounded-lg text-xs font-semibold transition bg-slate-900 text-slate-400 hover:bg-slate-800">Week 5: Monetary Tools</button>
+                        <button onclick="showLecture(6)" id="btn-lec-6" class="lec-tab-btn text-left px-3 py-2 rounded-lg text-xs font-semibold transition bg-slate-900 text-slate-400 hover:bg-slate-800">Week 6: QPM & IT</button>
+                        <button onclick="showLecture(7)" id="btn-lec-7" class="lec-tab-btn text-left px-3 py-2 rounded-lg text-xs font-semibold transition bg-slate-900 text-slate-400 hover:bg-slate-800">Week 7: The Trilemma</button>
+                    </div>
+                    <div class="lg:w-3/4 text-xs text-slate-300 leading-relaxed max-h-[600px] overflow-y-auto custom-scrollbar pr-4" id="lecture-viewer">
+                        <!-- Content dynamically loaded via JS -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- MODULE: VIDEOS (6 Videos) -->
+            <section id="mod-videos" class="module-content hidden space-y-6">
+                <h2 class="text-lg font-black uppercase text-indigo-400 border-b border-slate-800 pb-3">Video Lectures Library</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="bg-slate-900/40 border border-slate-800 p-4 rounded-xl space-y-3">
+                        <div class="aspect-video bg-black rounded-lg flex items-center justify-center border border-slate-700 text-slate-500"><i class="fab fa-youtube text-3xl text-rose-500"></i></div>
+                        <h4 class="font-bold text-white text-xs">1. Milton Friedman - Inflation</h4>
+                        <p class="text-[10px] text-slate-400">Classical monetarist perspective on monetary phenomena.</p>
+                    </div>
+                    <div class="bg-slate-900/40 border border-slate-800 p-4 rounded-xl space-y-3">
+                        <div class="aspect-video bg-black rounded-lg flex items-center justify-center border border-slate-700 text-slate-500"><i class="fab fa-youtube text-3xl text-rose-500"></i></div>
+                        <h4 class="font-bold text-white text-xs">2. Central Banks Operations</h4>
+                        <p class="text-[10px] text-slate-400">How reserve requirements, discount rates, and OMO operate.</p>
+                    </div>
+                    <div class="bg-slate-900/40 border border-slate-800 p-4 rounded-xl space-y-3">
+                        <div class="aspect-video bg-black rounded-lg flex items-center justify-center border border-slate-700 text-slate-500"><i class="fab fa-youtube text-3xl text-rose-500"></i></div>
+                        <h4 class="font-bold text-white text-xs">3. The Fisher Equation</h4>
+                        <p class="text-[10px] text-slate-400">Nominal rates, real interest rates, and expected inflation.</p>
+                    </div>
+                    <div class="bg-slate-900/40 border border-slate-800 p-4 rounded-xl space-y-3">
+                        <div class="aspect-video bg-black rounded-lg flex items-center justify-center border border-slate-700 text-slate-500"><i class="fab fa-youtube text-3xl text-rose-500"></i></div>
+                        <h4 class="font-bold text-white text-xs">4. Money Multiplier Process</h4>
+                        <p class="text-[10px] text-slate-400">How commercial banks expand deposits based on reserves.</p>
+                    </div>
+                    <div class="bg-slate-900/40 border border-slate-800 p-4 rounded-xl space-y-3">
+                        <div class="aspect-video bg-black rounded-lg flex items-center justify-center border border-slate-700 text-slate-500"><i class="fab fa-youtube text-3xl text-rose-500"></i></div>
+                        <h4 class="font-bold text-white text-xs">5. QPM Framework (IMF)</h4>
+                        <p class="text-[10px] text-slate-400">Building Quarterly Projection Models for Inflation Targeting.</p>
+                    </div>
+                    <div class="bg-slate-900/40 border border-slate-800 p-4 rounded-xl space-y-3">
+                        <div class="aspect-video bg-black rounded-lg flex items-center justify-center border border-slate-700 text-slate-500"><i class="fab fa-youtube text-3xl text-rose-500"></i></div>
+                        <h4 class="font-bold text-white text-xs">6. The Impossible Trilemma</h4>
+                        <p class="text-[10px] text-slate-400">Mundell-Fleming corners: Float, Fixed, or Capital Controls.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- MODULE: READINGS (6 Articles) -->
+            <section id="mod-readings" class="module-content hidden space-y-6">
+                <h2 class="text-lg font-black uppercase text-indigo-400 border-b border-slate-800 pb-3">Required Academic Readings</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs text-slate-300">
+                    <!-- Article 1 -->
+                    <div class="bg-slate-900/40 border border-slate-800 p-4 rounded-xl space-y-2">
+                        <span class="text-[9px] text-indigo-400 font-bold uppercase tracking-wider block">Paper 1</span>
+                        <h4 class="text-xs font-bold text-white">M. Friedman: "The Role of Monetary Policy" (1968)</h4>
+                        <p class="text-[11px] text-slate-400">Establishing the natural rate of unemployment and limits of policy.</p>
+                    </div>
+                    <!-- Article 2 -->
+                    <div class="bg-slate-900/40 border border-slate-800 p-4 rounded-xl space-y-2">
+                        <span class="text-[9px] text-indigo-400 font-bold uppercase tracking-wider block">Paper 2</span>
+                        <h4 class="text-xs font-bold text-white">J. Taylor: "Discretion vs Policy Rules" (1993)</h4>
+                        <p class="text-[11px] text-slate-400">The seminal publication introducing the Taylor Rule reaction function.</p>
+                    </div>
+                    <!-- Article 3 -->
+                    <div class="bg-slate-900/40 border border-slate-800 p-4 rounded-xl space-y-2">
+                        <span class="text-[9px] text-indigo-400 font-bold uppercase tracking-wider block">Paper 3</span>
+                        <h4 class="text-xs font-bold text-white">R. Mundell: "Capital Mobility and Size" (1963)</h4>
+                        <p class="text-[11px] text-slate-400">Foundational work on the Impossible Trilemma.</p>
+                    </div>
+                    <!-- Article 4 -->
+                    <div class="bg-slate-900/40 border border-slate-800 p-4 rounded-xl space-y-2">
+                        <span class="text-[9px] text-indigo-400 font-bold uppercase tracking-wider block">Paper 4</span>
+                        <h4 class="text-xs font-bold text-white">IMF: "FPAS and QPM Framework"</h4>
+                        <p class="text-[11px] text-slate-400">Forecasting and Policy Analysis Systems used by Central Banks.</p>
+                    </div>
+                    <!-- Article 5 -->
+                    <div class="bg-slate-900/40 border border-slate-800 p-4 rounded-xl space-y-2">
+                        <span class="text-[9px] text-indigo-400 font-bold uppercase tracking-wider block">Paper 5</span>
+                        <h4 class="text-xs font-bold text-white">B. Bernanke: "The Macroeconomics of the Great Depression"</h4>
+                        <p class="text-[11px] text-slate-400">Analyzing the failure of the banking system and money supply collapse.</p>
+                    </div>
+                    <!-- Article 6 -->
+                    <div class="bg-slate-900/40 border border-slate-800 p-4 rounded-xl space-y-2">
+                        <span class="text-[9px] text-indigo-400 font-bold uppercase tracking-wider block">Paper 6</span>
+                        <h4 class="text-xs font-bold text-white">BIS: "Central Bank Digital Currencies (CBDCs)"</h4>
+                        <p class="text-[11px] text-slate-400">The future of fiat money and wholesale settlement systems.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- MODULE: TASKS (6 Interactive Solvers) -->
+            <section id="mod-tasks" class="module-content hidden space-y-6">
+                <h2 class="text-lg font-black uppercase text-indigo-400 border-b border-slate-800 pb-3">Interactive Task Solvers</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 text-xs text-slate-300">
+                    
+                    <!-- Task 1 -->
+                    <div class="bg-slate-900/60 border border-slate-700 p-5 rounded-xl space-y-3">
+                        <h4 class="font-bold text-white">Task 1: Fisher Equation (M×V=P×Y)</h4>
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-center"><span>Money (M):</span><input type="number" id="t1-m" value="1000" class="w-20 bg-slate-800 p-1 rounded text-center text-white" oninput="solveT1()"></div>
+                            <div class="flex justify-between items-center"><span>Velocity (V):</span><input type="number" id="t1-v" value="4" class="w-20 bg-slate-800 p-1 rounded text-center text-white" oninput="solveT1()"></div>
+                            <div class="flex justify-between items-center"><span>Price (P):</span><input type="number" id="t1-p" value="2" class="w-20 bg-slate-800 p-1 rounded text-center text-white" oninput="solveT1()"></div>
+                            <div class="flex justify-between items-center text-indigo-400 font-bold mt-2 pt-2 border-t border-slate-700"><span>Real GDP (Y):</span><span id="t1-res">2000.0</span></div>
+                        </div>
+                    </div>
+
+                    <!-- Task 2 -->
+                    <div class="bg-slate-900/60 border border-slate-700 p-5 rounded-xl space-y-3">
+                        <h4 class="font-bold text-white">Task 2: Simple Deposit Multiplier</h4>
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-center"><span>Reserves Inj. (ΔR):</span><input type="number" id="t2-r" value="100" class="w-20 bg-slate-800 p-1 rounded text-center text-white" oninput="solveT2()"></div>
+                            <div class="flex justify-between items-center"><span>Req. Ratio (rr):</span><input type="number" id="t2-rr" value="0.10" step="0.01" class="w-20 bg-slate-800 p-1 rounded text-center text-white" oninput="solveT2()"></div>
+                            <div class="flex justify-between items-center text-indigo-400 font-bold mt-2 pt-2 border-t border-slate-700"><span>Deposit Change (ΔD):</span><span id="t2-res">1000.0</span></div>
+                        </div>
+                    </div>
+
+                    <!-- Task 3 -->
+                    <div class="bg-slate-900/60 border border-slate-700 p-5 rounded-xl space-y-3">
+                        <h4 class="font-bold text-white">Task 3: Full Money Multiplier</h4>
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-center"><span>Currency Ratio (c):</span><input type="number" id="t3-c" value="0.20" step="0.01" class="w-20 bg-slate-800 p-1 rounded text-center text-white" oninput="solveT3()"></div>
+                            <div class="flex justify-between items-center"><span>Excess Res. (e):</span><input type="number" id="t3-e" value="0.05" step="0.01" class="w-20 bg-slate-800 p-1 rounded text-center text-white" oninput="solveT3()"></div>
+                            <div class="flex justify-between items-center"><span>Req. Res. (rr):</span><input type="number" id="t3-rr" value="0.10" step="0.01" class="w-20 bg-slate-800 p-1 rounded text-center text-white" oninput="solveT3()"></div>
+                            <div class="flex justify-between items-center text-indigo-400 font-bold mt-2 pt-2 border-t border-slate-700"><span>Multiplier (m):</span><span id="t3-res">3.43</span></div>
+                        </div>
+                    </div>
+
+                    <!-- Task 4 -->
+                    <div class="bg-slate-900/60 border border-slate-700 p-5 rounded-xl space-y-3">
+                        <h4 class="font-bold text-white">Task 4: Fisher Effect (Real Rate)</h4>
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-center"><span>Nominal Rate (i%):</span><input type="number" id="t4-i" value="8.0" step="0.5" class="w-20 bg-slate-800 p-1 rounded text-center text-white" oninput="solveT4()"></div>
+                            <div class="flex justify-between items-center"><span>Expected Inf. (π%):</span><input type="number" id="t4-p" value="3.5" step="0.5" class="w-20 bg-slate-800 p-1 rounded text-center text-white" oninput="solveT4()"></div>
+                            <div class="flex justify-between items-center text-indigo-400 font-bold mt-2 pt-2 border-t border-slate-700"><span>Real Rate (r%):</span><span id="t4-res">4.5%</span></div>
+                        </div>
+                    </div>
+
+                    <!-- Task 5 -->
+                    <div class="bg-slate-900/60 border border-slate-700 p-5 rounded-xl space-y-3">
+                        <h4 class="font-bold text-white">Task 5: Present Value (YTM)</h4>
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-center"><span>Future CF ($):</span><input type="number" id="t5-cf" value="1100" class="w-20 bg-slate-800 p-1 rounded text-center text-white" oninput="solveT5()"></div>
+                            <div class="flex justify-between items-center"><span>Interest Rate (i):</span><input type="number" id="t5-i" value="0.10" step="0.01" class="w-20 bg-slate-800 p-1 rounded text-center text-white" oninput="solveT5()"></div>
+                            <div class="flex justify-between items-center"><span>Years (n):</span><input type="number" id="t5-n" value="1" class="w-20 bg-slate-800 p-1 rounded text-center text-white" oninput="solveT5()"></div>
+                            <div class="flex justify-between items-center text-indigo-400 font-bold mt-2 pt-2 border-t border-slate-700"><span>Present Value:</span>$<span id="t5-res">1000.00</span></div>
+                        </div>
+                    </div>
+
+                    <!-- Task 6 -->
+                    <div class="bg-slate-900/60 border border-slate-700 p-5 rounded-xl space-y-3">
+                        <h4 class="font-bold text-white">Task 6: Taylor Rule (Target Rate)</h4>
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-center"><span>Neutral Rate (r*):</span><input type="number" id="t6-r" value="2.0" step="0.5" class="w-20 bg-slate-800 p-1 rounded text-center text-white" oninput="solveT6()"></div>
+                            <div class="flex justify-between items-center"><span>Current Inf. (π):</span><input type="number" id="t6-pi" value="4.0" step="0.5" class="w-20 bg-slate-800 p-1 rounded text-center text-white" oninput="solveT6()"></div>
+                            <div class="flex justify-between items-center"><span>Target Inf. (π*):</span><input type="number" id="t6-targ" value="2.0" step="0.5" class="w-20 bg-slate-800 p-1 rounded text-center text-white" oninput="solveT6()"></div>
+                            <div class="flex justify-between items-center text-indigo-400 font-bold mt-2 pt-2 border-t border-slate-700"><span>Policy Rate (i):</span><span id="t6-res">7.0%</span></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- MODULE: GLOSSARY (Connected to The Economist) -->
+            <section id="mod-glossary" class="module-content hidden space-y-6">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-slate-800 pb-3">
+                    <h2 class="text-lg font-black uppercase text-indigo-400">Economic Glossary & Search</h2>
+                </div>
+                
+                <div class="p-4 bg-indigo-950/20 border border-indigo-500/30 rounded-xl text-sm flex flex-col items-center justify-center space-y-4 text-center">
+                    <i class="fas fa-book-open text-4xl text-indigo-400"></i>
+                    <p class="text-slate-300">This module is integrated with the official <strong>The Economist (Economics A-to-Z)</strong> dictionary for precise academic definitions.</p>
+                    <a href="https://www.economist.com/economics-a-to-z" target="_blank" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-2.5 px-6 rounded-lg text-xs uppercase tracking-wider transition">
+                        <i class="fas fa-external-link-alt mr-2"></i> Open The Economist Dictionary
+                    </a>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <script>
+        // LECTURE DATA (Mishkin Based)
+        const LECTURES_DATA = {
+            1: `
+                <h3 class="text-lg font-bold text-white mb-3">Week 1: Fundamentals of Money (Mishkin Ch. 1-3)</h3>
+                <p class="mb-3 text-slate-300">Money acts as the circulatory system of the macroeconomy. It solves the "double coincidence of wants" problem inherent in barter economies.</p>
+                <ul class="list-disc list-inside space-y-1 mb-3 pl-2">
+                    <li><strong>Medium of Exchange:</strong> Minimizes transaction costs.</li>
+                    <li><strong>Unit of Account:</strong> Measures relative value.</li>
+                    <li><strong>Store of Value:</strong> Repository of purchasing power over time.</li>
+                </ul>
+                <p class="text-slate-300">Monetary aggregates classify money by liquidity, from high-powered base money (M0) to broad money (M2, M3).</p>
+            `,
+            2: `
+                <h3 class="text-lg font-bold text-white mb-3">Week 2: Interest Rates & Yields (Mishkin Ch. 4)</h3>
+                <p class="mb-3 text-slate-300">The interest rate is the price of renting money. The fundamental concept is Present Value (PV), which states a dollar today is worth more than a dollar tomorrow.</p>
+                <div class="bg-slate-900 p-3 rounded-lg text-center font-mono text-indigo-400 mb-3 border border-slate-700">
+                    PV = CF / (1 + i)^n
+                </div>
+                <p class="text-slate-300">The Fisher Equation distinguishes nominal rates (i) from real rates (r), adjusting for expected inflation (π^e): i = r + π^e.</p>
+            `,
+            3: `
+                <h3 class="text-lg font-bold text-white mb-3">Week 3: Bonds & The Yield Curve (Mishkin Ch. 5-6)</h3>
+                <p class="mb-3 text-slate-300">There is an inverse relationship between bond prices and interest rates. When interest rates rise, existing bond prices fall.</p>
+                <p class="text-slate-300">The <strong>Yield Curve</strong> plots yields of bonds with equal credit quality against different maturities. An inverted yield curve (short-term rates higher than long-term) is a reliable predictor of economic recessions.</p>
+            `,
+            4: `
+                <h3 class="text-lg font-bold text-white mb-3">Week 4: The Money Supply Process (Mishkin Ch. 15)</h3>
+                <p class="mb-3 text-slate-300">Commercial banks create money through fractional reserve banking. The Central Bank controls the Monetary Base (Reserves + Currency), but banks determine the broad money supply via the multiplier.</p>
+                <div class="bg-slate-900 p-3 rounded-lg text-center font-mono text-indigo-400 mb-3 border border-slate-700">
+                    m = (1 + c) / (rr + e + c)
+                </div>
+                <p class="text-slate-300">Where 'rr' is required reserves, 'e' is excess reserves, and 'c' is the currency ratio.</p>
+            `,
+            5: `
+                <h3 class="text-lg font-bold text-white mb-3">Week 5: Monetary Policy Tools (Mishkin Ch. 16-17)</h3>
+                <p class="mb-3 text-slate-300">Central banks utilize three classical policy levers to adjust commercial bank liquidity:</p>
+                <ul class="list-disc list-inside space-y-1 mb-3 pl-2 text-slate-300">
+                    <li><strong>Open Market Operations (OMO):</strong> Buying/selling government bonds to change bank reserves.</li>
+                    <li><strong>Discount Policy:</strong> Setting the rate for direct CB loans (Lender of Last Resort).</li>
+                    <li><strong>Reserve Requirements:</strong> Mandating the minimum percentage of deposits kept in vault.</li>
+                </ul>
+            `,
+            6: `
+                <h3 class="text-lg font-bold text-white mb-3">Week 6: Inflation Targeting & QPM</h3>
+                <p class="mb-3 text-slate-300">Modern Central Banks use forward-looking models like the Quarterly Projection Model (QPM) for Inflation Targeting.</p>
+                <p class="text-slate-300">The QPM relies on the IS Curve (Aggregate Demand), the Phillips Curve (Inflation), Uncovered Interest Parity (Exchange Rates), and the Taylor Rule (Central Bank reaction function).</p>
+            `,
+            7: `
+                <h3 class="text-lg font-bold text-white mb-3">Week 7: The Impossible Trilemma</h3>
+                <p class="mb-3 text-slate-300">Developed in the Mundell-Fleming framework, the Impossible Trilemma rules that a nation cannot simultaneously sustain:</p>
+                <ul class="list-disc list-inside space-y-1 text-slate-300">
+                    <li>Independent Monetary Policy</li>
+                    <li>Free Capital Mobility</li>
+                    <li>Fixed Exchange Rate</li>
+                </ul>
+            `
+        };
+
+        // NAVIGATION LOGIC
+        function activateModule(moduleId) {
+            // Hide welcome message and all modules
+            document.getElementById('welcome-message').classList.add('hidden');
+            document.querySelectorAll('.module-content').forEach(el => el.classList.add('hidden'));
+            
+            // Remove active styling from all buttons
+            document.querySelectorAll('.tile-btn').forEach(btn => btn.classList.remove('active-tile'));
+            
+            // Show targeted module
+            const target = document.getElementById(moduleId);
+            if (target) {
+                target.classList.remove('hidden');
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+
+            // Highlight the clicked button
+            const btn = document.getElementById('btn-' + moduleId);
+            if (btn) {
+                btn.classList.add('active-tile');
+            }
+
+            // Default behavior for lectures
+            if (moduleId === 'mod-lectures') {
+                showLecture(1);
+            }
+        }
+
+        // LECTURE VIEWER LOGIC
+        function showLecture(weekNum) {
+            document.querySelectorAll('.lec-tab-btn').forEach(btn => {
+                btn.classList.remove('bg-indigo-600/20', 'text-white', 'border-indigo-500/30');
+                btn.classList.add('bg-slate-900', 'text-slate-400');
+            });
+            
+            const btn = document.getElementById('btn-lec-' + weekNum);
+            if(btn) {
+                btn.classList.add('bg-indigo-600/20', 'text-white', 'border-indigo-500/30');
+                btn.classList.remove('bg-slate-900', 'text-slate-400');
+            }
+            
+            document.getElementById('lecture-viewer').innerHTML = LECTURES_DATA[weekNum] || "Content not found.";
+        }
+
+        // TASK SOLVERS (6 Functions)
+        function solveT1() {
+            let m = parseFloat(document.getElementById('t1-m').value) || 0;
+            let v = parseFloat(document.getElementById('t1-v').value) || 0;
+            let p = parseFloat(document.getElementById('t1-p').value) || 1;
+            document.getElementById('t1-res').innerText = ((m * v) / p).toFixed(1);
+        }
+        function solveT2() {
+            let r = parseFloat(document.getElementById('t2-r').value) || 0;
+            let rr = parseFloat(document.getElementById('t2-rr').value) || 0.1;
+            document.getElementById('t2-res').innerText = (r / rr).toFixed(1);
+        }
+        function solveT3() {
+            let c = parseFloat(document.getElementById('t3-c').value) || 0;
+            let e = parseFloat(document.getElementById('t3-e').value) || 0;
+            let rr = parseFloat(document.getElementById('t3-rr').value) || 0.1;
+            document.getElementById('t3-res').innerText = ((1 + c) / (rr + e + c)).toFixed(2);
+        }
+        function solveT4() {
+            let i = parseFloat(document.getElementById('t4-i').value) || 0;
+            let p = parseFloat(document.getElementById('t4-p').value) || 0;
+            document.getElementById('t4-res').innerText = (i - p).toFixed(1) + '%';
+        }
+        function solveT5() {
+            let cf = parseFloat(document.getElementById('t5-cf').value) || 0;
+            let i = parseFloat(document.getElementById('t5-i').value) || 0.1;
+            let n = parseFloat(document.getElementById('t5-n').value) || 1;
+            document.getElementById('t5-res').innerText = (cf / Math.pow(1 + i, n)).toFixed(2);
+        }
+        function solveT6() {
+            let r = parseFloat(document.getElementById('t6-r').value) || 2;
+            let pi = parseFloat(document.getElementById('t6-pi').value) || 4;
+            let targ = parseFloat(document.getElementById('t6-targ').value) || 2;
+            // Taylor Rule (Simplified): i = r* + pi + 0.5(pi - pi*)
+            let res = r + pi + 0.5 * (pi - targ);
+            document.getElementById('t6-res').innerText = res.toFixed(1) + '%';
+        }
+
+        // Init tasks
+        window.onload = function() {
+            showLecture(1);
+        }
+    </script>
+</body>
+</html>
