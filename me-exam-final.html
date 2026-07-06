@@ -1,0 +1,1368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monetary Economics Final Exam 2026 • AlmaU</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        body { 
+            background: radial-gradient(circle at top right, #0f172a 0%, #020617 100%); 
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            color: #e2e8f0;
+        }
+        .card { 
+            background: rgba(30, 41, 59, 0.7); 
+            border: 1px solid rgba(255,255,255,0.08); 
+            border-radius: 16px; 
+            backdrop-filter: blur(12px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .card:hover {
+            border-color: rgba(99, 102, 241, 0.3);
+            box-shadow: 0 10px 30px -10px rgba(99, 102, 241, 0.15);
+        }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.15); border-radius: 3px; }
+        .tab-btn.active { background-color: rgb(79, 70, 229); color: white; border-color: rgb(99, 102, 241); }
+
+        /* Perfect SVG Trilemma Geometry */
+        .tri-corner { cursor: pointer; transition: all 0.3s ease; }
+        .tri-corner:hover { filter: drop-shadow(0 0 10px rgba(255,255,255,0.4)); stroke-width: 3; }
+        .tri-active-float { fill: rgba(59, 130, 246, 0.8) !important; stroke: #60a5fa !important; }
+        .tri-active-fixed { fill: rgba(16, 185, 129, 0.8) !important; stroke: #34d399 !important; }
+        .tri-active-controls { fill: rgba(244, 63, 94, 0.8) !important; stroke: #fb7185 !important; }
+        
+        .bank-badge { font-style: normal !important; font-weight: 800; }
+    </style>
+</head>
+<body class="min-h-screen p-4 md:p-8 flex flex-col justify-between">
+
+    <div id="toast" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none">
+        <div id="toast-bg" class="bg-indigo-600 text-white px-5 py-3.5 rounded-xl shadow-2xl flex items-center gap-3 border border-indigo-400/30">
+            <i class="fas fa-info-circle text-lg"></i>
+            <span id="toast-msg" class="text-xs font-semibold">Notification</span>
+        </div>
+    </div>
+
+    <div id="teacher-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm hidden">
+        <div class="card p-6 max-w-sm w-full bg-slate-900 border border-slate-700/60 space-y-4">
+            <div class="flex items-center gap-3 text-indigo-400">
+                <i class="fas fa-key text-2xl"></i>
+                <h4 class="text-md font-bold">Professor Panel Auth</h4>
+            </div>
+            <p class="text-xs text-slate-300">Enter secure master-key to access the validation engine.</p>
+            <input type="password" id="teacher-key" class="w-full bg-slate-950 border border-slate-800 rounded-md p-2 text-xs text-slate-200 focus:ring-1 focus:ring-indigo-500" placeholder="Master Key">
+            <div class="flex justify-end gap-3 pt-2">
+                <button onclick="toggleModal('teacher-modal', false)" class="px-4 py-2 rounded-lg text-xs font-semibold bg-slate-800 text-slate-300 hover:bg-slate-700 transition">Cancel</button>
+                <button onclick="verifyTeacherKey()" class="px-4 py-2 rounded-lg text-xs font-semibold bg-indigo-600 text-white hover:bg-indigo-500 transition">Unlock</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="max-w-[1500px] mx-auto w-full space-y-6">
+        
+        <header class="flex flex-col md:flex-row justify-between items-start md:items-center card p-6 border-t-2 border-t-indigo-500/50">
+            <div>
+                <h1 class="text-xl md:text-2xl font-bold tracking-tight text-white">Monetary Economics Final Exam</h1>
+                <div class="flex flex-wrap items-center gap-2 mt-1 text-xs text-slate-400">
+                    <span class="font-bold tracking-widest text-indigo-400 uppercase">School of Digital Technologies & Economics</span>
+                    <span>•</span>
+                    <span class="uppercase tracking-wider">BA&E 2nd year • Summer 2026</span>
+                </div>
+            </div>
+            <div class="mt-4 md:mt-0 text-right">
+                <span class="text-[10px] text-slate-500 uppercase tracking-widest block">System Node</span>
+                <span class="font-mono text-xs text-indigo-300 font-bold">ALMAU-ME-2026</span>
+            </div>
+        </header>
+
+        <section class="card p-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label class="block text-[10px] uppercase font-bold text-slate-400 tracking-wider mb-2">Student Credentials (Full Name)</label>
+                    <input type="text" id="student-name" placeholder="Begin typing your name (e.g. Zhasmin, Kirill, Nika)..." 
+                           class="w-full bg-slate-950 border border-slate-800 p-3.5 rounded-lg text-sm text-white focus:ring-2 focus:ring-indigo-500 outline-none transition"
+                           oninput="detectStudentAndLoadExam()">
+                    <p class="text-[10px] text-slate-500 mt-2">Personalized parameters will automatically propagate once a valid enrollment is recognized.</p>
+                </div>
+                <div class="flex flex-col justify-center bg-slate-950/40 border border-slate-800/60 p-4 rounded-xl">
+                    <div class="text-[10px] uppercase font-bold text-slate-500 tracking-wider">Identified Central Bank Platform</div>
+                    <div id="bank-logo-box" class="flex items-center gap-3 mt-2 text-indigo-300 font-bold text-lg not-italic">
+                        <i class="fas fa-university text-2xl text-slate-700 animate-pulse"></i>
+                        <span class="text-slate-500 font-normal">Awaiting authentic name entry...</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div id="exam-hub" class="hidden space-y-6">
+            
+            <div class="flex flex-wrap gap-2 border-b border-slate-800 pb-2">
+                <button onclick="switchTab('tab-theory')" class="tab-btn active px-4 py-2 text-xs font-semibold uppercase tracking-wider rounded-lg border border-slate-800 bg-slate-950 text-slate-400 transition hover:text-white">
+                    <i class="fas fa-book-open mr-1.5"></i> Part 1: Theory
+                </button>
+                <button onclick="switchTab('tab-cb-profile')" class="tab-btn px-4 py-2 text-xs font-semibold uppercase tracking-wider rounded-lg border border-slate-800 bg-slate-950 text-slate-400 transition hover:text-white">
+                    <i class="fas fa-sliders mr-1.5"></i> Part 2: CB Framework
+                </button>
+                <button onclick="switchTab('tab-balance-trilemma')" class="tab-btn px-4 py-2 text-xs font-semibold uppercase tracking-wider rounded-lg border border-slate-800 bg-slate-950 text-slate-400 transition hover:text-white">
+                    <i class="fas fa-balance-scale mr-1.5"></i> Part 3: Balance & Trilemma
+                </button>
+                <button onclick="switchTab('tab-qpm-sim')" class="tab-btn px-4 py-2 text-xs font-semibold uppercase tracking-wider rounded-lg border border-slate-800 bg-slate-950 text-slate-400 transition hover:text-white">
+                    <i class="fas fa-chart-line mr-1.5"></i> Part 4: QPM Simulator
+                </button>
+                <button onclick="switchTab('tab-submit')" class="tab-btn px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg border border-emerald-800 bg-emerald-950/20 text-emerald-400 ml-auto transition hover:bg-emerald-600 hover:text-white">
+                    <i class="fas fa-id-card mr-1.5"></i> Finalize Session
+                </button>
+            </div>
+
+            <div id="tab-theory" class="tab-pane space-y-6">
+                <div id="theory-questions-container" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
+            </div>
+
+            <div id="tab-cb-profile" class="tab-pane space-y-6 hidden">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="card p-5 space-y-4 md:col-span-1">
+                        <div>
+                            <span class="text-[9px] bg-indigo-500/10 text-indigo-400 px-2.5 py-1 rounded-md border border-indigo-500/20 uppercase font-black tracking-widest inline-block mb-2">Framework Q5</span>
+                            <h4 class="text-sm font-bold text-slate-200">Central Bank Target Alignment</h4>
+                            <p class="text-[11px] text-indigo-300 font-bold mt-1" id="q5-instruction">Identify the correct targets.</p>
+                        </div>
+                        <div id="q5-options-box" class="space-y-2 text-xs custom-scrollbar overflow-y-auto max-h-[350px] pr-2"></div>
+                    </div>
+                    <div class="card p-5 space-y-4 md:col-span-1">
+                        <div>
+                            <span class="text-[9px] bg-indigo-500/10 text-indigo-400 px-2.5 py-1 rounded-md border border-indigo-500/20 uppercase font-black tracking-widest inline-block mb-2">Framework Q6</span>
+                            <h4 class="text-sm font-bold text-slate-200">MP Operational Instruments</h4>
+                            <p class="text-[11px] text-indigo-300 font-bold mt-1" id="q6-instruction">Select the operational tools.</p>
+                        </div>
+                        <div id="q6-options-box" class="space-y-2 text-xs custom-scrollbar overflow-y-auto max-h-[350px] pr-2"></div>
+                    </div>
+                    <div class="card p-5 space-y-4 md:col-span-1">
+                        <div>
+                            <span class="text-[9px] bg-indigo-500/10 text-indigo-400 px-2.5 py-1 rounded-md border border-indigo-500/20 uppercase font-black tracking-widest inline-block mb-2">Framework Q7</span>
+                            <h4 class="text-sm font-bold text-slate-200">Monetary Aggregates (M1/M2/M3)</h4>
+                            <p class="text-[11px] text-indigo-300 font-bold mt-1" id="q7-instruction">Identify the correct national definitions.</p>
+                        </div>
+                        <div id="q7-options-box" class="space-y-2 text-xs"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tab-balance-trilemma" class="tab-pane space-y-6 hidden">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="card p-5 space-y-4">
+                        <div>
+                            <span class="text-[9px] bg-indigo-500/10 text-indigo-400 px-2.5 py-1 rounded-md border border-indigo-500/20 uppercase font-black tracking-widest inline-block mb-2">Accounting Q8</span>
+                            <h4 class="text-sm font-bold text-slate-200" id="t8-header-title">T-Account Operations</h4>
+                            <p class="text-xs text-slate-300 leading-relaxed mt-1" id="t8-instruction-text">Loading...</p>
+                            <p class="text-[10px] text-amber-400 font-semibold mt-2">Instructions: Enter values with signs (+300 or -300). Use 0 for no change.</p>
+                        </div>
+                        <div class="space-y-4 text-xs" id="t8-interactive-tables"></div>
+                        <div id="t8-live-status" class="p-3 mt-3 rounded-lg text-center text-xs font-bold transition-all bg-slate-900 border border-slate-700 text-slate-400">
+                            Awaiting Input...
+                        </div>
+                    </div>
+
+                    <div class="card p-5 space-y-4">
+                        <div>
+                            <span class="text-[9px] bg-indigo-500/10 text-indigo-400 px-2.5 py-1 rounded-md border border-indigo-500/20 uppercase font-black tracking-widest inline-block mb-2">Macroeconomic Trilemma Q9</span>
+                            <h4 class="text-sm font-bold text-slate-200">The Mundell-Fleming Impossible Trilemma</h4>
+                            <p class="text-xs text-slate-300 leading-relaxed mt-1">Select the combination representing the exact macroeconomic corner chosen by your assigned nation.</p>
+                        </div>
+
+                        <!-- PERFECT EQUILATERAL TRIANGLE GEOMETRY -->
+                        <div class="flex items-center justify-center py-2">
+                            <div class="w-[320px] h-[220px] relative">
+                                <svg width="320" height="220" viewBox="0 0 320 220" class="drop-shadow-lg mx-auto overflow-visible">
+                                    <!-- Base: Center(160,50), Left(80,189), Right(240,189) -->
+                                    <polygon points="160,50 240,189 80,189" fill="rgba(30, 41, 59, 0.4)" stroke="#334155" stroke-width="2" stroke-linejoin="round"/>
+                                    
+                                    <!-- Top Corner: Pure Float -->
+                                    <polygon id="tri-float" points="160,50 180,85 140,85" class="tri-corner fill-slate-800 stroke-slate-600" onclick="selectTrilemma('float')"/>
+                                    <text x="160" y="35" class="tri-text text-blue-400 font-bold" font-size="11px" fill="#60a5fa" text-anchor="middle">Pure Float</text>
+                                    
+                                    <!-- Right Corner: Fixed Peg -->
+                                    <polygon id="tri-fixed" points="240,189 220,154 200,189" class="tri-corner fill-slate-800 stroke-slate-600" onclick="selectTrilemma('fixed')"/>
+                                    <text x="250" y="210" class="tri-text text-emerald-400 font-bold" font-size="11px" fill="#34d399" text-anchor="left">Fixed Peg</text>
+                                    
+                                    <!-- Left Corner: Capital Controls -->
+                                    <polygon id="tri-controls" points="80,189 100,154 120,189" class="tri-corner fill-slate-800 stroke-slate-600" onclick="selectTrilemma('controls')"/>
+                                    <text x="70" y="210" class="tri-text text-rose-400 font-bold" font-size="11px" fill="#fb7185" text-anchor="end">Capital Controls</text>
+
+                                    <!-- Exact 60-degree Slopes rotation labels -->
+                                    <text x="110" y="115" class="text-[9px] font-bold fill-slate-500" transform="rotate(-60 110 115)" text-anchor="middle">Independent Policy</text>
+                                    <text x="210" y="115" class="text-[9px] font-bold fill-slate-500" transform="rotate(60 210 115)" text-anchor="middle">Free Capital Flow</text>
+                                    <text x="160" y="205" class="text-[9px] font-bold fill-slate-500" text-anchor="middle">Fixed Exchange Rate</text>
+                                </svg>
+                            </div>
+                        </div>
+                        
+                        <div class="space-y-3 text-xs hidden">
+                            <input type="radio" name="q9" value="float" id="rad-float">
+                            <input type="radio" name="q9" value="fixed" id="rad-fixed">
+                            <input type="radio" name="q9" value="controls" id="rad-controls">
+                        </div>
+                        <div id="trilemma-status" class="text-center font-bold text-xs text-slate-400 h-6">Awaiting selection on the triangle...</div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tab-qpm-sim" class="tab-pane space-y-6 hidden">
+                <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+                    <div class="lg:col-span-1 space-y-4">
+                        <div class="bg-slate-900/80 border border-slate-800 p-5 rounded-xl space-y-5">
+                            <h3 class="text-xs font-bold text-slate-300 uppercase tracking-widest border-b border-slate-800 pb-2 flex justify-between items-center">
+                                <span>Sim Regulators</span>
+                                <span class="bg-indigo-600/20 text-indigo-400 px-2 py-0.5 rounded text-[9px] font-black border border-indigo-500/30">Active</span>
+                            </h3>
+                            <div class="space-y-4">
+                                <div class="space-y-1">
+                                    <div class="flex justify-between text-xs text-slate-400"><span>Inflation Target</span><span id="lbl-target" class="text-indigo-400 font-bold">5.0%</span></div>
+                                    <input type="range" id="param-target" min="2" max="15" step="0.5" value="5" class="w-full accent-indigo-500">
+                                </div>
+                                <div class="space-y-1">
+                                    <div class="flex justify-between text-xs text-slate-400"><span>Neutral Interest Rate</span><span id="lbl-neutral" class="text-indigo-400 font-bold">4.0%</span></div>
+                                    <input type="range" id="param-neutral" min="1" max="10" step="0.5" value="4" class="w-full accent-indigo-500">
+                                </div>
+                                <div class="pt-2 border-t border-slate-800/60">
+                                    <div class="space-y-1 mt-2">
+                                        <div class="flex justify-between text-xs text-slate-400"><span>Inflation Expectations &pi;</span><span id="lbl-exp-inf" class="text-amber-400 font-bold">5.0%</span></div>
+                                        <input type="range" id="param-exp-inf" min="0" max="25" step="0.5" value="5" class="w-full accent-amber-500">
+                                    </div>
+                                    <div class="space-y-1 mt-3">
+                                        <div class="flex justify-between text-xs text-slate-400"><span>Expectation Weight &lambda;</span><span id="lbl-lambda" class="text-amber-400 font-bold">0.6</span></div>
+                                        <input type="range" id="param-lambda" min="0" max="1" step="0.1" value="0.6" class="w-full accent-amber-500">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-900/80 border border-slate-800 p-5 rounded-xl border-l-2 border-l-rose-500/50 space-y-5">
+                            <h3 class="text-xs font-bold text-slate-300 uppercase tracking-widest border-b border-slate-800 pb-2">Exogenous Shocks (t=1)</h3>
+                            <div class="space-y-4">
+                                <div class="space-y-1">
+                                    <div class="flex justify-between text-xs text-slate-400"><span>Demand Shock</span><span id="lbl-shock-y" class="text-rose-400 font-mono">0.0%</span></div>
+                                    <input type="range" id="shock-y" min="-10" max="10" step="0.5" value="0" class="w-full accent-rose-500">
+                                </div>
+                                <div class="space-y-1">
+                                    <div class="flex justify-between text-xs text-slate-400"><span>Supply Shock</span><span id="lbl-shock-pi" class="text-rose-400 font-mono">0.0%</span></div>
+                                    <input type="range" id="shock-pi" min="-10" max="10" step="0.5" value="0" class="w-full accent-rose-500">
+                                </div>
+                                <div class="space-y-1">
+                                    <div class="flex justify-between text-xs text-slate-400"><span>Oil Price Shock</span><span id="lbl-shock-oil" class="text-emerald-400 font-mono">0%</span></div>
+                                    <input type="range" id="shock-oil" min="-40" max="40" step="5" value="0" class="w-full accent-emerald-500">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="lg:col-span-3 space-y-4 flex flex-col justify-between">
+                        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                            <div class="md:col-span-3 bg-slate-950 border border-slate-800/80 p-4 rounded-xl font-mono text-xs">
+                                <div class="text-slate-500 mb-2 uppercase text-[10px] tracking-widest">>> Console Output: QPM Engine</div>
+                                <div id="narrative-box" class="text-slate-300 leading-relaxed space-y-1"></div>
+                            </div>
+                            <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl flex flex-col justify-center">
+                                <div class="text-[9px] text-slate-400 uppercase tracking-wider text-center">Sensor: Kalman Filter</div>
+                                <div class="text-center mt-1">
+                                    <div class="text-[10px] text-slate-500">Output Gap Estimate</div>
+                                    <div id="kalman-val" class="text-lg font-mono text-purple-400 mt-1 font-bold">0.00%</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="bg-slate-950/40 border border-slate-800 p-4 rounded-xl relative">
+                                <h4 class="text-xs text-slate-300 font-bold uppercase tracking-widest absolute top-4 left-4">Inflation (Phillips Curve)</h4>
+                                <div class="h-64 mt-6"><canvas id="chartInf"></canvas></div>
+                            </div>
+                            <div class="bg-slate-950/40 border border-slate-800 p-4 rounded-xl relative">
+                                <h4 class="text-xs text-slate-300 font-bold uppercase tracking-widest absolute top-4 left-4">Output Gap (IS Curve)</h4>
+                                <div class="h-64 mt-6"><canvas id="chartGap"></canvas></div>
+                            </div>
+                            <div class="bg-slate-950/40 border border-slate-800 p-4 rounded-xl relative">
+                                <h4 class="text-xs text-slate-300 font-bold uppercase tracking-widest absolute top-4 left-4">Policy Rate (Taylor Rule)</h4>
+                                <div class="h-64 mt-6"><canvas id="chartRate"></canvas></div>
+                            </div>
+                            <div class="bg-slate-950/40 border border-slate-800 p-4 rounded-xl relative">
+                                <h4 class="text-xs text-slate-300 font-bold uppercase tracking-widest absolute top-4 left-4">Real Exchange Rate (UIP)</h4>
+                                <div class="h-64 mt-6"><canvas id="chartUIP"></canvas></div>
+                            </div>
+                        </div>
+
+                        <div class="card p-4 space-y-3">
+                            <div class="flex justify-between items-center">
+                                <span class="text-[9px] bg-indigo-500/10 text-indigo-400 px-2.5 py-1 rounded-md border border-indigo-500/20 uppercase font-black tracking-widest inline-block">Analysis Q10</span>
+                                <span class="text-xs text-amber-400 font-bold"><i class="fas fa-edit mr-1"></i> Policy Briefing Challenge</span>
+                            </div>
+                            <h4 class="text-xs text-slate-300">Set a **+3% Demand Shock** at t=1. Based on your central bank parameters, analyze the inflation trajectory and the simulated policy rate response. Write a concise policy briefing (max 150 words) justifying your policy stance.</h4>
+                            <textarea id="q10-brief" maxlength="500" class="w-full bg-slate-950/80 border border-slate-800 rounded-lg p-3 text-xs focus:ring-1 focus:ring-indigo-500 text-slate-200 h-24 resize-none custom-scrollbar" placeholder="Type your strategic analysis here..."></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tab-submit" class="tab-pane space-y-6 hidden">
+                <div class="text-center py-8 space-y-2">
+                    <div class="inline-flex p-4 bg-emerald-500/10 rounded-full text-emerald-400 border border-emerald-500/20 mb-2">
+                        <i class="fas fa-stamp text-4xl"></i>
+                    </div>
+                    <h2 class="text-xl font-bold text-slate-100">Finalize Exam Session</h2>
+                    <p class="text-xs text-slate-400 max-w-md mx-auto">This compiles all dynamic responses and locks them into an unmodifiable secure token for your professor.</p>
+                    <button onclick="compileFinalToken()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 px-6 rounded-lg text-xs tracking-wider uppercase transition shadow-lg shadow-emerald-950/50">
+                        Compile & Generate Token
+                    </button>
+                </div>
+
+                <div id="passport-block" class="hidden card p-6 border-t-4 border-emerald-500 bg-slate-900/20 space-y-6">
+                    <div class="flex justify-between items-start border-b border-slate-800 pb-4 flex-wrap gap-4">
+                        <div>
+                            <h3 class="text-md font-black text-white tracking-tight">ALMAU MONETARY ECONOMICS CERTIFICATE</h3>
+                            <p class="text-[10px] text-slate-400 font-mono">Academic Verification Protocol • Summer 2026</p>
+                        </div>
+                        <div class="text-right text-xs">
+                            <span class="text-slate-400">Protocol Status:</span>
+                            <span class="font-mono text-emerald-400 font-bold block">SECURED-SESSION</span>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-xs">
+                        <div class="bg-slate-950/50 p-3 rounded border border-slate-800">
+                            <span class="text-[10px] text-slate-500 uppercase block">Candidate Name:</span>
+                            <span class="font-bold text-slate-200" id="p-student"></span>
+                        </div>
+                        <div class="bg-slate-950/50 p-3 rounded border border-slate-800">
+                            <span class="text-[10px] text-slate-500 uppercase block">Monetary Platform:</span>
+                            <span class="font-bold text-slate-200" id="p-bank"></span>
+                        </div>
+                        <div class="bg-slate-950/50 p-3 rounded border border-slate-800">
+                            <span class="text-[10px] text-slate-500 uppercase block">Completed Time:</span>
+                            <span class="font-bold text-slate-200" id="p-time"></span>
+                        </div>
+                        <div class="bg-slate-950/50 p-3 rounded border border-slate-800">
+                            <span class="text-[10px] text-slate-500 uppercase block">Balance Check:</span>
+                            <span class="font-bold text-slate-200" id="p-bal-check"></span>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-950 border border-emerald-500/20 p-4 rounded-lg text-center space-y-2">
+                        <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider block">VERIFICATION KEY (COPY AND TRANSMIT TO INSTRUCTOR)</span>
+                        <div class="font-mono text-[11px] text-emerald-400 break-all select-all cursor-pointer bg-slate-900/60 p-3 rounded" id="p-token" onclick="copyToClipboard()">Compiling...</div>
+                    </div>
+                </div>
+
+                <!-- Professor Grade Dashboard -->
+                <div id="prof-grade-panel" class="hidden card p-6 border-t-4 border-indigo-500 bg-indigo-950/10 space-y-4">
+                    <div class="border-b border-slate-800 pb-2">
+                        <h4 class="font-bold text-sm text-indigo-400 uppercase tracking-wider"><i class="fas fa-user-shield mr-1.5"></i> Professor Grade Verification Hub</h4>
+                        <p class="text-[10px] text-slate-400">Import secure tokens received from candidates to decrypt their entire session matrix.</p>
+                    </div>
+                    <div class="space-y-3">
+                        <textarea id="prof-token-input" class="w-full bg-slate-950 border border-slate-800 rounded-md p-2 text-xs text-slate-200 h-16 resize-none custom-scrollbar" placeholder="Insert compiled candidate token..."></textarea>
+                        <div class="flex gap-2">
+                            <button onclick="decryptAndScoreToken()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-2 px-4 rounded text-xs uppercase tracking-wider transition">
+                                Decrypt & Grade Session
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Decrypted Result Dashboard -->
+                    <div id="grade-panel-output" class="hidden bg-slate-950/80 p-4 rounded-lg border border-slate-800 text-xs space-y-4">
+                        <h5 class="font-bold text-indigo-400 border-b border-slate-800 pb-1 uppercase text-[10px]">Session Audit Analytics</h5>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-slate-300">
+                            <div>Candidate: <span class="text-white font-bold block" id="dec-student"></span></div>
+                            <div>Sovereign Bank: <span class="text-white font-bold block" id="dec-bank"></span></div>
+                            <div>Final Score: <span class="text-emerald-400 font-bold block text-sm" id="dec-score"></span></div>
+                            <div>T-Account Status: <span class="font-bold block" id="dec-t-account"></span></div>
+                        </div>
+                        <div class="bg-slate-900/60 p-3 rounded border border-slate-800/80">
+                            <span class="text-[10px] text-slate-500 uppercase block font-bold mb-1">Student Q10 Brief:</span>
+                            <p class="text-slate-200 italic" id="dec-brief"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="border-t border-slate-800/80 bg-slate-950/60 py-5 text-center text-xs text-slate-500 w-full mt-10">
+        <div class="max-w-[1500px] mx-auto px-4 flex justify-between items-center flex-wrap gap-4 relative">
+            <p class="text-slate-500 text-left">School of Digital Technologies & Economics • Business Analytics & Economics • Summer Semester 2026 • All rights reserved.</p>
+            <button onclick="toggleModal('teacher-modal', true)" class="text-slate-800 hover:text-indigo-500/30 transition text-sm focus:outline-none" title="Professor Entry">
+                <i class="fas fa-key"></i>
+            </button>
+        </div>
+    </footer>
+
+    <script>
+        // Enrollment definitions map
+        const ENROLLED_STUDENTS = {
+            "zhasmin makulbekova": "People's Bank of China (PBoC)",
+            "zhasmin": "People's Bank of China (PBoC)",
+            "жасмин макулбекова": "People's Bank of China (PBoC)",
+            "жасмин": "People's Bank of China (PBoC)",
+            
+            "nika krivenko": "Bank of Japan (BoJ)",
+            "nika": "Bank of Japan (BoJ)",
+            "ника кривенко": "Bank of Japan (BoJ)",
+            "ника": "Bank of Japan (BoJ)",
+            
+            "kirill": "Central Bank of the Argentine Republic (BCRA)",
+            "кирилл": "Central Bank of the Argentine Republic (BCRA)",
+            
+            "daulet": "Swiss National Bank (SNB)",
+            "даулет": "Swiss National Bank (SNB)",
+            
+            "kamilla": "Sveriges Riksbank",
+            "камилла": "Sveriges Riksbank"
+        };
+
+        // Master Gold Data Dictionary
+        const BANK_PROFILES = {
+            "People's Bank of China (PBoC)": {
+                name: "People's Bank of China (PBoC)",
+                flag: "🇨🇳",
+                styleClass: "text-red-500 bank-badge",
+                questions: [
+                    {
+                        title: "Theory Q1",
+                        question: "According to modern monetary consensus, why did the PBoC and other major central banks shift from targeting the Money Supply directly to targeting short-term Interest Rates?",
+                        options: [
+                            "A) Direct monetary aggregates are impossible to measure.",
+                            "B) High instability in money velocity broke the predictive link between money supply and inflation targets.",
+                            "C) The money multiplier was proven to be constant."
+                        ],
+                        correct: "B"
+                    },
+                    {
+                        title: "Theory Q2",
+                        question: "As the PBoC accelerates the development of the Digital Yuan (e-CNY), how does this CBDC fundamentally differ from commercial bank electronic deposits?",
+                        options: [
+                            "A) It represents a direct liability claim on the PBoC balance sheet, functioning as digital legal tender cash.",
+                            "B) It is backed directly by physical gold bullion kept in state vaults.",
+                            "C) It is a private debt contract backed solely by commercial bank reserves."
+                        ],
+                        correct: "A"
+                    },
+                    {
+                        title: "Theory Q3",
+                        question: "How does Friedman's Restatement explain money demand stability during high-yield asset market environments in China?",
+                        options: [
+                            "A) Money demand instantly drops to zero when equities outperform bonds.",
+                            "B) Money demand remains perfectly inelastic to interest rates.",
+                            "C) Money demand is a function of multi-asset wealth; as yield on other assets rises, the opportunity cost of holding non-yield cash escalates."
+                        ],
+                        correct: "C"
+                    },
+                    {
+                        title: "Theory Q4",
+                        question: "Under the PBoC structural monetary policy framework, how do targeted reserve requirement ratio (RRR) cuts affect the credit creation process?",
+                        options: [
+                            "A) They reduce the monetary base directly.",
+                            "B) They expand the credit multiplier and free up commercial liquidity to support targeted real-economy sectors.",
+                            "C) They prevent commercial banks from borrowing."
+                        ],
+                        correct: "B"
+                    }
+                ],
+                objectives: [
+                    { text: "Strategic: Output Growth (GDP)", correct: true },
+                    { text: "Strategic: Renminbi Exchange Rate Stability", correct: true },
+                    { text: "Strategic: Zero Deflation Boundary", correct: false },
+                    { text: "Intermediate: Growth of Aggregate Financing", correct: true },
+                    { text: "Intermediate: Broad Money Supply (M2) Growth", correct: true },
+                    { text: "Intermediate: Complete Credit Ceilings", correct: false }
+                ],
+                instruments: [
+                    { text: "Reserve Requirement Ratio (RRR)", correct: true },
+                    { text: "Medium-term Lending Facility (MLF)", correct: true },
+                    { text: "Open Market Operations (OMO)", correct: true },
+                    { text: "Negative Interest Rates", correct: false },
+                    { text: "Yield Curve Control (YCC)", correct: false }
+                ],
+                aggregates: [
+                    { text: "M0: Currency in Circulation", correct: true },
+                    { text: "M1: M0 + Corporate Demand Deposits", correct: true },
+                    { text: "M2: M1 + Enterprise Time Deposits + Household Savings", correct: true }
+                ],
+                t8: {
+                    title: "T-Account Operations: Injection via MLF (Medium-term Lending Facility)",
+                    desc: "Your central bank (**PBoC**) injects <span class='text-emerald-400 font-bold'>300 million RMB</span> via Medium-term Lending Facility (MLF) into commercial banks.",
+                    layout: "com_liab",
+                    cb_assets_label: "MLF Loans",
+                    cb_liab_label: "Bank Reserves",
+                    com_assets_label: "Reserves at PBoC",
+                    com_liab_label: "MLF Borrowings",
+                    t8_expected: [300, 300, 300, 300]
+                }
+            },
+            "Bank of Japan (BoJ)": {
+                name: "Bank of Japan (BoJ)",
+                flag: "🇯🇵",
+                styleClass: "text-slate-100 bank-badge",
+                questions: [
+                    {
+                        title: "Theory Q1",
+                        question: "Why did the BoJ struggle to target the broad money supply directly during its prolonged deflationary eras?",
+                        options: [
+                            "A) Direct monetary aggregates are impossible to count.",
+                            "B) Extreme declines in the velocity of money broke the predictive link between the monetary base and target CPI.",
+                            "C) Friedman's rule is invalid in Asia."
+                        ],
+                        correct: "B"
+                    },
+                    {
+                        title: "Theory Q2",
+                        question: "In Japan's zero-lower-bound interest rate environment, why does the liquidity preference theory predict that money demand becomes nearly perfectly elastic?",
+                        options: [
+                            "A) Store of Value functions completely fail.",
+                            "B) At zero yields, money and short-term bonds become perfect substitutes, leading economic agents to hoard cash.",
+                            "C) The opportunity cost of holding cash approaches infinity."
+                        ],
+                        correct: "B"
+                    },
+                    {
+                        title: "Theory Q3",
+                        question: "How does the BoJ's Quantitative and Qualitative Easing (QQE) asset purchase program affect commercial bank balance sheets?",
+                        options: [
+                            "A) It replaces liquid bank reserves with high-duration government bonds.",
+                            "B) It exchanges domestic government bonds on commercial bank balance sheets for highly liquid reserves at the BoJ.",
+                            "C) It decreases total commercial assets."
+                        ],
+                        correct: "B"
+                    },
+                    {
+                        title: "Theory Q4",
+                        question: "What is the structural objective of the BoJ's Yield Curve Control (YCC) mechanism?",
+                        options: [
+                            "A) To target short-term interbank money market rates exclusively.",
+                            "B) To anchor the 10-year government bond yield at a specified target to lower long-term borrowing costs.",
+                            "C) To restrict commercial bank credit expansion."
+                        ],
+                        correct: "B"
+                    }
+                ],
+                objectives: [
+                    { text: "Strategic: Stable 2% Inflation Anchor", correct: true },
+                    { text: "Strategic: Absolute Employment Target", correct: false },
+                    { text: "Intermediate: 10-Year JGB Yield (Yield Curve Control)", correct: true },
+                    { text: "Intermediate: Direct M1 Aggregates targeting", correct: false }
+                ],
+                instruments: [
+                    { text: "Complementary Deposit Facility", correct: true },
+                    { text: "Yield Curve Control (YCC) Purchases", correct: true },
+                    { text: "ETF and REIT Asset Purchases", correct: true },
+                    { text: "Quantitative and Qualitative Easing (QQE)", correct: true },
+                    { text: "Discount window lending", correct: false }
+                ],
+                aggregates: [
+                    { text: "M1: Cash + Deposit Money", correct: true },
+                    { text: "M2: M1 + Quasi-Money (Certificates of Deposit)", correct: true },
+                    { text: "M3: M2 + Postal Savings + Cooperative Financial Inst.", correct: true }
+                ],
+                t8: {
+                    title: "T-Account Operations: Quantitative and Qualitative Easing (QQE) Bond Purchase",
+                    desc: "Your central bank (**BoJ**) purchases <span class='text-emerald-400 font-bold'>750 billion JPY</span> in Government Bonds (JGBs) directly from commercial banks.",
+                    layout: "com_sec",
+                    cb_assets_label: "JGBs (Securities)",
+                    cb_liab_label: "Bank Reserves",
+                    com_assets_label: "Reserves at BoJ",
+                    com_sec_label: "JGBs (Securities)",
+                    t8_expected: [750, 750, 750, -750]
+                }
+            },
+            "Central Bank of the Argentine Republic (BCRA)": {
+                name: "Central Bank of the Argentine Republic (BCRA)",
+                flag: "🇦🇷",
+                styleClass: "text-sky-400 bank-badge",
+                questions: [
+                    {
+                        title: "Theory Q1",
+                        question: "In an economy experiencing runaway inflation like Argentina's historical episodes, which core function of money degrades first?",
+                        options: [
+                            "A) Medium of Exchange, because physical banknotes disintegrate.",
+                            "B) Store of Value, as rapid price surges erode purchasing power, causing agents to swap local currency for foreign assets.",
+                            "C) Unit of Account, because merchants cannot update digital catalogs."
+                        ],
+                        correct: "B"
+                    },
+                    {
+                        title: "Theory Q2",
+                        question: "How does high inflation in Argentina impact the velocity of money (V) according to the Quantity Theory?",
+                        options: [
+                            "A) Velocity drops to zero.",
+                            "B) Velocity increases rapidly as agents seek to spend domestic currency as fast as possible to avoid depreciation.",
+                            "C) Velocity remains perfectly constant."
+                        ],
+                        correct: "B"
+                    },
+                    {
+                        title: "Theory Q3",
+                        question: "Why did the BCRA historically rely on sterilizing currency expansion through short-term debt instruments like Leliq?",
+                        options: [
+                            "A) To decrease the nominal supply of foreign reserves.",
+                            "B) To absorb excess domestic currency liquidity from the commercial banking system to curb inflation pressures.",
+                            "C) To mandate zero interest rates across all public banks."
+                        ],
+                        correct: "B"
+                    },
+                    {
+                        title: "Theory Q4",
+                        question: "Under strict capital controls (CEPO) in Argentina, how is the classical trilemma resolved?",
+                        options: [
+                            "A) Giving up monetary independence to maintain a fixed exchange rate and free capital mobility.",
+                            "B) Restricting capital flows to maintain both monetary independence and exchange rate controls.",
+                            "C) Choosing a pure floating regime with perfect capital mobility."
+                        ],
+                        correct: "B"
+                    }
+                ],
+                objectives: [
+                    { text: "Strategic: Inflation Containment", correct: true },
+                    { text: "Strategic: Domestic Currency Protection", correct: true },
+                    { text: "Intermediate: Monetary Base Growth Restriction Limits", correct: true },
+                    { text: "Intermediate: Strict Capital Control FX corridor", correct: false }
+                ],
+                instruments: [
+                    { text: "Liquidity Bills (Leliq)", correct: true },
+                    { text: "FX Market Intervention Controls", correct: true },
+                    { text: "Interest Rate Corridor Limits", correct: true },
+                    { text: "Digital Peso tokens", correct: false }
+                ],
+                aggregates: [
+                    { text: "M1: Cash + Checking Accounts", correct: true },
+                    { text: "M2: M1 + Savings Accounts", correct: true },
+                    { text: "M3: M2 + Fixed-term Deposits", correct: true }
+                ],
+                t8: {
+                    title: "T-Account Operations: Sterilization via Leliq Bills Issuance",
+                    desc: "Your central bank (**BCRA**) issues <span class='text-rose-400 font-bold'>400 million ARS</span> in short-term Leliq bills to commercial banks, removing excess reserves.",
+                    layout: "double_liab",
+                    cb_liab1_label: "Leliq Bills",
+                    cb_liab2_label: "Bank Reserves",
+                    com_assets1_label: "Leliq Bills",
+                    com_assets2_label: "Reserves at BCRA",
+                    t8_expected: [400, -400, 400, -400]
+                }
+            },
+            "Swiss National Bank (SNB)": {
+                name: "Swiss National Bank (SNB)",
+                flag: "🇨🇭",
+                styleClass: "text-red-500 bank-badge bg-white px-2 py-0.5 rounded",
+                questions: [
+                    {
+                        title: "Theory Q1",
+                        question: "Why does the SNB actively monitor and intervene in the foreign exchange market, particularly against the Euro?",
+                        options: [
+                            "A) To peg the Swiss Franc permanently to avoid sovereign defaults.",
+                            "B) To prevent excessive safe-haven appreciation of the Franc, which risks causing domestic deflation.",
+                            "C) To increase the broad money supply (M3) by exactly 10% annually."
+                        ],
+                        correct: "B"
+                    },
+                    {
+                        title: "Theory Q2",
+                        question: "During periods of negative policy interest rates at the SNB, what happens to the opportunity cost of holding non-yield cash?",
+                        options: [
+                            "A) It becomes positive, meaning commercial banks actually save money by holding physical currency vaults compared to negative-rate deposits.",
+                            "B) It rises to infinity, rendering cash completely obsolete.",
+                            "C) It remains unchanged because interest rates do not affect money demand."
+                        ],
+                        correct: "A"
+                    },
+                    {
+                        title: "Theory Q3",
+                        question: "What is the primary role of SARON (Swiss Average Rate Overnight) in the SNB monetary framework?",
+                        options: [
+                            "A) It serves as a strategic inflation target anchor.",
+                            "B) It serves as the key operational reference rate for Swiss franc money markets, targeted by SNB repo liquidity.",
+                            "C) It acts as a mandatory reserve requirement ratio."
+                        ],
+                        correct: "B"
+                    },
+                    {
+                        title: "Theory Q4",
+                        question: "How does safe-haven capital inflow into Switzerland affect the Swiss monetary base?",
+                        options: [
+                            "A) It decreases the monetary base as the SNB sells foreign assets.",
+                            "B) It expands the monetary base if the SNB intervenes by buying foreign currencies and crediting commercial bank sight deposits.",
+                            "C) It has no impact on any monetary aggregates."
+                        ],
+                        correct: "B"
+                    }
+                ],
+                objectives: [
+                    { text: "Strategic: Price Stability (CPI below 2%)", correct: true },
+                    { text: "Strategic: Sovereign Debt Neutralization", correct: false },
+                    { text: "Intermediate: Exchange rate mitigation vs Euro", correct: true }
+                ],
+                instruments: [
+                    { text: "Foreign Currency Interventions", correct: true },
+                    { text: "SNB Policy Rate adjustments", correct: true },
+                    { text: "SARON Repo Transactions", correct: true },
+                    { text: "Targeted reserve requirement adjustments", correct: false }
+                ],
+                aggregates: [
+                    { text: "M1: Sight Deposits + Transactions Accounts", correct: true },
+                    { text: "M2: M1 + Savings Deposits", correct: true },
+                    { text: "M3: M2 + Time Deposits", correct: true }
+                ],
+                t8: {
+                    title: "T-Account Operations: Foreign Exchange Market Intervention",
+                    desc: "Your central bank (**SNB**) purchases <span class='text-emerald-400 font-bold'>250 million CHF</span> worth of Euros from commercial banks, crediting their sight deposits.",
+                    layout: "com_sec",
+                    cb_assets_label: "Foreign Assets (EUR)",
+                    cb_liab_label: "Sight Deposits",
+                    com_assets_label: "Sight Deposits at SNB",
+                    com_sec_label: "Foreign Assets (EUR)",
+                    t8_expected: [250, 250, 250, -250]
+                }
+            },
+            "Sveriges Riksbank": {
+                name: "Sveriges Riksbank",
+                flag: "🇸🇪",
+                styleClass: "text-blue-400 bank-badge",
+                questions: [
+                    {
+                        title: "Theory Q1",
+                        question: "Why does the Sveriges Riksbank target CPIF (CPI with constant interest rate) rather than standard CPI?",
+                        options: [
+                            "A) To exclude the direct, temporary impact of policy interest rate changes on mortgage costs from the inflation measure.",
+                            "B) To completely ignore energy and import price volatility.",
+                            "C) Because Swedish law prohibits standard CPI targeting."
+                        ],
+                        correct: "A"
+                    },
+                    {
+                        title: "Theory Q2",
+                        question: "In Sweden's highly digitized cash-light society, how is the transaction demand for physical banknotes (M0) affected?",
+                        options: [
+                            "A) It remains high because digital systems are structurally insecure.",
+                            "B) It falls close to zero, causing Riksbank to explore the e-krona CBDC as a sovereign digital alternative to cash.",
+                            "C) It scales exponentially alongside sovereign GDP."
+                        ],
+                        correct: "B"
+                    },
+                    {
+                        title: "Theory Q3",
+                        question: "What is the primary transmission channel of Riksbank's Repo Policy Rate increases?",
+                        options: [
+                            "A) Increasing the monetary base directly by printing cash.",
+                            "B) Raising the cost of capital for commercial banks, which increases lending rates and cools aggregate demand.",
+                            "C) Automatically devaluing the Swedish Krona (SEK) in global markets."
+                        ],
+                        correct: "B"
+                    },
+                    {
+                        title: "Theory Q4",
+                        question: "How do large-scale asset purchases (QE) by Riksbank affect domestic financial markets?",
+                        options: [
+                            "A) They reduce the reserves of commercial banks, curbing credit.",
+                            "B) They lower yields on government and corporate bonds while injecting liquid reserves into the banking system.",
+                            "C) They eliminate the need for interbank settlement systems."
+                        ],
+                        correct: "B"
+                    }
+                ],
+                objectives: [
+                    { text: "Strategic: 2% Inflation Anchor based on CPIF", correct: true },
+                    { text: "Intermediate: Long-term Inflation Expectation Anchor", correct: true },
+                    { text: "Intermediate: Krona exchange rate peg", correct: false }
+                ],
+                instruments: [
+                    { text: "Riksbank Repo Policy Rate", correct: true },
+                    { text: "Standing Deposit & Lending Facilities", correct: true },
+                    { text: "Direct Government Bond Purchases (QE)", correct: true },
+                    { text: "Structural RRR adjustments", correct: false }
+                ],
+                aggregates: [
+                    { text: "M0: Banknotes and Coins in Circulation", correct: true },
+                    { text: "M1: M0 + Demand Deposits", correct: true },
+                    { text: "M2: M1 + Short-term Deposits (<2 years)", correct: true },
+                    { text: "M3: M2 + Repo Shares + Issued Debt Securities", correct: true }
+                ],
+                t8: {
+                    title: "T-Account Operations: Repo Liquidity Providing Operation",
+                    desc: "Your central bank (**Riksbank**) lends <span class='text-emerald-400 font-bold'>150 million SEK</span> to commercial banks via Repo agreement.",
+                    layout: "com_liab",
+                    cb_assets_label: "Repo Loans",
+                    cb_liab_label: "Bank Reserves",
+                    com_assets_label: "Reserves at Riksbank",
+                    com_liab_label: "Repo Borrowings",
+                    t8_expected: [150, 150, 150, 150]
+                }
+            }
+        };
+
+        let currentActiveBank = null;
+        let activeTab = 'tab-theory';
+
+        function notify(message, isError = false) {
+            const toast = document.getElementById('toast');
+            const bg = document.getElementById('toast-bg');
+            document.getElementById('toast-msg').innerText = message;
+            
+            if (isError) {
+                bg.classList.remove('bg-indigo-600', 'border-indigo-400/30');
+                bg.classList.add('bg-rose-600', 'border-rose-400/30');
+            } else {
+                bg.classList.add('bg-indigo-600', 'border-indigo-400/30');
+                bg.classList.remove('bg-rose-600', 'border-rose-400/30');
+            }
+
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+            setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 4000);
+        }
+
+        function toggleModal(id, show) {
+            const modal = document.getElementById(id);
+            if(show) modal.classList.remove('hidden');
+            else modal.classList.add('hidden');
+        }
+
+        function verifyTeacherKey() {
+            const key = document.getElementById('teacher-key').value;
+            if (key === "MEE-07072026") {
+                document.getElementById('prof-grade-panel').classList.remove('hidden');
+                toggleModal('teacher-modal', false);
+                notify("Access Granted. Professor Panel is unlocked inside the Submit tab.");
+            } else {
+                notify("Invalid access protocol key.", true);
+            }
+        }
+
+        function detectStudentAndLoadExam() {
+            const val = document.getElementById('student-name').value.toLowerCase().trim();
+            const logoBox = document.getElementById('bank-logo-box');
+            const examHub = document.getElementById('exam-hub');
+            
+            let detected = null;
+            for (let nameKey in ENROLLED_STUDENTS) {
+                if (val.includes(nameKey)) {
+                    detected = ENROLLED_STUDENTS[nameKey];
+                    break;
+                }
+            }
+
+            if (detected) {
+                currentActiveBank = detected;
+                const profile = BANK_PROFILES[detected];
+                
+                logoBox.innerHTML = `
+                    <span class="text-2xl mr-2 drop-shadow-md">${profile.flag}</span>
+                    <span class="${profile.styleClass}">${profile.name}</span>
+                `;
+                examHub.classList.remove('hidden');
+                setupCountryQuestions(detected);
+            } else {
+                currentActiveBank = null;
+                logoBox.innerHTML = `
+                    <i class="fas fa-university text-2xl text-slate-700 animate-pulse"></i>
+                    <span class="text-slate-500 font-normal">Awaiting authentic name entry...</span>
+                `;
+                examHub.classList.add('hidden');
+            }
+        }
+
+        function setupCountryQuestions(bankName) {
+            const profile = BANK_PROFILES[bankName];
+            
+            // Part 1: Dynamic Theory
+            const theoryContainer = document.getElementById('theory-questions-container');
+            theoryContainer.innerHTML = '';
+            
+            profile.questions.forEach((q, idx) => {
+                theoryContainer.innerHTML += `
+                    <div class="card p-5 space-y-3 border-t-2 border-slate-700 hover:border-indigo-500">
+                        <span class="text-[9px] bg-indigo-500/10 text-indigo-400 px-2.5 py-1 rounded-md border border-indigo-500/20 uppercase font-black tracking-widest inline-block">${q.title}</span>
+                        <h4 class="text-sm font-bold text-slate-200">${q.question}</h4>
+                        <div class="space-y-2 text-xs">
+                            <label class="flex items-start gap-3 p-2.5 rounded-lg bg-slate-900/50 border border-slate-800 hover:bg-slate-800 cursor-pointer transition">
+                                <input type="radio" name="q${idx+1}" value="A" class="mt-1 accent-indigo-500">
+                                <span>${q.options[0]}</span>
+                            </label>
+                            <label class="flex items-start gap-3 p-2.5 rounded-lg bg-slate-900/50 border border-slate-800 hover:bg-slate-800 cursor-pointer transition">
+                                <input type="radio" name="q${idx+1}" value="B" class="mt-1 accent-indigo-500">
+                                <span>${q.options[1]}</span>
+                            </label>
+                            <label class="flex items-start gap-3 p-2.5 rounded-lg bg-slate-900/50 border border-slate-800 hover:bg-slate-800 cursor-pointer transition">
+                                <input type="radio" name="q${idx+1}" value="C" class="mt-1 accent-indigo-500">
+                                <span>${q.options[2]}</span>
+                            </label>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            // Part 2: Exact Count Objective Checkboxes
+            const q5Box = document.getElementById('q5-options-box');
+            q5Box.innerHTML = '';
+            const correctQ5Count = profile.objectives.filter(o => o.correct).length;
+            document.getElementById('q5-instruction').innerText = `Select exactly ${correctQ5Count} correct targets.`;
+            profile.objectives.forEach((obj, idx) => {
+                q5Box.innerHTML += `
+                    <label class="flex items-start gap-2.5 p-2 rounded bg-slate-900/60 border border-slate-800 hover:border-indigo-500/50 cursor-pointer transition">
+                        <input type="checkbox" id="q5-opt-${idx}" value="${idx}" class="mt-1 accent-indigo-500">
+                        <span>${obj.text}</span>
+                    </label>
+                `;
+            });
+
+            const q6Box = document.getElementById('q6-options-box');
+            q6Box.innerHTML = '';
+            const correctQ6Count = profile.instruments.filter(o => o.correct).length;
+            document.getElementById('q6-instruction').innerText = `Select exactly ${correctQ6Count} operational tools.`;
+            profile.instruments.forEach((inst, idx) => {
+                q6Box.innerHTML += `
+                    <label class="flex items-start gap-2.5 p-2 rounded bg-slate-900/60 border border-slate-800 hover:border-indigo-500/50 cursor-pointer transition">
+                        <input type="checkbox" id="q6-opt-${idx}" value="${idx}" class="mt-1 accent-indigo-500">
+                        <span>${inst.text}</span>
+                    </label>
+                `;
+            });
+
+            const q7Box = document.getElementById('q7-options-box');
+            q7Box.innerHTML = '';
+            profile.aggregates.forEach((agg, idx) => {
+                q7Box.innerHTML += `
+                    <label class="flex items-start gap-2.5 p-2 rounded bg-slate-900/60 border border-slate-800 hover:border-indigo-500/50 cursor-pointer transition">
+                        <input type="checkbox" id="q7-opt-${idx}" value="${idx}" class="mt-1 accent-indigo-500">
+                        <span>${agg.text}</span>
+                    </label>
+                `;
+            });
+
+            // Part 3: T-Accounts
+            const t8 = profile.t8;
+            document.getElementById('t8-header-title').innerText = t8.title;
+            document.getElementById('t8-instruction-text').innerHTML = t8.desc;
+
+            const tablesContainer = document.getElementById('t8-interactive-tables');
+            tablesContainer.innerHTML = '';
+
+            const inputClasses = "t8-live-input w-20 bg-slate-900 border border-slate-700 text-center font-mono rounded text-xs p-1.5 text-white focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none transition";
+
+            if (t8.layout === "com_liab") {
+                tablesContainer.innerHTML = `
+                    <div class="border border-slate-700/60 rounded-xl overflow-hidden bg-slate-950/40">
+                        <div class="bg-indigo-950/40 px-3 py-2 border-b border-slate-700/60 font-bold text-indigo-300 flex justify-between"><span>Central Bank Balance Sheet</span></div>
+                        <div class="grid grid-cols-2 divide-x divide-slate-800">
+                            <div class="p-3 space-y-2">
+                                <div class="font-bold text-slate-400 uppercase text-[9px] border-b border-slate-800 pb-1">Assets</div>
+                                <div class="flex justify-between items-center gap-2"><span>${t8.cb_assets_label}:</span><input type="text" id="t8-input-1" placeholder="0" class="${inputClasses}"></div>
+                            </div>
+                            <div class="p-3 space-y-2">
+                                <div class="font-bold text-slate-400 uppercase text-[9px] border-b border-slate-800 pb-1">Liabilities</div>
+                                <div class="flex justify-between items-center gap-2"><span>${t8.cb_liab_label}:</span><input type="text" id="t8-input-2" placeholder="0" class="${inputClasses}"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="border border-slate-700/60 rounded-xl overflow-hidden bg-slate-950/40 mt-3">
+                        <div class="bg-indigo-950/40 px-3 py-2 border-b border-slate-700/60 font-bold text-indigo-300 flex justify-between"><span>Commercial Banks</span></div>
+                        <div class="grid grid-cols-2 divide-x divide-slate-800">
+                            <div class="p-3 space-y-2">
+                                <div class="font-bold text-slate-400 uppercase text-[9px] border-b border-slate-800 pb-1">Assets</div>
+                                <div class="flex justify-between items-center gap-2"><span>${t8.com_assets_label}:</span><input type="text" id="t8-input-3" placeholder="0" class="${inputClasses}"></div>
+                            </div>
+                            <div class="p-3 space-y-2">
+                                <div class="font-bold text-slate-400 uppercase text-[9px] border-b border-slate-800 pb-1">Liabilities</div>
+                                <div class="flex justify-between items-center gap-2"><span>${t8.com_liab_label}:</span><input type="text" id="t8-input-4" placeholder="0" class="${inputClasses}"></div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else if (t8.layout === "com_sec") {
+                tablesContainer.innerHTML = `
+                    <div class="border border-slate-700/60 rounded-xl overflow-hidden bg-slate-950/40">
+                        <div class="bg-indigo-950/40 px-3 py-2 border-b border-slate-700/60 font-bold text-indigo-300 flex justify-between"><span>Central Bank Balance Sheet</span></div>
+                        <div class="grid grid-cols-2 divide-x divide-slate-800">
+                            <div class="p-3 space-y-2">
+                                <div class="font-bold text-slate-400 uppercase text-[9px] border-b border-slate-800 pb-1">Assets</div>
+                                <div class="flex justify-between items-center gap-2"><span>${t8.cb_assets_label}:</span><input type="text" id="t8-input-1" placeholder="0" class="${inputClasses}"></div>
+                            </div>
+                            <div class="p-3 space-y-2">
+                                <div class="font-bold text-slate-400 uppercase text-[9px] border-b border-slate-800 pb-1">Liabilities</div>
+                                <div class="flex justify-between items-center gap-2"><span>${t8.cb_liab_label}:</span><input type="text" id="t8-input-2" placeholder="0" class="${inputClasses}"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="border border-slate-700/60 rounded-xl overflow-hidden bg-slate-950/40 mt-3">
+                        <div class="bg-indigo-950/40 px-3 py-2 border-b border-slate-700/60 font-bold text-indigo-300 flex justify-between"><span>Commercial Banks</span></div>
+                        <div class="grid grid-cols-2 divide-x divide-slate-800">
+                            <div class="p-3 space-y-2">
+                                <div class="font-bold text-slate-400 uppercase text-[9px] border-b border-slate-800 pb-1">Assets</div>
+                                <div class="flex justify-between items-center gap-2"><span>${t8.com_assets_label}:</span><input type="text" id="t8-input-3" placeholder="0" class="${inputClasses}"></div>
+                                <div class="flex justify-between items-center gap-2"><span>${t8.com_sec_label}:</span><input type="text" id="t8-input-4" placeholder="0" class="${inputClasses}"></div>
+                            </div>
+                            <div class="p-3 space-y-2 flex items-center justify-center">
+                                <div class="text-[10px] text-slate-500 italic">No structural change...</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else if (t8.layout === "double_liab") {
+                tablesContainer.innerHTML = `
+                    <div class="border border-slate-700/60 rounded-xl overflow-hidden bg-slate-950/40">
+                        <div class="bg-indigo-950/40 px-3 py-2 border-b border-slate-700/60 font-bold text-indigo-300 flex justify-between"><span>Central Bank Balance Sheet</span></div>
+                        <div class="grid grid-cols-2 divide-x divide-slate-800">
+                            <div class="p-3 space-y-2 flex items-center justify-center">
+                                <div class="text-[10px] text-slate-500 italic">No structural change...</div>
+                            </div>
+                            <div class="p-3 space-y-2">
+                                <div class="font-bold text-slate-400 uppercase text-[9px] border-b border-slate-800 pb-1">Liabilities</div>
+                                <div class="flex justify-between items-center gap-2"><span>${t8.cb_liab1_label}:</span><input type="text" id="t8-input-1" placeholder="0" class="${inputClasses}"></div>
+                                <div class="flex justify-between items-center gap-2"><span>${t8.cb_liab2_label}:</span><input type="text" id="t8-input-2" placeholder="0" class="${inputClasses}"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="border border-slate-700/60 rounded-xl overflow-hidden bg-slate-950/40 mt-3">
+                        <div class="bg-indigo-950/40 px-3 py-2 border-b border-slate-700/60 font-bold text-indigo-300 flex justify-between"><span>Commercial Banks</span></div>
+                        <div class="grid grid-cols-2 divide-x divide-slate-800">
+                            <div class="p-3 space-y-2">
+                                <div class="font-bold text-slate-400 uppercase text-[9px] border-b border-slate-800 pb-1">Assets</div>
+                                <div class="flex justify-between items-center gap-2"><span>${t8.com_assets1_label}:</span><input type="text" id="t8-input-3" placeholder="0" class="${inputClasses}"></div>
+                                <div class="flex justify-between items-center gap-2"><span>${t8.com_assets2_label}:</span><input type="text" id="t8-input-4" placeholder="0" class="${inputClasses}"></div>
+                            </div>
+                            <div class="p-3 space-y-2 flex items-center justify-center">
+                                <div class="text-[10px] text-slate-500 italic">No structural change...</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Attach Smart Live Check Listeners
+            document.querySelectorAll('.t8-live-input').forEach(input => {
+                input.addEventListener('input', runLiveTAccountCheck);
+            });
+            runLiveTAccountCheck();
+        }
+
+        // Extractor capable of handling "+ 300", "-300", "300 mln", etc.
+        function parseCleanInt(val) {
+            if (!val) return 0;
+            // Replace various em-dashes and en-dashes with standard minus
+            let cleanStr = val.toString().replace(/[−–—]/g, '-').replace(/\s+/g, '');
+            // Extract sign and digits only
+            let match = cleanStr.match(/^([+-]?)\D*?(\d+)/);
+            if(match) {
+                let sign = match[1] === '-' ? -1 : 1;
+                let digits = parseInt(match[2], 10);
+                return sign * digits;
+            }
+            return 0;
+        }
+
+        function runLiveTAccountCheck() {
+            if (!currentActiveBank) return;
+            const profile = BANK_PROFILES[currentActiveBank];
+            const expected = profile.t8.t8_expected;
+
+            const v1 = parseCleanInt(document.getElementById('t8-input-1')?.value);
+            const v2 = parseCleanInt(document.getElementById('t8-input-2')?.value);
+            const v3 = parseCleanInt(document.getElementById('t8-input-3')?.value);
+            const v4 = parseCleanInt(document.getElementById('t8-input-4')?.value);
+
+            const isConsolidated = (v1 === expected[0] && v2 === expected[1] && v3 === expected[2] && v4 === expected[3]);
+            
+            const statusBox = document.getElementById('t8-live-status');
+            
+            // Wait for user to type something before showing red
+            const allEmpty = !document.getElementById('t8-input-1')?.value && !document.getElementById('t8-input-2')?.value && !document.getElementById('t8-input-3')?.value && !document.getElementById('t8-input-4')?.value;
+
+            if (allEmpty) {
+                statusBox.className = "p-3 mt-3 rounded-lg text-center text-xs font-bold transition-all bg-slate-900 border border-slate-700 text-slate-400";
+                statusBox.innerHTML = "Awaiting structural input...";
+            } else if (isConsolidated) {
+                statusBox.className = "p-3 mt-3 rounded-lg text-center text-xs font-bold transition-all bg-emerald-950/40 border border-emerald-500/50 text-emerald-400 shadow-[0_0_15px_rgba(16,185,129,0.15)]";
+                statusBox.innerHTML = '<i class="fas fa-check-circle mr-1"></i> Balance Consolidated';
+            } else {
+                statusBox.className = "p-3 mt-3 rounded-lg text-center text-xs font-bold transition-all bg-rose-950/40 border border-rose-500/50 text-rose-400";
+                statusBox.innerHTML = '<i class="fas fa-exclamation-triangle mr-1"></i> Discrepancy detected in values or mathematical signs';
+            }
+        }
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-pane').forEach(p => p.classList.add('hidden'));
+            document.getElementById(tabId).classList.remove('hidden');
+            
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            const activeBtn = Array.from(document.querySelectorAll('.tab-btn')).find(b => b.getAttribute('onclick').includes(tabId));
+            if (activeBtn) activeBtn.classList.add('active');
+
+            activeTab = tabId;
+            if(tabId === 'tab-qpm-sim') {
+                setTimeout(initCharts, 100);
+            }
+        }
+
+        let charts = {};
+        const periods = 17; // 0 to 16 quarters
+
+        function initCharts() {
+            if(charts.inf) return; // Prevent double init
+            
+            const ctxInf = document.getElementById('chartInf').getContext('2d');
+            const ctxGap = document.getElementById('chartGap').getContext('2d');
+            const ctxRate = document.getElementById('chartRate').getContext('2d');
+            const ctxUIP = document.getElementById('chartUIP').getContext('2d');
+
+            const labels = Array.from({length: periods}, (_, i) => i === 0 ? 'SS' : `Q${i}`);
+
+            const commonOptions = {
+                responsive: true, maintainAspectRatio: false,
+                plugins: { legend: { position: 'top', align: 'end', labels: { boxWidth: 10, usePointStyle: true, color: '#94a3b8', font: { size: 9 } } } },
+                scales: {
+                    x: { ticks: { color: '#64748b', font: { size: 9 } }, grid: { color: 'rgba(51, 65, 85, 0.2)' } },
+                    y: { ticks: { color: '#64748b', font: { size: 9 } }, grid: { color: 'rgba(51, 65, 85, 0.2)' } }
+                }
+            };
+
+            charts.inf = new Chart(ctxInf, { type: 'line', data: { labels: labels, datasets: [{ label: 'Inflation', data: [], borderColor: '#ef4444', borderWidth: 2 }, { label: 'Target', data: [], borderColor: '#475569', borderDash: [5, 5], borderWidth: 1 }] }, options: commonOptions });
+            charts.gap = new Chart(ctxGap, { type: 'line', data: { labels: labels, datasets: [{ label: 'Actual Output Gap', data: [], borderColor: '#3b82f6', borderWidth: 2 }, { label: 'Kalman Estimate', data: [], borderColor: '#a855f7', borderDash: [4, 4], borderWidth: 1.5 }] }, options: commonOptions });
+            charts.rate = new Chart(ctxRate, { type: 'line', data: { labels: labels, datasets: [{ label: 'Policy Rate', data: [], borderColor: '#10b981', borderWidth: 2 }, { label: 'Neutral', data: [], borderColor: '#475569', borderDash: [5, 5], borderWidth: 1 }] }, options: commonOptions });
+            charts.uip = new Chart(ctxUIP, { type: 'line', data: { labels: labels, datasets: [{ label: 'Real Exchange Rate', data: [], borderColor: '#eab308', borderWidth: 2 }] }, options: commonOptions });
+
+            const inputs = document.querySelectorAll('#tab-qpm-sim input[type=range]');
+            inputs.forEach(input => input.addEventListener('input', updateSimulator));
+
+            updateSimulator();
+        }
+
+        function updateSimulator() {
+            const targetInf = parseFloat(document.getElementById('param-target').value);
+            const rStar = parseFloat(document.getElementById('param-neutral').value);
+            const expInf = parseFloat(document.getElementById('param-exp-inf').value);
+            const lambda = parseFloat(document.getElementById('param-lambda').value);
+
+            const shockYVal = parseFloat(document.getElementById('shock-y').value);
+            const shockPiVal = parseFloat(document.getElementById('shock-pi').value);
+            const shockOilVal = parseFloat(document.getElementById('shock-oil').value);
+
+            document.getElementById('lbl-target').innerText = targetInf.toFixed(1) + '%';
+            document.getElementById('lbl-neutral').innerText = rStar.toFixed(1) + '%';
+            document.getElementById('lbl-exp-inf').innerText = expInf.toFixed(1) + '%';
+            document.getElementById('lbl-lambda').innerText = lambda.toFixed(1);
+            document.getElementById('lbl-shock-y').innerText = (shockYVal > 0 ? '+' : '') + shockYVal.toFixed(1) + '%';
+            document.getElementById('lbl-shock-pi').innerText = (shockPiVal > 0 ? '+' : '') + shockPiVal.toFixed(1) + '%';
+            document.getElementById('lbl-shock-oil').innerText = (shockOilVal > 0 ? '+' : '') + shockOilVal.toFixed(0) + '%';
+
+            let pi = new Array(periods).fill(targetInf);
+            let y_true = new Array(periods).fill(0);
+            let y_kf = new Array(periods).fill(0);
+            let i_rate = new Array(periods).fill(targetInf + rStar);
+            let r_real = new Array(periods).fill(rStar);
+            let z_rer = new Array(periods).fill(0);
+
+            const a_y = 0.15, a_z = 0.10, b_y = 0.60, b_r = 0.25, oil_to_z = -0.15, oil_to_y = 0.05, kalmanGain = 0.45;
+            const c1 = 1.5, c2 = 0.5;
+
+            for (let t = 1; t < periods; t++) {
+                let eps_y = (t === 1) ? shockYVal : 0;
+                let eps_pi = (t === 1) ? shockPiVal : 0;
+                let eps_oil = (t === 1) ? shockOilVal : 0;
+
+                let rate_diff = r_real[t-1] - rStar;
+                z_rer[t] = 0.8 * z_rer[t-1] - 0.25 * rate_diff + oil_to_z * (t === 1 ? eps_oil : eps_oil * 0.5);
+                let delta_z = z_rer[t] - z_rer[t-1];
+
+                y_true[t] = b_y * y_true[t-1] - b_r * (r_real[t-1] - rStar) + oil_to_y * (t === 1 ? eps_oil : 0) + eps_y;
+                y_kf[t] = y_kf[t-1] + kalmanGain * (y_true[t] - y_kf[t-1]);
+
+                pi[t] = lambda * expInf + (1 - lambda) * pi[t-1] + a_y * y_true[t-1] + a_z * delta_z + eps_pi;
+
+                i_rate[t] = rStar + pi[t] + c1 * (pi[t] - targetInf) + c2 * y_kf[t];
+                if (i_rate[t] < 0) i_rate[t] = 0;
+                r_real[t] = i_rate[t] - pi[t];
+            }
+
+            charts.inf.data.datasets[0].data = pi; charts.inf.data.datasets[1].data = new Array(periods).fill(targetInf); charts.inf.update();
+            charts.gap.data.datasets[0].data = y_true; charts.gap.data.datasets[1].data = y_kf; charts.gap.update();
+            charts.rate.data.datasets[0].data = i_rate; charts.rate.data.datasets[1].data = new Array(periods).fill(targetInf + rStar); charts.rate.update();
+            charts.uip.data.datasets[0].data = z_rer; charts.uip.update();
+
+            const currentKalman = y_kf[1];
+            document.getElementById('kalman-val').innerText = (currentKalman > 0 ? '+' : '') + currentKalman.toFixed(2) + '%';
+
+            let action = (i_rate[1] - (targetInf + rStar)) > 0.1 ? "TIGHTENING (HAWKISH RESPONSE)" : "NEUTRAL / EASING";
+            document.getElementById('narrative-box').innerHTML = `
+                <div><span class="text-blue-500 font-bold">[QPM ENGINE]</span> Dynamic matrix verified...</div>
+                <div>>> Inflation at t=1: <span class="text-red-400 font-bold">${pi[1].toFixed(2)}%</span> (Target: ${targetInf}%)</div>
+                <div>>> Output Gap at t=1: <span class="text-blue-400 font-bold">${y_true[1].toFixed(2)}%</span></div>
+                <div>>> Taylor Policy rate decision: <span class="text-indigo-400 font-bold">${action}</span> -> Set to ${i_rate[1].toFixed(2)}%</div>
+            `;
+        }
+
+        function safeBtoa(str) {
+            return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, (match, p1) => String.fromCharCode('0x' + p1)));
+        }
+
+        function safeAtob(str) {
+            return decodeURIComponent(atob(str).split('').map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)).join(''));
+        }
+
+        function selectTrilemma(val) {
+            document.getElementById(`rad-${val}`).checked = true;
+            document.querySelectorAll('.tri-corner').forEach(el => el.classList.remove('tri-active-float', 'tri-active-fixed', 'tri-active-controls'));
+
+            if (val === 'float') {
+                document.getElementById('tri-float').classList.add('tri-active-float');
+                document.getElementById('trilemma-status').innerHTML = '<span class="text-blue-400">Pure Float: Monetary Independence + Free Capital Flow</span>';
+            } else if (val === 'fixed') {
+                document.getElementById('tri-fixed').classList.add('tri-active-fixed');
+                document.getElementById('trilemma-status').innerHTML = '<span class="text-emerald-400">Fixed Peg: Exchange Rate Stability + Free Capital Flow</span>';
+            } else if (val === 'controls') {
+                document.getElementById('tri-controls').classList.add('tri-active-controls');
+                document.getElementById('trilemma-status').innerHTML = '<span class="text-rose-400">Capital Controls: Monetary Independence + Exchange Rate Stability</span>';
+            }
+        }
+
+        function compileFinalToken() {
+            if(!currentActiveBank) {
+                notify("ERROR: Authentic enrollment verification required before compilation.", true);
+                return;
+            }
+
+            const student = document.getElementById('student-name').value;
+            const q1 = document.querySelector('input[name="q1"]:checked')?.value || 'N/A';
+            const q2 = document.querySelector('input[name="q2"]:checked')?.value || 'N/A';
+            const q3 = document.querySelector('input[name="q3"]:checked')?.value || 'N/A';
+            const q4 = document.querySelector('input[name="q4"]:checked')?.value || 'N/A';
+            const q9 = document.querySelector('input[name="q9"]:checked')?.value || 'N/A';
+            const q10Brief = document.getElementById('q10-brief').value;
+
+            const profile = BANK_PROFILES[currentActiveBank];
+            let q5Answers = [];
+            profile.objectives.forEach((_, idx) => { if(document.getElementById(`q5-opt-${idx}`)?.checked) q5Answers.push(idx); });
+            let q6Answers = [];
+            profile.instruments.forEach((_, idx) => { if(document.getElementById(`q6-opt-${idx}`)?.checked) q6Answers.push(idx); });
+            let q7Answers = [];
+            profile.aggregates.forEach((_, idx) => { if(document.getElementById(`q7-opt-${idx}`)?.checked) q7Answers.push(idx); });
+
+            // Final check on T-accounts
+            const v1 = parseCleanInt(document.getElementById('t8-input-1')?.value);
+            const v2 = parseCleanInt(document.getElementById('t8-input-2')?.value);
+            const v3 = parseCleanInt(document.getElementById('t8-input-3')?.value);
+            const v4 = parseCleanInt(document.getElementById('t8-input-4')?.value);
+            const expected = profile.t8.t8_expected;
+            const isConsolidated = (v1 === expected[0] && v2 === expected[1] && v3 === expected[2] && v4 === expected[3]);
+            const balStatus = isConsolidated ? "CONSOLIDATED" : "DISCREPANCY";
+
+            const sessionData = {
+                student,
+                bank: currentActiveBank,
+                q1, q2, q3, q4, q9,
+                q5: q5Answers,
+                q6: q6Answers,
+                q7: q7Answers,
+                tAccounts: balStatus,
+                q8_vals: [v1, v2, v3, v4],
+                brief: q10Brief,
+                time: new Date().toLocaleTimeString()
+            };
+
+            const tokenString = safeBtoa(JSON.stringify(sessionData));
+            const formattedToken = tokenString.match(/.{1,16}/g).join('-');
+
+            document.getElementById('p-student').innerText = student;
+            document.getElementById('p-bank').innerText = currentActiveBank;
+            document.getElementById('p-time').innerText = sessionData.time;
+            document.getElementById('p-bal-check').innerText = balStatus;
+            document.getElementById('p-bal-check').className = isConsolidated ? "text-emerald-400 font-bold" : "text-rose-400 font-bold";
+
+            document.getElementById('p-token').innerText = formattedToken;
+            document.getElementById('passport-block').classList.remove('hidden');
+            notify("Exam session compiled successfully! Copy key to transmit.");
+        }
+
+        function copyToClipboard() {
+            const range = document.createRange();
+            range.selectNode(document.getElementById('p-token'));
+            window.getSelection().removeAllRanges();
+            window.getSelection().addRange(range);
+            document.execCommand('copy');
+            window.getSelection().removeAllRanges();
+            notify("Verification key copied directly to clipboard!");
+        }
+
+        function decryptAndScoreToken() {
+            try {
+                const rawInput = document.getElementById('prof-token-input').value.trim();
+                if(!rawInput) { notify("Error: Token input is empty.", true); return; }
+                
+                const rawToken = rawInput.replace(/-/g, '');
+                const sessionData = JSON.parse(safeAtob(rawToken));
+
+                if(!sessionData.bank || !BANK_PROFILES[sessionData.bank]) {
+                    notify("Error: Corrupted token. Bank profile unrecognized.", true);
+                    return;
+                }
+
+                let totalScore = 0;
+                const profile = BANK_PROFILES[sessionData.bank];
+                
+                if (sessionData.q1 === profile.questions[0].correct) totalScore += 10;
+                if (sessionData.q2 === profile.questions[1].correct) totalScore += 10;
+                if (sessionData.q3 === profile.questions[2].correct) totalScore += 10;
+                if (sessionData.q4 === profile.questions[3].correct) totalScore += 10;
+
+                let q5Correct = true;
+                profile.objectives.forEach((obj, idx) => {
+                    const isChecked = sessionData.q5.includes(idx);
+                    if(obj.correct !== isChecked) q5Correct = false;
+                });
+                if(q5Correct) totalScore += 15;
+
+                let q6Correct = true;
+                profile.instruments.forEach((inst, idx) => {
+                    const isChecked = sessionData.q6.includes(idx);
+                    if(inst.correct !== isChecked) q6Correct = false;
+                });
+                if(q6Correct) totalScore += 15;
+
+                let q7Correct = true;
+                profile.aggregates.forEach((agg, idx) => {
+                    const isChecked = sessionData.q7.includes(idx);
+                    if(agg.correct !== isChecked) q7Correct = false;
+                });
+                if(q7Correct) totalScore += 10;
+
+                if (sessionData.tAccounts === "CONSOLIDATED") totalScore += 15;
+
+                const trilemmaMap = {
+                    "People's Bank of China (PBoC)": "controls",
+                    "Bank of Japan (BoJ)": "float",
+                    "Central Bank of the Argentine Republic (BCRA)": "controls",
+                    "Swiss National Bank (SNB)": "float",
+                    "Sveriges Riksbank": "float"
+                };
+                if(sessionData.q9 === trilemmaMap[sessionData.bank]) totalScore += 15;
+
+                document.getElementById('dec-student').innerText = sessionData.student;
+                document.getElementById('dec-bank').innerText = sessionData.bank;
+                document.getElementById('dec-score').innerText = totalScore + " / 100 points";
+                document.getElementById('dec-t-account').innerText = sessionData.tAccounts;
+                document.getElementById('dec-t-account').className = sessionData.tAccounts === "CONSOLIDATED" ? "text-emerald-400 font-bold" : "text-rose-400 font-bold";
+                document.getElementById('dec-brief').innerText = sessionData.brief || "No brief submitted.";
+
+                document.getElementById('grade-panel-output').classList.remove('hidden');
+                notify("Token successfully analyzed and evaluated!");
+            } catch(e) {
+                notify("Error: Failed to parse token matrix structure.", true);
+                console.error(e);
+            }
+        }
+    </script>
+</body>
+</html>
