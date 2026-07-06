@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@300;400;600;700;800;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght=400;600&family=Inter:wght=300;400;600;700;800;900&display=swap');
         
         body {
             background: radial-gradient(circle at top right, #0f172a 0%, #020617 100%);
@@ -31,8 +31,7 @@
 
         /* Responsive glowing effects around portrait cards */
         .glow-card:hover { 
-            border-color: rgba(99, 102, 241, 0.4); 
-            box-shadow: 0 0 30px -5px rgba(99, 102, 241, 0.25); 
+            box-shadow: 0 12px 30px -5px rgba(99, 102, 241, 0.3); 
             transform: translateY(-5px) scale(1.02); 
         }
 
@@ -43,6 +42,12 @@
         .custom-scrollbar::-webkit-scrollbar-thumb {
             background: rgba(255, 255, 255, 0.1);
             border-radius: 4px;
+        }
+
+        .active-tab {
+            background-color: rgba(99, 102, 241, 0.15) !important;
+            border-color: rgba(99, 102, 241, 0.4) !important;
+            color: #ffffff !important;
         }
     </style>
 </head>
@@ -73,67 +78,127 @@
             </div>
         </header>
 
-        <!-- PORTRAIT 10-CARD GRID (No text overlays, preserves 3:4.5 vertical ratios) -->
+        <!-- PORTRAIT 10-CARD GRID (White backgrounds for crisp image alignment) -->
         <section class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 md:gap-6">
             
-            <!-- 1. SYLLABUS -->
-            <button onclick="activateModule('mod-syllabus')" class="neon-card glow-card rounded-xl aspect-[3/4.5] overflow-hidden group focus:outline-none relative bg-slate-950/80">
-                <img src="pic-book.png" class="w-full h-full object-contain" 
-                     onerror="this.src='https://placehold.co/300x450/0f172a/6366f1?text=Syllabus';">
+            <!-- 1. SYLLABUS (Official Course Program) -->
+            <button onclick="activateModule('mod-syllabus')" class="bg-white glow-card rounded-xl aspect-[3/4.5] overflow-hidden group focus:outline-none relative border border-slate-200 shadow-md text-left flex flex-col">
+                <div class="w-full h-[70%] bg-white flex items-center justify-center p-2">
+                    <img src="pic-book.png" class="w-full h-full object-contain" 
+                         onerror="this.src='https://placehold.co/300x450/ffffff/ef4444?text=Syllabus';">
+                </div>
+                <div class="p-3 bg-slate-50 flex-1 flex flex-col justify-center border-t border-slate-100">
+                    <span class="text-[9px] text-red-500 font-extrabold tracking-widest block uppercase">Module 01</span>
+                    <span class="text-xs font-bold text-slate-900 truncate">Official Syllabus</span>
+                </div>
             </button>
 
-            <!-- 2. LECTURE NOTES -->
-            <button onclick="activateModule('mod-lectures')" class="neon-card glow-card rounded-xl aspect-[3/4.5] overflow-hidden group focus:outline-none relative bg-slate-950/80">
-                <img src="pic-lectures.png" class="w-full h-full object-contain" 
-                     onerror="this.src='https://placehold.co/300x450/0f172a/6366f1?text=Lectures';">
+            <!-- 2. LECTURE NOTES (Lec materials) -->
+            <button onclick="activateModule('mod-lectures')" class="bg-white glow-card rounded-xl aspect-[3/4.5] overflow-hidden group focus:outline-none relative border border-slate-200 shadow-md text-left flex flex-col">
+                <div class="w-full h-[70%] bg-white flex items-center justify-center p-2">
+                    <img src="pic-lectures.png" class="w-full h-full object-contain" 
+                         onerror="this.src='https://placehold.co/300x450/ffffff/6366f1?text=Lectures';">
+                </div>
+                <div class="p-3 bg-slate-50 flex-1 flex flex-col justify-center border-t border-slate-100">
+                    <span class="text-[9px] text-indigo-600 font-extrabold tracking-widest block uppercase">Module 02</span>
+                    <span class="text-xs font-bold text-slate-900 truncate">Lecture Notes</span>
+                </div>
             </button>
 
-            <!-- 3. CANVA SLIDES -->
-            <button onclick="activateModule('mod-slides')" class="neon-card glow-card rounded-xl aspect-[3/4.5] overflow-hidden group focus:outline-none relative bg-slate-950/80">
-                <img src="pic-preza-me.png" class="w-full h-full object-contain" 
-                     onerror="this.src='https://placehold.co/300x450/0f172a/6366f1?text=Slides';">
+            <!-- 3. READING LIST (Academic papers) -->
+            <button onclick="activateModule('mod-articles')" class="bg-white glow-card rounded-xl aspect-[3/4.5] overflow-hidden group focus:outline-none relative border border-slate-200 shadow-md text-left flex flex-col">
+                <div class="w-full h-[70%] bg-white flex items-center justify-center p-2">
+                    <img src="pic-reading.png" class="w-full h-full object-contain" 
+                         onerror="this.src='https://placehold.co/300x450/ffffff/3b82f6?text=Readings';">
+                </div>
+                <div class="p-3 bg-slate-50 flex-1 flex flex-col justify-center border-t border-slate-100">
+                    <span class="text-[9px] text-blue-600 font-extrabold tracking-widest block uppercase">Module 03</span>
+                    <span class="text-xs font-bold text-slate-900 truncate">Reading List</span>
+                </div>
             </button>
 
-            <!-- 4. VIDEO LECTURES -->
-            <button onclick="activateModule('mod-videos')" class="neon-card glow-card rounded-xl aspect-[3/4.5] overflow-hidden group focus:outline-none relative bg-slate-950/80">
-                <img src="pic-videos.png" class="w-full h-full object-contain" 
-                     onerror="this.src='https://placehold.co/300x450/0f172a/6366f1?text=Videos';">
+            <!-- 4. CANVA SLIDES (Presentations) -->
+            <button onclick="activateModule('mod-slides')" class="bg-white glow-card rounded-xl aspect-[3/4.5] overflow-hidden group focus:outline-none relative border border-slate-200 shadow-md text-left flex flex-col">
+                <div class="w-full h-[70%] bg-white flex items-center justify-center p-2">
+                    <img src="pic-preza-me.png" class="w-full h-full object-contain" 
+                         onerror="this.src='https://placehold.co/300x450/ffffff/14b8a6?text=Slides';">
+                </div>
+                <div class="p-3 bg-slate-50 flex-1 flex flex-col justify-center border-t border-slate-100">
+                    <span class="text-[9px] text-teal-600 font-extrabold tracking-widest block uppercase">Module 04</span>
+                    <span class="text-xs font-bold text-slate-900 truncate">Canva Slides</span>
+                </div>
             </button>
 
-            <!-- 5. READING LIST -->
-            <button onclick="activateModule('mod-articles')" class="neon-card glow-card rounded-xl aspect-[3/4.5] overflow-hidden group focus:outline-none relative bg-slate-950/80">
-                <img src="pic-reading.png" class="w-full h-full object-contain" 
-                     onerror="this.src='https://placehold.co/300x450/0f172a/6366f1?text=Reading';">
+            <!-- 5. VIDEO LECTURES (Media content) -->
+            <button onclick="activateModule('mod-videos')" class="bg-white glow-card rounded-xl aspect-[3/4.5] overflow-hidden group focus:outline-none relative border border-slate-200 shadow-md text-left flex flex-col">
+                <div class="w-full h-[70%] bg-white flex items-center justify-center p-2">
+                    <img src="pic-videos.png" class="w-full h-full object-contain" 
+                         onerror="this.src='https://placehold.co/300x450/ffffff/f43f5e?text=Videos';">
+                </div>
+                <div class="p-3 bg-slate-50 flex-1 flex flex-col justify-center border-t border-slate-100">
+                    <span class="text-[9px] text-rose-600 font-extrabold tracking-widest block uppercase">Module 05</span>
+                    <span class="text-xs font-bold text-slate-900 truncate">Video Lectures</span>
+                </div>
             </button>
 
-            <!-- 6. TASK SOLVER -->
-            <button onclick="activateModule('mod-solver')" class="neon-card glow-card rounded-xl aspect-[3/4.5] overflow-hidden group focus:outline-none relative bg-slate-950/80">
-                <img src="pic-tasks.png" class="w-full h-full object-contain" 
-                     onerror="this.src='https://placehold.co/300x450/0f172a/6366f1?text=Tasks';">
+            <!-- 6. GRADING RUBRICS & RATINGS -->
+            <button onclick="activateModule('mod-rubrics')" class="bg-white glow-card rounded-xl aspect-[3/4.5] overflow-hidden group focus:outline-none relative border border-slate-200 shadow-md text-left flex flex-col">
+                <div class="w-full h-[70%] bg-white flex items-center justify-center p-2">
+                    <img src="pic-me2026.png" class="w-full h-full object-contain" 
+                         onerror="this.src='https://placehold.co/300x450/ffffff/64748b?text=Rubrics';">
+                </div>
+                <div class="p-3 bg-slate-50 flex-1 flex flex-col justify-center border-t border-slate-100">
+                    <span class="text-[9px] text-slate-600 font-extrabold tracking-widest block uppercase">Module 06</span>
+                    <span class="text-xs font-bold text-slate-900 truncate">Grading & Rating</span>
+                </div>
             </button>
 
-            <!-- 7. TERM GLOSSARY -->
-            <button onclick="activateModule('mod-glossary')" class="neon-card glow-card rounded-xl aspect-[3/4.5] overflow-hidden group focus:outline-none relative bg-slate-950/80">
-                <img src="pic-glossary.png" class="w-full h-full object-contain" 
-                     onerror="this.src='https://placehold.co/300x450/0f172a/6366f1?text=Glossary';">
+            <!-- 7. TASK SOLVER (Calculators) -->
+            <button onclick="activateModule('mod-solver')" class="bg-white glow-card rounded-xl aspect-[3/4.5] overflow-hidden group focus:outline-none relative border border-slate-200 shadow-md text-left flex flex-col">
+                <div class="w-full h-[70%] bg-white flex items-center justify-center p-2">
+                    <img src="pic-tasks.png" class="w-full h-full object-contain" 
+                         onerror="this.src='https://placehold.co/300x450/ffffff/d97706?text=Tasks';">
+                </div>
+                <div class="p-3 bg-slate-50 flex-1 flex flex-col justify-center border-t border-slate-100">
+                    <span class="text-[9px] text-amber-600 font-extrabold tracking-widest block uppercase">Module 07</span>
+                    <span class="text-xs font-bold text-slate-900 truncate">Task Solver</span>
+                </div>
             </button>
 
-            <!-- 8. QPM SIMULATOR (Launches qpm-kz-en.html) -->
-            <button onclick="window.open('qpm-kz-en.html', '_blank')" class="neon-card glow-card rounded-xl aspect-[3/4.5] overflow-hidden group focus:outline-none relative bg-slate-950/80">
-                <img src="pic-sim-qpm.png" class="w-full h-full object-contain" 
-                     onerror="this.src='https://placehold.co/300x450/0f172a/6366f1?text=QPM+Sim';">
+            <!-- 8. TERM GLOSSARY -->
+            <button onclick="activateModule('mod-glossary')" class="bg-white glow-card rounded-xl aspect-[3/4.5] overflow-hidden group focus:outline-none relative border border-slate-200 shadow-md text-left flex flex-col">
+                <div class="w-full h-[70%] bg-white flex items-center justify-center p-2">
+                    <img src="pic-glossary.png" class="w-full h-full object-contain" 
+                         onerror="this.src='https://placehold.co/300x450/ffffff/10b981?text=Glossary';">
+                </div>
+                <div class="p-3 bg-slate-50 flex-1 flex flex-col justify-center border-t border-slate-100">
+                    <span class="text-[9px] text-emerald-600 font-extrabold tracking-widest block uppercase">Module 08</span>
+                    <span class="text-xs font-bold text-slate-900 truncate">Term Glossary</span>
+                </div>
             </button>
 
-            <!-- 9. FINAL EXAM (Launches me-exam-final.html) -->
-            <button onclick="window.open('me-exam-final.html', '_blank')" class="neon-card glow-card rounded-xl aspect-[3/4.5] overflow-hidden group focus:outline-none relative bg-slate-950/80">
-                <img src="pic-exam-me.png" class="w-full h-full object-contain" 
-                     onerror="this.src='https://placehold.co/300x450/0f172a/6366f1?text=Final+Exam';">
+            <!-- 9. QPM SIMULATOR (Launches qpm-kz-en.html in a new tab) -->
+            <button onclick="window.open('qpm-kz-en.html', '_blank')" class="bg-white glow-card rounded-xl aspect-[3/4.5] overflow-hidden group focus:outline-none relative border border-slate-200 shadow-md text-left flex flex-col">
+                <div class="w-full h-[70%] bg-white flex items-center justify-center p-2">
+                    <img src="pic-sim-qpm.png" class="w-full h-full object-contain" 
+                         onerror="this.src='https://placehold.co/300x450/ffffff/8b5cf6?text=QPM+Sim';">
+                </div>
+                <div class="p-3 bg-slate-50 flex-1 flex flex-col justify-center border-t border-slate-100">
+                    <span class="text-[9px] text-purple-600 font-extrabold tracking-widest block uppercase">Module 09</span>
+                    <span class="text-xs font-bold text-slate-900 truncate">QPM Simulator</span>
+                </div>
             </button>
 
-            <!-- 10. ABOUT & GRADING RUBRICS -->
-            <button onclick="activateModule('mod-rubrics')" class="neon-card glow-card rounded-xl aspect-[3/4.5] overflow-hidden group focus:outline-none relative bg-slate-950/80">
-                <img src="pic-me2026.png" class="w-full h-full object-contain" 
-                     onerror="this.src='https://placehold.co/300x450/0f172a/6366f1?text=About';">
+            <!-- 10. FINAL EXAM (Launches monetary_exam_smart.html in a new tab) -->
+            <button onclick="window.open('monetary_exam_smart.html', '_blank')" class="bg-white glow-card rounded-xl aspect-[3/4.5] overflow-hidden group focus:outline-none relative border border-slate-200 shadow-md text-left flex flex-col">
+                <div class="w-full h-[70%] bg-white flex items-center justify-center p-2">
+                    <img src="pic-exam-me.png" class="w-full h-full object-contain" 
+                         onerror="this.src='https://placehold.co/300x450/ffffff/eab308?text=Final+Exam';">
+                </div>
+                <div class="p-3 bg-slate-50 flex-1 flex flex-col justify-center border-t border-slate-100">
+                    <span class="text-[9px] text-yellow-600 font-extrabold tracking-widest block uppercase">Module 10</span>
+                    <span class="text-xs font-bold text-slate-900 truncate">Final Exam Node</span>
+                </div>
             </button>
 
         </section>
@@ -153,8 +218,8 @@
             <!-- MODULE 1: SYLLABUS -->
             <section id="mod-syllabus" class="hidden space-y-6">
                 <div class="flex justify-between items-center border-b border-slate-800 pb-3">
-                    <h2 class="text-lg font-black uppercase text-rose-400 flex items-center gap-2"><i class="fas fa-file-invoice"></i> Course Syllabus (Official AlmaU Document)</h2>
-                    <span class="text-[10px] bg-rose-950/40 text-rose-400 px-3 py-1 rounded border border-rose-900/30 font-bold uppercase">5 ECTS</span>
+                    <h2 class="text-lg font-black uppercase text-red-400 flex items-center gap-2"><i class="fas fa-file-invoice"></i> Course Syllabus (Official AlmaU Document)</h2>
+                    <span class="text-[10px] bg-red-950/40 text-red-400 px-3 py-1 rounded border border-red-900/30 font-bold uppercase">5 ECTS</span>
                 </div>
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 text-xs text-slate-300 leading-relaxed">
                     <div class="lg:col-span-2 space-y-6 max-h-[600px] overflow-y-auto custom-scrollbar pr-4">
@@ -203,10 +268,10 @@
                     <div class="lg:col-span-1 space-y-2 bg-slate-900/40 p-4 rounded-xl border border-slate-800" id="lecture-tabs-container">
                         <button onclick="showLecture(1)" class="lec-tab-btn w-full text-left p-2.5 rounded text-xs transition font-bold active-tab">Week 1: Fundamentals of Money</button>
                         <button onclick="showLecture(2)" class="lec-tab-btn w-full text-left p-2.5 rounded text-xs transition font-bold text-slate-400 hover:bg-slate-800">Week 2: Money Supply & Assets</button>
-                        <button onclick="showLecture(3)" class="lec-tab-btn w-full text-left p-2.5 rounded text-xs transition font-bold text-slate-400 hover:bg-slate-800">Week 3-4: Central Bank Instruments</button>
-                        <button onclick="showLecture(4)" class="lec-tab-btn w-full text-left p-2.5 rounded text-xs transition font-bold text-slate-400 hover:bg-slate-800">Week 5: Commercial Credit Creation</button>
-                        <button onclick="showLecture(5)" class="lec-tab-btn w-full text-left p-2.5 rounded text-xs transition font-bold text-slate-400 hover:bg-slate-800">Week 6: Macro Effects & Multipliers</button>
-                        <button onclick="showLecture(6)" class="lec-tab-btn w-full text-left p-2.5 rounded text-xs transition font-bold text-slate-400 hover:bg-slate-800">Week 7: QPM Framework Principles</button>
+                        <button onclick="showLecture(3)" class="lec-tab-btn w-full text-left p-2.5 rounded text-xs transition font-bold text-slate-400 hover:bg-slate-800">Week 3-4: CB Instruments</button>
+                        <button onclick="showLecture(4)" class="lec-tab-btn w-full text-left p-2.5 rounded text-xs transition font-bold text-slate-400 hover:bg-slate-800">Week 5: Commercial Credit</button>
+                        <button onclick="showLecture(5)" class="lec-tab-btn w-full text-left p-2.5 rounded text-xs transition font-bold text-slate-400 hover:bg-slate-800">Week 6: Multipliers</button>
+                        <button onclick="showLecture(6)" class="lec-tab-btn w-full text-left p-2.5 rounded text-xs transition font-bold text-slate-400 hover:bg-slate-800">Week 7: QPM Framework</button>
                     </div>
                     <div class="lg:col-span-3 p-6 max-h-[600px] overflow-y-auto custom-scrollbar text-xs text-slate-300 bg-slate-950/40 border border-slate-900 rounded-xl space-y-4" id="lecture-viewport">
                         <!-- Dynamic notes injected here -->
@@ -214,44 +279,7 @@
                 </div>
             </section>
 
-            <!-- MODULE 3: SLIDES -->
-            <section id="mod-slides" class="hidden space-y-6">
-                <div class="flex justify-between items-center border-b border-slate-800 pb-3">
-                    <h2 class="text-lg font-black uppercase text-teal-400 flex items-center gap-2"><i class="fas fa-desktop"></i> Canva Presentation Terminal</h2>
-                </div>
-                <div class="w-full h-[500px] rounded-xl overflow-hidden border border-slate-800 bg-black">
-                    <iframe src="https://www.canva.com/design/DAF-VStm3-A/view?embed" class="w-full h-full border-0" allowfullscreen></iframe>
-                </div>
-            </section>
-
-            <!-- MODULE 4: VIDEOS -->
-            <section id="mod-videos" class="hidden space-y-6">
-                <div class="flex justify-between items-center border-b border-slate-800 pb-3">
-                    <h2 class="text-lg font-black uppercase text-rose-400 flex items-center gap-2"><i class="fab fa-youtube"></i> Curated Video Resources</h2>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <div class="card p-4 space-y-3">
-                        <span class="text-[9px] text-indigo-400 font-bold uppercase tracking-widest">W1 Concept Study</span>
-                        <h4 class="font-bold text-xs text-white">The History and Functions of Money (MRU)</h4>
-                        <p class="text-slate-400 text-[11px] leading-relaxed">Understanding double coincidence of wants, functions of exchange, and liquidity thresholds.</p>
-                        <a href="https://www.youtube.com/watch?v=BKQa09slX7o" target="_blank" class="block text-center bg-rose-600 hover:bg-rose-500 text-white py-1.5 rounded text-[10px] font-bold uppercase transition">Watch on YouTube</a>
-                    </div>
-                    <div class="card p-4 space-y-3">
-                        <span class="text-[9px] text-indigo-400 font-bold uppercase tracking-widest">W3 Macro Insights</span>
-                        <h4 class="font-bold text-xs text-white">How Central Banks Control the Money Supply</h4>
-                        <p class="text-slate-400 text-[11px] leading-relaxed">Analytic walkthrough of reserve requirements, open market bond purchases, and key corridor rates.</p>
-                        <a href="https://www.youtube.com/watch?v=S2OnN-O3r4A" target="_blank" class="block text-center bg-rose-600 hover:bg-rose-500 text-white py-1.5 rounded text-[10px] font-bold uppercase transition">Watch on YouTube</a>
-                    </div>
-                    <div class="card p-4 space-y-3">
-                        <span class="text-[9px] text-indigo-400 font-bold uppercase tracking-widest">W6 IMF Academy</span>
-                        <h4 class="font-bold text-xs text-white">Introduction to the Quarterly Projection Model (QPM)</h4>
-                        <p class="text-slate-400 text-[11px] leading-relaxed">Advanced study of monetary policy formulation frameworks under dynamic New Keynesian rules.</p>
-                        <a href="https://www.youtube.com/watch?v=48_V_q22gGo" target="_blank" class="block text-center bg-rose-600 hover:bg-rose-500 text-white py-1.5 rounded text-[10px] font-bold uppercase transition">Watch on YouTube</a>
-                    </div>
-                </div>
-            </section>
-
-            <!-- MODULE 5: ARTICLES -->
+            <!-- MODULE 3: READING LIST -->
             <section id="mod-articles" class="hidden space-y-6">
                 <div class="flex justify-between items-center border-b border-slate-800 pb-3">
                     <h2 class="text-lg font-black uppercase text-blue-400 flex items-center gap-2"><i class="fas fa-file-invoice"></i> Academic Readings & Core Papers</h2>
@@ -272,54 +300,44 @@
                 </div>
             </section>
 
-            <!-- MODULE 6: TASK SOLVER (6 Core Calculation Forms) -->
-            <section id="mod-solver" class="hidden space-y-6">
+            <!-- MODULE 4: SLIDES -->
+            <section id="mod-slides" class="hidden space-y-6">
                 <div class="flex justify-between items-center border-b border-slate-800 pb-3">
-                    <h2 class="text-lg font-black uppercase text-amber-400 flex items-center gap-2"><i class="fas fa-calculator"></i> Active Mathematical Task Solver</h2>
+                    <h2 class="text-lg font-black uppercase text-teal-400 flex items-center gap-2"><i class="fas fa-desktop"></i> Canva Presentation Terminal</h2>
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs">
-                    <!-- Task 1: Irving Fisher -->
-                    <div class="card p-5 space-y-4 border-l-2 border-amber-500">
-                        <h3 class="font-bold text-white uppercase text-xs">Task 1: Irving Fisher's Equation ($M \times V = P \times Y$)</h3>
-                        <p class="text-slate-400 leading-relaxed">Calculate the missing variable given three inputs.</p>
-                        <div class="grid grid-cols-2 gap-3">
-                            <div><label>Money Supply (M)</label><input type="number" id="sol-m" value="2000" class="w-full bg-slate-950 border border-slate-800 p-2 rounded text-white"></div>
-                            <div><label>Velocity (V)</label><input type="number" id="sol-v" value="5" class="w-full bg-slate-950 border border-slate-800 p-2 rounded text-white"></div>
-                            <div><label>Price Level (P)</label><input type="number" id="sol-p" value="2" class="w-full bg-slate-950 border border-slate-800 p-2 rounded text-white"></div>
-                            <div><label>Real Output (Y)</label><input type="number" id="sol-y" value="5000" class="w-full bg-slate-950 border border-slate-800 p-2 rounded text-white"></div>
-                        </div>
-                        <button onclick="calculateFisher()" class="bg-amber-600 hover:bg-amber-500 text-white font-bold py-1.5 px-4 rounded text-[10px] uppercase transition">Verify & Solve</button>
-                        <div id="fisher-result" class="bg-slate-950/60 p-2.5 rounded border border-slate-800 font-mono text-amber-400 font-bold text-center">Awaiting inputs...</div>
-                    </div>
+                <div class="w-full h-[500px] rounded-xl overflow-hidden border border-slate-800 bg-black">
+                    <iframe src="https://www.canva.com/design/DAF-VStm3-A/view?embed" class="w-full h-full border-0" allowfullscreen></iframe>
+                </div>
+            </section>
 
-                    <!-- Task 2: Money Multiplier -->
-                    <div class="card p-5 space-y-4 border-l-2 border-amber-500">
-                        <h3 class="font-bold text-white uppercase text-xs">Task 2: Money Multiplier & Broad Supply ($m$)</h3>
-                        <p class="text-slate-400 leading-relaxed">Calculate total money supply given required reserves ($rr$), excess reserves ($e$), and currency ratio ($c$).</p>
-                        <div class="grid grid-cols-2 gap-3">
-                            <div><label>Monetary Base (MB)</label><input type="number" id="sol-mb" value="1000" class="w-full bg-slate-950 border border-slate-800 p-2 rounded text-white"></div>
-                            <div><label>Required Reserve (rr)</label><input type="number" id="sol-rr" value="0.10" class="w-full bg-slate-950 border border-slate-800 p-2 rounded text-white"></div>
-                            <div><label>Excess Reserves (e)</label><input type="number" id="sol-e" value="0.05" class="w-full bg-slate-950 border border-slate-800 p-2 rounded text-white"></div>
-                            <div><label>Currency Ratio (c)</label><input type="number" id="sol-c" value="0.20" class="w-full bg-slate-950 border border-slate-800 p-2 rounded text-white"></div>
-                        </div>
-                        <button onclick="calculateMultiplier()" class="bg-amber-600 hover:bg-amber-500 text-white font-bold py-1.5 px-4 rounded text-[10px] uppercase transition">Calculate Multiplier</button>
-                        <div id="multiplier-result" class="bg-slate-950/60 p-2.5 rounded border border-slate-800 font-mono text-amber-400 font-bold text-center">Awaiting inputs...</div>
+            <!-- MODULE 5: VIDEOS -->
+            <section id="mod-videos" class="hidden space-y-6">
+                <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+                    <h2 class="text-lg font-black uppercase text-rose-400 flex items-center gap-2"><i class="fab fa-youtube"></i> Curated Video Resources</h2>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl space-y-3">
+                        <span class="text-[9px] text-indigo-400 font-bold uppercase tracking-widest">W1 Concept Study</span>
+                        <h4 class="font-bold text-xs text-white">The History and Functions of Money (MRU)</h4>
+                        <p class="text-slate-400 text-[11px] leading-relaxed">Understanding double coincidence of wants, functions of exchange, and liquidity thresholds.</p>
+                        <a href="https://www.youtube.com/watch?v=BKQa09slX7o" target="_blank" class="block text-center bg-rose-600 hover:bg-rose-500 text-white py-1.5 rounded text-[10px] font-bold uppercase transition">Watch on YouTube</a>
+                    </div>
+                    <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl space-y-3">
+                        <span class="text-[9px] text-indigo-400 font-bold uppercase tracking-widest">W3 Macro Insights</span>
+                        <h4 class="font-bold text-xs text-white">How Central Banks Control the Money Supply</h4>
+                        <p class="text-slate-400 text-[11px] leading-relaxed">Analytic walkthrough of reserve requirements, open market bond purchases, and key corridor rates.</p>
+                        <a href="https://www.youtube.com/watch?v=S2OnN-O3r4A" target="_blank" class="block text-center bg-rose-600 hover:bg-rose-500 text-white py-1.5 rounded text-[10px] font-bold uppercase transition">Watch on YouTube</a>
+                    </div>
+                    <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl space-y-3">
+                        <span class="text-[9px] text-indigo-400 font-bold uppercase tracking-widest">W6 IMF Academy</span>
+                        <h4 class="font-bold text-xs text-white">Introduction to the Quarterly Projection Model (QPM)</h4>
+                        <p class="text-slate-400 text-[11px] leading-relaxed">Advanced study of monetary policy formulation frameworks under dynamic New Keynesian rules.</p>
+                        <a href="https://www.youtube.com/watch?v=48_V_q22gGo" target="_blank" class="block text-center bg-rose-600 hover:bg-rose-500 text-white py-1.5 rounded text-[10px] font-bold uppercase transition">Watch on YouTube</a>
                     </div>
                 </div>
             </section>
 
-            <!-- MODULE 7: GLOSSARY -->
-            <section id="mod-glossary" class="hidden space-y-6">
-                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-slate-800 pb-3">
-                    <h2 class="text-lg font-black uppercase text-emerald-400 flex items-center gap-2"><i class="fas fa-search"></i> The Economist Terminology Glossary</h2>
-                    <input type="text" id="glossary-search" placeholder="Type term (e.g. inflation, trilemma)..." class="bg-slate-950 border border-slate-800 text-xs text-white p-2.5 rounded-lg w-64 outline-none" oninput="searchGlossary()">
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-[500px] overflow-y-auto custom-scrollbar pr-2" id="glossary-viewport">
-                    <!-- Injected through JS -->
-                </div>
-            </section>
-
-            <!-- MODULE 10: ABOUT & RUBRICS -->
+            <!-- MODULE 6: ABOUT & RUBRICS -->
             <section id="mod-rubrics" class="hidden space-y-6">
                 <div class="flex justify-between items-center border-b border-slate-800 pb-3">
                     <h2 class="text-lg font-black uppercase text-slate-400 flex items-center gap-2"><i class="fas fa-gavel"></i> Course Appendix & Marking Rubrics</h2>
@@ -342,6 +360,54 @@
                     </div>
                 </div>
             </section>
+
+            <!-- MODULE 7: TASK SOLVER (Calculation Forms) -->
+            <section id="mod-solver" class="hidden space-y-6">
+                <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+                    <h2 class="text-lg font-black uppercase text-amber-400 flex items-center gap-2"><i class="fas fa-calculator"></i> Active Mathematical Task Solver</h2>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs">
+                    <!-- Task 1: Irving Fisher -->
+                    <div class="bg-slate-900 p-5 rounded-xl space-y-4 border-l-2 border-amber-500">
+                        <h3 class="font-bold text-white uppercase text-xs">Task 1: Irving Fisher's Equation ($M \times V = P \times Y$)</h3>
+                        <p class="text-slate-400 leading-relaxed">Calculate the missing variable given three inputs.</p>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div><label>Money Supply (M)</label><input type="number" id="sol-m" value="2000" class="w-full bg-slate-950 border border-slate-800 p-2 rounded text-white"></div>
+                            <div><label>Velocity (V)</label><input type="number" id="sol-v" value="5" class="w-full bg-slate-950 border border-slate-800 p-2 rounded text-white"></div>
+                            <div><label>Price Level (P)</label><input type="number" id="sol-p" value="2" class="w-full bg-slate-950 border border-slate-800 p-2 rounded text-white"></div>
+                            <div><label>Real Output (Y)</label><input type="number" id="sol-y" value="5000" class="w-full bg-slate-950 border border-slate-800 p-2 rounded text-white"></div>
+                        </div>
+                        <button onclick="calculateFisher()" class="bg-amber-600 hover:bg-amber-500 text-white font-bold py-1.5 px-4 rounded text-[10px] uppercase transition">Verify & Solve</button>
+                        <div id="fisher-result" class="bg-slate-950/60 p-2.5 rounded border border-slate-800 font-mono text-amber-400 font-bold text-center">Awaiting inputs...</div>
+                    </div>
+
+                    <!-- Task 2: Money Multiplier -->
+                    <div class="bg-slate-900 p-5 rounded-xl space-y-4 border-l-2 border-amber-500">
+                        <h3 class="font-bold text-white uppercase text-xs">Task 2: Money Multiplier & Broad Supply ($m$)</h3>
+                        <p class="text-slate-400 leading-relaxed">Calculate total money supply given required reserves ($rr$), excess reserves ($e$), and currency ratio ($c$).</p>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div><label>Monetary Base (MB)</label><input type="number" id="sol-mb" value="1000" class="w-full bg-slate-950 border border-slate-800 p-2 rounded text-white"></div>
+                            <div><label>Required Reserve (rr)</label><input type="number" id="sol-rr" value="0.10" class="w-full bg-slate-950 border border-slate-800 p-2 rounded text-white"></div>
+                            <div><label>Excess Reserves (e)</label><input type="number" id="sol-e" value="0.05" class="w-full bg-slate-950 border border-slate-800 p-2 rounded text-white"></div>
+                            <div><label>Currency Ratio (c)</label><input type="number" id="sol-c" value="0.20" class="w-full bg-slate-950 border border-slate-800 p-2 rounded text-white"></div>
+                        </div>
+                        <button onclick="calculateMultiplier()" class="bg-amber-600 hover:bg-amber-500 text-white font-bold py-1.5 px-4 rounded text-[10px] uppercase transition">Calculate Multiplier</button>
+                        <div id="multiplier-result" class="bg-slate-950/60 p-2.5 rounded border border-slate-800 font-mono text-amber-400 font-bold text-center">Awaiting inputs...</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- MODULE 8: GLOSSARY -->
+            <section id="mod-glossary" class="hidden space-y-6">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-slate-800 pb-3">
+                    <h2 class="text-lg font-black uppercase text-emerald-400 flex items-center gap-2"><i class="fas fa-search"></i> The Economist Terminology Glossary</h2>
+                    <input type="text" id="glossary-search" placeholder="Type term (e.g. inflation, trilemma)..." class="bg-slate-950 border border-slate-800 text-xs text-white p-2.5 rounded-lg w-64 outline-none" oninput="searchGlossary()">
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-[500px] overflow-y-auto custom-scrollbar pr-2" id="glossary-viewport">
+                    <!-- Injected through JS -->
+                </div>
+            </section>
+
         </main>
 
     </div>
@@ -355,11 +421,14 @@
         // Core state
         function activateModule(moduleId) {
             document.getElementById('welcome-message').classList.add('hidden');
-            document.querySelectorAll('main > section').forEach(sec => sec.classList.add('hidden'));
+            
+            // Hide ALL sections inside viewport
+            document.querySelectorAll('#viewport > section').forEach(sec => sec.classList.add('hidden'));
             
             const targetSec = document.getElementById(moduleId);
             if (targetSec) {
                 targetSec.classList.remove('hidden');
+                targetSec.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
 
             if (moduleId === 'mod-lectures') {
@@ -436,10 +505,14 @@
         };
 
         function showLecture(weekNum) {
-            document.querySelectorAll('.lec-tab-btn').forEach(btn => btn.classList.remove('active-tab'));
+            document.querySelectorAll('.lec-tab-btn').forEach(btn => {
+                btn.classList.remove('active-tab', 'text-white', 'bg-indigo-600/30');
+                btn.classList.add('text-slate-400');
+            });
             const tabs = document.querySelectorAll('.lec-tab-btn');
             if (tabs[weekNum - 1]) {
-                tabs[weekNum - 1].classList.add('active-tab', 'text-white', 'bg-indigo-600/30');
+                tabs[weekNum - 1].classList.add('active-tab', 'text-white');
+                tabs[weekNum - 1].classList.remove('text-slate-400');
             }
             const lec = LECTURES_DATA[weekNum];
             document.getElementById('lecture-viewport').innerHTML = `
