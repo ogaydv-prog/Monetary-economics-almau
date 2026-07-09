@@ -1,0 +1,1654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monetary Economics Hub • AlmaU</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome for fallback icons and interactive elements -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- KaTeX for high-quality mathematical notation -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@300;400;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap');
+        
+        body {
+            background: radial-gradient(circle at top right, #0f172a 0%, #020617 100%);
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            color: #f1f5f9;
+        }
+
+        .neon-card {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(16px);
+        }
+
+        /* Portrait tile containers: white background, fully embracing vertical ratios */
+        .tile-btn {
+            background-color: #ffffff;
+            border-radius: 1rem;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            border: 3px solid transparent;
+            aspect-ratio: 3 / 4.2;
+            position: relative;
+        }
+        
+        .tile-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px -5px rgba(99, 102, 241, 0.4);
+            border-color: #6366f1;
+        }
+
+        /* Specific red border for the Syllabus card */
+        .tile-btn-red {
+            border-color: #ef4444;
+        }
+        .tile-btn-red:hover {
+            border-color: #dc2626;
+            box-shadow: 0 15px 30px -5px rgba(239, 68, 68, 0.4);
+        }
+
+        .active-tile {
+            border-color: #4f46e5 !important;
+            box-shadow: 0 0 25px rgba(79, 70, 229, 0.4) !important;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-radius: 4px; }
+        
+        .active-lecture-tab {
+            background: rgba(99, 102, 241, 0.15) !important;
+            border-color: rgba(99, 102, 241, 0.4) !important;
+            color: #ffffff !important;
+        }
+
+        /* --- INTEGRATED DASHBOARD STYLES --- */
+        .neon-text-red { text-shadow: 0 0 10px rgba(239, 68, 68, 0.4); }
+        .neon-text-blue { text-shadow: 0 0 10px rgba(99, 102, 241, 0.4); }
+        
+        .tech-panel { 
+            background-color: #121215; 
+            border: 1px solid #27272a; 
+            position: relative; 
+            border-radius: 0.75rem; 
+            box-shadow: 0 4px 20px -2px rgba(0,0,0,0.5);
+        }
+        .tech-panel::after { 
+            content: ''; 
+            position: absolute; 
+            top: 0; left: 0; right: 0; 
+            height: 1px; 
+            background: linear-gradient(90deg, transparent, #3f3f46, transparent); 
+        }
+        
+        .math-block { 
+            background-color: #030303; 
+            border-left: 3px solid #6366f1; 
+            font-family: 'JetBrains Mono', monospace; 
+            padding: 1.25rem; 
+            border-radius: 0 0.75rem 0.75rem 0; 
+            box-shadow: inset 0 2px 8px rgba(0,0,0,0.8);
+        }
+
+        input[type=range] { -webkit-appearance: none; width: 100%; background: transparent; margin: 12px 0; }
+        input[type=range]:focus { outline: none; }
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%; height: 5px; cursor: pointer; background: #1f1f23; border: 1px solid #2d2d30; border-radius: 3px;
+        }
+        input[type=range]::-webkit-slider-thumb {
+            height: 24px; width: 14px; border-radius: 3px;
+            background: linear-gradient(to right, #a1a1aa 0%, #71717a 40%, #6366f1 43%, #6366f1 57%, #71717a 60%, #52525b 100%);
+            border: 1px solid #09090b; cursor: pointer; -webkit-appearance: none; margin-top: -10px;
+            box-shadow: 0 0 8px rgba(99, 102, 241, 0.6); 
+            transition: all 0.1s ease;
+        }
+        input[type=range]:active::-webkit-slider-thumb { 
+            box-shadow: 0 0 14px rgba(99, 102, 241, 0.9); 
+        }
+
+        .nav-tab { 
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); 
+            border: 1px solid #27272a; 
+            background-color: #0f0f11; 
+            cursor: pointer; 
+            color: #a1a1aa;
+        }
+        .nav-tab:hover { border-color: #52525b; color: #ffffff; background-color: #121215; }
+        .nav-tab.active { 
+            background-color: #1c1c24; 
+            border-color: #6366f1; 
+            color: #818cf8; 
+            box-shadow: 0 0 12px rgba(99, 102, 241, 0.15); 
+        }
+        
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: paneReveal 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+        @keyframes paneReveal { from { opacity: 0; transform: scale(0.995) translateY(6px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+
+        .tri-corner { cursor: pointer; transition: all 0.3s ease; }
+        .tri-corner:hover { filter: drop-shadow(0 0 8px rgba(255,255,255,0.25)); }
+        .tri-active-float { fill: rgba(59, 130, 246, 0.8) !important; stroke: #60a5fa !important; stroke-width: 2px; }
+        .tri-active-fixed { fill: rgba(16, 185, 129, 0.8) !important; stroke: #34d399 !important; stroke-width: 2px; }
+        .tri-active-controls { fill: rgba(239, 68, 68, 0.8) !important; stroke: #f87171 !important; stroke-width: 2px; }
+        .tri-text { font-size: 10px; font-weight: 800; fill: #a1a1aa; pointer-events: none; text-anchor: middle; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between custom-scrollbar">
+
+    <div class="w-full max-w-[1500px] mx-auto p-4 md:p-8 space-y-8">
+        
+        <!-- HEADER -->
+        <header class="neon-card rounded-2xl border-t-2 border-t-indigo-500/50 relative overflow-hidden">
+            <div class="p-6 md:p-8 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
+                <div class="flex items-center gap-4">
+                    <div class="border-r border-slate-800 pr-6 hidden sm:block">
+                        <span class="text-indigo-400 font-extrabold tracking-widest text-sm uppercase block">Almaty Management University</span>
+                        <span class="text-[10px] text-slate-500 uppercase font-black tracking-widest block">School of Digital Technologies & Economics</span>
+                    </div>
+                    <div>
+                        <h1 class="text-xl md:text-2xl font-black tracking-tight text-white uppercase flex items-center gap-2">
+                            <i class="fas fa-university text-indigo-500"></i> Monetary Economics
+                        </h1>
+                        <p class="text-xs text-slate-400 mt-1">Interactive Learning Hub • Course designed by Professor of Practice Dmitriy Ogay</p>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- GRID OF 10 BUTTONS (Using exact images from user) -->
+        <section class="grid grid-cols-2 md:grid-cols-5 gap-5">
+            
+            <!-- 1. SYLLABUS -->
+            <button id="btn-mod-syllabus" onclick="window.open('https://drive.google.com/file/d/14Hxqctzb3ELzkCD9SUnZDxDiojD3AVNh/view?usp=drive_link', '_blank')" class="tile-btn tile-btn-red focus:outline-none group">
+                <img src="https://raw.githubusercontent.com/ogaydv-prog/Monetary-economics-almau/main/pic-me2026.png" 
+                     class="w-full h-full object-contain" alt="Syllabus"
+                     onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
+                <div class="hidden absolute inset-0 bg-red-950/20 flex flex-col items-center justify-center p-4 text-center">
+                    <i class="fas fa-file-pdf text-3xl text-red-500 mb-2"></i>
+                    <span class="text-xs font-bold text-slate-900">Syllabus</span>
+                </div>
+            </button>
+
+            <!-- 2. LECTURES -->
+            <button id="btn-mod-lectures" onclick="activateModule('mod-lectures')" class="tile-btn focus:outline-none group">
+                <img src="https://raw.githubusercontent.com/ogaydv-prog/Monetary-economics-almau/main/pic-lectures.png" 
+                     class="w-full h-full object-contain" alt="Lectures"
+                     onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
+                <div class="hidden absolute inset-0 bg-slate-100 flex flex-col items-center justify-center p-4 text-center">
+                    <i class="fas fa-book-open text-3xl text-indigo-500 mb-2"></i>
+                    <span class="text-xs font-bold text-slate-900">Lectures</span>
+                </div>
+            </button>
+
+            <!-- 3. CANVA SLIDES -->
+            <button onclick="window.open('https://www.canva.com/design/DAHOfdoZUdY/iuHXiukIJDZ9NdFe9MvG_w/view?utm_content=DAHOfdoZUdY&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h582a2c5837', '_blank')" class="tile-btn focus:outline-none group">
+                <img src="https://raw.githubusercontent.com/ogaydv-prog/Monetary-economics-almau/main/pic-preza-me.png" 
+                     class="w-full h-full object-contain" alt="Canva Slides"
+                     onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
+                <div class="hidden absolute inset-0 bg-slate-100 flex flex-col items-center justify-center p-4 text-center">
+                    <i class="fas fa-desktop text-3xl text-teal-500 mb-2"></i>
+                    <span class="text-xs font-bold text-slate-900">Canva</span>
+                </div>
+            </button>
+
+            <!-- 4. TEXTBOOK -->
+           <button onclick="window.open('https://drive.google.com/file/d/1ZXRwoW8oaIPug96FAlymu3lGkNt1cSak/view?usp=sharing', '_blank')" class="tile-btn focus:outline-none group">
+                <img src="https://raw.githubusercontent.com/ogaydv-prog/Monetary-economics-almau/main/pic-book.png" 
+                     class="w-full h-full object-contain" alt="Textbook"
+                     onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
+                <div class="hidden absolute inset-0 bg-slate-100 flex flex-col items-center justify-center p-4 text-center">
+                    <i class="fas fa-book text-3xl text-amber-500 mb-2"></i>
+                    <span class="text-xs font-bold text-slate-900">Textbook</span>
+                </div>
+            </button>
+
+            <!-- 5. VIDEOS -->
+            <button id="btn-mod-videos" onclick="activateModule('mod-videos')" class="tile-btn focus:outline-none group">
+                <img src="https://raw.githubusercontent.com/ogaydv-prog/Monetary-economics-almau/main/pic-videos.png" 
+                     class="w-full h-full object-contain" alt="Videos"
+                     onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
+                <div class="hidden absolute inset-0 bg-slate-100 flex flex-col items-center justify-center p-4 text-center">
+                    <i class="fab fa-youtube text-3xl text-rose-500 mb-2"></i>
+                    <span class="text-xs font-bold text-slate-900">Videos</span>
+                </div>
+            </button>
+
+            <!-- 6. READINGS (News) -->
+            <button id="btn-mod-readings" onclick="activateModule('mod-readings')" class="tile-btn focus:outline-none group">
+                <img src="https://raw.githubusercontent.com/ogaydv-prog/Monetary-economics-almau/main/pic-reading.png" 
+                     class="w-full h-full object-contain" alt="Readings"
+                     onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
+                <div class="hidden absolute inset-0 bg-slate-100 flex flex-col items-center justify-center p-4 text-center">
+                    <i class="fas fa-glasses text-3xl text-blue-500 mb-2"></i>
+                    <span class="text-xs font-bold text-slate-900">News</span>
+                </div>
+            </button>
+
+            <!-- 7. TASKS -->
+            <button id="btn-mod-tasks" onclick="activateModule('mod-tasks')" class="tile-btn focus:outline-none group">
+                <img src="https://raw.githubusercontent.com/ogaydv-prog/Monetary-economics-almau/main/pic-tasks.png" 
+                     class="w-full h-full object-contain" alt="Tasks"
+                     onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
+                <div class="hidden absolute inset-0 bg-slate-100 flex flex-col items-center justify-center p-4 text-center">
+                    <i class="fas fa-tasks text-3xl text-emerald-500 mb-2"></i>
+                    <span class="text-xs font-bold text-slate-900">Tasks</span>
+                </div>
+            </button>
+
+            <!-- 8. GLOSSARY -->
+            <button id="btn-mod-glossary" onclick="activateModule('mod-glossary')" class="tile-btn focus:outline-none group">
+                <img src="https://raw.githubusercontent.com/ogaydv-prog/Monetary-economics-almau/main/pic-glossary.png" 
+                     class="w-full h-full object-contain" alt="Glossary"
+                     onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
+                <div class="hidden absolute inset-0 bg-slate-100 flex flex-col items-center justify-center p-4 text-center">
+                    <i class="fas fa-book-atlas text-3xl text-purple-500 mb-2"></i>
+                    <span class="text-xs font-bold text-slate-900">Glossary</span>
+                </div>
+            </button>
+
+            <!-- 9. QPM SIMULATOR -->
+            <button onclick="window.open('qpm-kz-en.html', '_blank')" class="tile-btn focus:outline-none group">
+                <img src="https://raw.githubusercontent.com/ogaydv-prog/Monetary-economics-almau/main/pic-sim-qpm.png" 
+                     class="w-full h-full object-contain" alt="QPM Simulator"
+                     onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
+                <div class="hidden absolute inset-0 bg-slate-100 flex flex-col items-center justify-center p-4 text-center">
+                    <i class="fas fa-project-diagram text-3xl text-indigo-500 mb-2"></i>
+                    <span class="text-xs font-bold text-slate-900">QPM Sim</span>
+                </div>
+            </button>
+
+            <!-- 10. FINAL EXAM -->
+            <button onclick="window.open('me-exam-final.html', '_blank')" class="tile-btn focus:outline-none group">
+                <img src="https://raw.githubusercontent.com/ogaydv-prog/Monetary-economics-almau/main/pic-exam-me.png" 
+                     class="w-full h-full object-contain" alt="Final Exam"
+                     onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
+                <div class="hidden absolute inset-0 bg-slate-100 flex flex-col items-center justify-center p-4 text-center">
+                    <i class="fas fa-graduation-cap text-3xl text-emerald-500 mb-2"></i>
+                    <span class="text-xs font-bold text-slate-900">Exam</span>
+                </div>
+            </button>
+
+        </section>
+
+        <!-- MAIN VIEWPORT FOR INTERNAL CONTENT -->
+        <main id="viewport" class="neon-card p-6 md:p-8 rounded-2xl min-h-[500px] mt-4 border-t-4 border-indigo-500/50">
+            
+            <!-- WELCOME SCREEN -->
+            <div id="welcome-message" class="flex flex-col items-center justify-center text-center h-[400px] space-y-4">
+                <div class="p-4 bg-indigo-500/10 rounded-full border border-indigo-500/20 text-indigo-400">
+                    <i class="fas fa-university text-4xl"></i>
+                </div>
+                <h2 class="text-xl font-bold uppercase text-white tracking-wide">Monetary Economics: Interactive Hub</h2>
+                <p class="text-xs text-slate-400 max-w-lg leading-relaxed">Select a module from the grid above to access the syllabus, lecture notes, interactive tasks, or external simulators.</p>
+            </div>
+
+            <!-- MODULE: SYLLABUS -->
+            <section id="mod-syllabus" class="module-content hidden space-y-6">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-slate-800 pb-3 gap-4">
+                    <div>
+                        <h2 class="text-xl font-black uppercase text-red-400">Course Syllabus</h2>
+                        <p class="text-xs text-slate-400 mt-1">Native HTML Version — No PDF download required</p>
+                    </div>
+                    <a href="Syllabus.pdf" target="_blank" class="bg-slate-800 hover:bg-slate-700 border border-slate-600 text-white font-bold py-2 px-4 rounded text-xs transition flex items-center gap-2">
+                        <i class="fas fa-download"></i> Download Original PDF
+                    </a>
+                </div>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 text-sm text-slate-300">
+                    <!-- Left Column: Core Info -->
+                    <div class="lg:col-span-2 space-y-6">
+                        <div class="space-y-2">
+                            <h3 class="text-white font-bold text-lg border-l-4 border-red-500 pl-3">Course Description</h3>
+                            <p class="leading-relaxed bg-slate-900/50 p-4 rounded-lg border border-slate-800">
+                                This course systematically explores the channels of monetary transmission, the operational balance sheet dynamics of modern central banking, and macroeconomic trade-offs captured in the Impossible Trilemma. It is structured around the Mishkin framework and the IMF's semi-structural QPM forecasting approach. Students will learn how central banks utilize open market operations and interest rates to manage inflation and stabilize output.
+                            </p>
+                        </div>
+
+                        <div class="space-y-3">
+                            <h3 class="text-white font-bold text-lg border-l-4 border-indigo-500 pl-3">Learning Outcomes (LOs)</h3>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                <div class="bg-indigo-950/20 p-4 rounded-lg border border-indigo-900/30">
+                                    <span class="text-indigo-400 font-bold block mb-1">LO 1: Liquidity & Policy</span>
+                                    <p class="text-xs">Evaluate how monetary policy instruments impact commercial bank liquidity and target money supply.</p>
+                                </div>
+                                <div class="bg-indigo-950/20 p-4 rounded-lg border border-indigo-900/30">
+                                    <span class="text-indigo-400 font-bold block mb-1">LO 2: Interest Rates</span>
+                                    <p class="text-xs">Apply the Fisher Equation and Bond Pricing theory to structural interest rate fluctuations.</p>
+                                </div>
+                                <div class="bg-indigo-950/20 p-4 rounded-lg border border-indigo-900/30">
+                                    <span class="text-indigo-400 font-bold block mb-1">LO 3: Balance Sheets</span>
+                                    <p class="text-xs">Analyze open-market structural adjustments utilizing Central Bank T-Accounts.</p>
+                                </div>
+                                <div class="bg-indigo-950/20 p-4 rounded-lg border border-indigo-900/30">
+                                    <span class="text-indigo-400 font-bold block mb-1">LO 4: Taylor Rule</span>
+                                    <p class="text-xs">Synthesize policy decisions using the Taylor Rule response function and QPM modeling.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="space-y-2">
+                            <h3 class="text-white font-bold text-lg border-l-4 border-emerald-500 pl-3">Grading Policy</h3>
+                            <div class="flex items-center gap-4 bg-slate-900/50 p-4 rounded-lg border border-slate-800">
+                                <div class="text-center p-3 bg-slate-950 rounded-lg w-24 border border-slate-700">
+                                    <span class="block text-2xl font-black text-emerald-400">30%</span>
+                                    <span class="text-[9px] uppercase tracking-wider text-slate-400">Midterm</span>
+                                </div>
+                                <div class="text-center p-3 bg-slate-950 rounded-lg w-24 border border-slate-700">
+                                    <span class="block text-2xl font-black text-emerald-400">30%</span>
+                                    <span class="text-[9px] uppercase tracking-wider text-slate-400">Tasks</span>
+                                </div>
+                                <div class="text-center p-3 bg-indigo-950 rounded-lg w-24 border border-indigo-500/50 shadow-[0_0_15px_rgba(99,102,241,0.2)]">
+                                    <span class="block text-2xl font-black text-indigo-400">40%</span>
+                                    <span class="text-[9px] uppercase tracking-wider text-indigo-300">Final Exam</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Right Column: Sidebar Info -->
+                    <div class="space-y-4">
+                        <div class="bg-slate-900/80 p-5 rounded-xl border border-slate-700 space-y-4">
+                            <span class="text-[10px] text-slate-500 uppercase font-bold tracking-widest block border-b border-slate-700 pb-2">Course Overview</span>
+                            <div class="flex justify-between border-b border-slate-800 pb-2">
+                                <span class="text-slate-400">Credits:</span><span class="text-white font-bold">5 ECTS</span>
+                            </div>
+                            <div class="flex justify-between border-b border-slate-800 pb-2">
+                                <span class="text-slate-400">Prerequisites:</span><span class="text-indigo-400 font-bold">Macroeconomics</span>
+                            </div>
+                            <div class="flex justify-between pb-2">
+                                <span class="text-slate-400">Instructor:</span><span class="text-emerald-400 font-bold text-right">Prof. Dmitriy Ogay</span>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-900/80 p-5 rounded-xl border border-slate-700 space-y-3">
+                            <span class="text-[10px] text-slate-500 uppercase font-bold tracking-widest block border-b border-slate-700 pb-2">Weekly Schedule</span>
+                            <ul class="space-y-2 text-xs">
+                                <li class="flex gap-3"><span class="text-slate-500 font-mono">W1</span> <span>Fundamentals of Money</span></li>
+                                <li class="flex gap-3"><span class="text-slate-500 font-mono">W2</span> <span>Interest Rates & Yields</span></li>
+                                <li class="flex gap-3"><span class="text-slate-500 font-mono">W3</span> <span>Bond Market Dynamics</span></li>
+                                <li class="flex gap-3"><span class="text-slate-500 font-mono">W4</span> <span>Money Supply Process</span></li>
+                                <li class="flex gap-3"><span class="text-slate-500 font-mono">W5</span> <span>Monetary Policy Tools</span></li>
+                                <li class="flex gap-3"><span class="text-slate-500 font-mono">W6</span> <span>QPM & Inflation Targeting</span></li>
+                                <li class="flex gap-3 text-indigo-400 font-bold"><span class="text-indigo-500 font-mono">W7</span> <span>The Impossible Trilemma</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- MODULE: LECTURES (FULLY INTEGRATED INTERNAL INTERACTIVE PORTAL ARCHITECTURE) -->
+            <section id="mod-lectures" class="module-content hidden space-y-6">
+                <div class="w-full mx-auto flex flex-col lg:flex-row gap-6 text-left">
+                    
+                    <nav class="w-full lg:w-72 flex flex-col gap-2 shrink-0">
+                        <div class="text-[10px] font-mono uppercase tracking-widest text-zinc-500 mb-2 px-2">Thematic Modules</div>
+                        <button class="nav-tab active text-left px-4 py-3 rounded-lg text-xs font-semibold" onclick="switchTab(this, 'lec1')">01. Monetary Aggregates & Liquidity</button>
+                        <button class="nav-tab text-left px-4 py-3 rounded-lg text-xs font-semibold" onclick="switchTab(this, 'lec2')">02. Interest Rates & Money Demand</button>
+                        <button class="nav-tab text-left px-4 py-3 rounded-lg text-xs font-semibold" onclick="switchTab(this, 'lec3')">03. Money Multiplier & Bank Credit</button>
+                        <button class="nav-tab text-left px-4 py-3 rounded-lg text-xs font-semibold" onclick="switchTab(this, 'lec4')">04. Balance Sheets (CB & ComBank)</button>
+                        <button class="nav-tab text-left px-4 py-3 rounded-lg text-xs font-semibold" onclick="switchTab(this, 'lec5')">05. Inflation Dynamics: Phillips Curve</button>
+                        <button class="nav-tab text-left px-4 py-3 rounded-lg text-xs font-semibold" onclick="switchTab(this, 'lec6')">06. Open Macroeconomics: The Trilemma</button>
+                        <button class="nav-tab text-left px-4 py-3 rounded-lg text-xs font-semibold" onclick="switchTab(this, 'lec7')">07. Core Policy Model: IMF QPM</button>
+                    </nav>
+
+                    <div class="flex-1 min-w-0 space-y-6">
+                        
+                        <!-- LECTURE 1: MONEY AGGREGATES -->
+                        <div id="lec1" class="tab-content active space-y-6">
+                            <div class="tech-panel p-6 space-y-4">
+                                <h2 class="text-xl font-bold text-white flex items-center gap-2"><i class="fas fa-coins text-indigo-400"></i> Lecture 1: Functions of Money & Liquidity Hierarchy</h2>
+                                <div class="text-zinc-300 text-xs leading-relaxed space-y-3">
+                                    <p>
+                                        Money resolves the fundamental <strong>"double coincidence of wants"</strong> problem inherent in barter economies, drastically lowering transaction and search costs. In macroeconomic theory, money is defined through three classical pillars: 
+                                        <em>Medium of Exchange</em> (facilitating trade), <em>Unit of Account</em> (standardizing relative values), and <em>Store of Value</em> (transferring purchasing power across time).
+                                    </p>
+                                    <p>
+                                        Central Banks categorize money into **Monetary Aggregates** based on their degree of liquidity. Liquidity refers to the speed, ease, and certainty with which an asset can be converted back into a primary medium of exchange.
+                                    </p>
+                                </div>
+                                <div class="math-block text-xs">
+                                    $$M0 = \text{Currency in Circulation (Banknotes and Coins)}$$
+                                    $$M1 = M0 + \text{Demand Deposits (Highly liquid checking accounts)}$$
+                                    $$M2 = M1 + \text{Time \& Savings Deposits (Interest-bearing term deposits)}$$
+                                </div>
+                            </div>
+
+                            <div class="tech-panel p-6">
+                                <h3 class="text-xs font-mono text-indigo-400 uppercase tracking-widest mb-4">Interactive Simulator: Liquidity Aggregates Breakdown</h3>
+                                
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                    <div class="space-y-4">
+                                        <div>
+                                            <label class="block text-[10px] font-mono text-zinc-400 mb-1">Currency in Circulation (M0) [<span id="val-m0" class="text-[#f59e0b] font-bold">100</span> bln ₸]</label>
+                                            <input type="range" id="slide-m0" min="50" max="500" value="100" oninput="updateAggregates()">
+                                        </div>
+                                        
+                                        <div>
+                                            <label class="block text-[10px] font-mono text-zinc-400 mb-1">Demand Deposits [<span id="val-dd" class="text-[#6366f1] font-bold">400</span> bln ₸]</label>
+                                            <input type="range" id="slide-dd" min="100" max="1000" value="400" oninput="updateAggregates()">
+                                        </div>
+                                        
+                                        <div>
+                                            <label class="block text-[10px] font-mono text-zinc-400 mb-1">Time & Savings Deposits [<span id="val-sd" class="text-[#10b981] font-bold">800</span> bln ₸]</label>
+                                            <input type="range" id="slide-sd" min="200" max="2000" value="800" oninput="updateAggregates()">
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="flex flex-col justify-center space-y-4 bg-black/60 p-5 rounded-lg border border-zinc-800/80">
+                                        <div>
+                                            <div class="flex justify-between text-[11px] font-mono mb-1.5"><span class="text-indigo-400 font-bold">M1 (Narrow Money)</span><span id="tot-m1" class="text-white">500B</span></div>
+                                            <div class="w-full bg-zinc-950 h-6 rounded-md overflow-hidden flex border border-zinc-800/80">
+                                                <div id="bar-m0" class="bg-[#f59e0b] anim-bar h-full"></div>
+                                                <div id="bar-dd" class="bg-[#6366f1] anim-bar h-full"></div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="flex justify-between text-[11px] font-mono mb-1.5"><span class="text-emerald-400 font-bold">M2 (Broad Money)</span><span id="tot-m2" class="text-white">1300B</span></div>
+                                            <div class="w-full bg-zinc-950 h-6 rounded-md overflow-hidden flex border border-zinc-800/80">
+                                                <div id="bar-m1-in-m2" class="bg-[#4f46e5] anim-bar h-full"></div>
+                                                <div id="bar-sd" class="bg-[#10b981] anim-bar h-full"></div>
+                                            </div>
+                                        </div>
+                                        <div class="text-[9px] text-zinc-500 font-mono mt-2 text-center border-t border-zinc-800/50 pt-2 flex justify-center gap-4">
+                                            <span><span class="inline-block w-2.5 h-2.5 bg-[#f59e0b] rounded-sm mr-1"></span> M0 (Cash)</span>
+                                            <span><span class="inline-block w-2.5 h-2.5 bg-[#6366f1] rounded-sm mr-1"></span> Demand Deposits</span>
+                                            <span><span class="inline-block w-2.5 h-2.5 bg-[#10b981] rounded-sm mr-1"></span> Time Deposits</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="bg-zinc-900/60 border border-zinc-800 p-5 rounded-xl space-y-3">
+                                <h4 class="text-xs font-mono uppercase tracking-wider text-amber-400 font-bold flex items-center gap-2">
+                                    <i class="fas fa-comment-alt"></i> Analytical Commentary: The Liquidity Continuum
+                                </h4>
+                                <p class="text-xs text-zinc-400 leading-relaxed">
+                                    Notice how shifts in aggregates alter the underlying liquidity mix of the financial system. When transactions drive physical cash or checking balances up, <strong>M1 expands immediately</strong>, reflecting increased transactional velocity. Conversely, high macroeconomic risk or enticing real yields prompt a flight toward fixed-term liabilities (Time Deposits), causing <strong>M2 to capture broader liquidity structures</strong> while transactional assets stabilize. Central banks continuously monitor this shifting frontier to anticipate inflation spikes and structural velocity shifts.
+                                </p>
+                            </div>
+                        </div>
+
+                       <!-- LECTURE 2: INTEREST RATES -->
+<div id="lec2" class="tab-content space-y-6">
+    <div class="tech-panel p-6 space-y-4">
+        <h2 class="text-xl font-bold text-white flex items-center gap-2"><i class="fas fa-chart-line text-indigo-400"></i> Lecture 2: Interest Rates & Money Demand</h2>
+        <div class="text-zinc-300 text-xs leading-relaxed space-y-3">
+            <p>
+                Keynes' <strong>Liquidity Preference Theory</strong> asserts that individuals hold cash for three distinct reasons: 
+                1) <em>Transactions Motive</em> (day-to-day transactions), 
+                2) <em>Precautionary Motive</em> (unexpected future obligations), and 
+                3) <em>Speculative Motive</em> (holding cash to exploit fluctuations in bond prices and yields).
+            </p>
+            <p>
+                Because non-interest-bearing cash compete directly with interest-yielding bonds, money demand ($M^d$) has an <strong>inverse relationship</strong> with nominal interest rates ($i$). When interest rates rise, holding liquid cash yields a higher opportunity cost, leading actors to lock capital into bonds.
+            </p>
+            <p>
+                In the standard short-run model, the Money Supply ($M^s$) is strictly controlled by the Central Bank and is represented as a **vertical line**.
+            </p>
+        </div>
+        <div class="math-block text-xs">
+            $$M^d = L(i, Y) \quad \text{where} \quad \frac{\partial L}{\partial i} < 0, \ \frac{\partial L}{\partial Y} > 0$$
+            $$P_{bond} = \sum_{t=1}^{n} \frac{C}{(1+i)^t} + \frac{F}{(1+i)^n}$$
+        </div>
+    </div>
+
+    <div class="tech-panel p-6">
+        <h3 class="text-xs font-mono text-indigo-400 uppercase tracking-widest mb-4">Interactive Simulator: Money Market Equilibrium</h3>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+            <div class="space-y-6">
+                <div>
+                    <label class="block text-[10px] font-mono text-zinc-400 mb-1">Money Supply Target (Mˢ) [<span id="val-ms-pos" class="text-white font-bold">500</span> bln ₸]</label>
+                    <input type="range" id="slide-ms-pos" min="200" max="800" value="500" oninput="updateMoneyMarket()">
+                </div>
+                <div>
+                    <label class="block text-[10px] font-mono text-zinc-400 mb-1">Real Income Shift (Mᵈ) [<span id="val-md-shift" class="text-white font-bold">Baseline</span>]</label>
+                    <input type="range" id="slide-md-shift" min="-200" max="200" step="50" value="0" oninput="updateMoneyMarket()">
+                </div>
+                <div class="p-3 bg-zinc-950 rounded-lg border border-zinc-800 space-y-1">
+                    <div class="text-[10px] uppercase font-mono text-zinc-500">Real-Time Indicator</div>
+                    <div class="text-xs text-zinc-300">Equilibrium Rate ($i^*$): <span id="eq-rate-val" class="font-bold text-indigo-400">12.5%</span></div>
+                </div>
+            </div>
+            
+            <!-- Interactive Money Market Graph (SVG) -->
+            <div class="bg-black/40 p-4 rounded-xl border border-zinc-800 relative">
+                <div class="absolute top-2 left-4 text-[9px] font-mono text-zinc-500 uppercase">Money Market Model (Keynesian)</div>
+                <svg viewBox="0 0 300 240" class="w-full h-auto overflow-visible">
+                    <line x1="40" y1="20" x2="40" y2="200" stroke="#4b5563" stroke-width="2"/>
+                    <line x1="40" y1="200" x2="280" y2="200" stroke="#4b5563" stroke-width="2"/>
+                    
+                    <text x="25" y="25" fill="#9ca3af" font-size="9px" font-family="monospace">i (%)</text>
+                    <text x="270" y="215" fill="#9ca3af" font-size="9px" font-family="monospace">M</text>
+                    
+                    <path id="md-curve" d="M 60,40 Q 150,120 260,180" fill="none" stroke="#6366f1" stroke-width="2.5" class="transition-all duration-300"/>
+                    <text x="255" y="170" fill="#6366f1" font-size="8px" font-family="monospace" font-weight="bold">Mᵈ</text>
+                    
+                    <line id="ms-line" x1="160" y1="30" x2="160" y2="200" stroke="#10b981" stroke-width="2.5" class="transition-all duration-300"/>
+                    <text x="165" y="25" fill="#10b981" font-size="8px" font-family="monospace" font-weight="bold">Mˢ</text>
+                    
+                    <line id="helper-rate" x1="40" y1="120" x2="160" y2="120" stroke="#a855f7" stroke-dasharray="4" stroke-width="1.5" class="transition-all duration-300"/>
+                    <circle id="eq-dot" cx="160" cy="120" r="5" fill="#ffffff" stroke="#a855f7" stroke-width="2"/>
+                </svg>
+            </div>
+        </div>
+    </div>
+</div>
+
+                     <!-- LECTURE 3: MONEY MULTIPLIER -->
+<div id="lec3" class="tab-content space-y-6">
+    <div class="tech-panel p-6 space-y-4">
+        <h2 class="text-xl font-bold text-white flex items-center gap-2"><i class="fas fa-network-wired text-indigo-400"></i> Lecture 3: Credit Expansion & The Money Multiplier</h2>
+        <div class="text-zinc-300 text-xs leading-relaxed space-y-3">
+            <p>
+                Commercial banks create <strong>"inside money"</strong> through fractional reserve banking. When a new deposit enters a bank, a portion is legally set aside under regulatory reserves ($rr$), while the remainder is loaned out, triggering an expansion cycle.
+            </p>
+        </div>
+        <div class="math-block text-xs">
+            $$M2 = m \times MB \quad \text{where} \quad MB = C + R \quad (\text{Monetary Base}) \qquad m = \frac{1 + c}{rr + e + c}$$
+        </div>
+    </div>
+
+    <!-- Основной контейнер визуализации -->
+    <div class="space-y-6 w-full">
+        <!-- ВЕРХНИЙ РЯД: Графики во всю ширину -->
+        <div class="grid grid-cols-1 md:grid-cols-5 gap-6 w-full">
+            <!-- Столбчатая диаграмма (Structural Balance) - 2 колонки -->
+            <div class="bg-black/40 p-5 flex flex-col justify-end items-center relative h-80 overflow-hidden md:col-span-2 border border-zinc-800 rounded-lg">
+                <div class="absolute top-2.5 left-3 text-[9px] font-mono text-zinc-500 uppercase tracking-wider">Structural Balance</div>
+                <div class="flex items-end justify-center gap-10 w-full h-56 relative z-10">
+                    <div class="flex flex-col items-center w-20 h-full justify-end">
+                        <div class="w-full bg-zinc-900 border border-zinc-800 rounded-md flex flex-col-reverse overflow-hidden h-52">
+                            <div id="m-base-c" class="bg-[#f59e0b] w-full text-[10px] font-mono text-zinc-950 font-black flex items-center justify-center shadow-inner transition-all duration-200">C</div>
+                            <div id="m-base-r" class="bg-[#3b82f6] w-full text-[10px] font-mono text-white font-black flex items-center justify-center shadow-inner transition-all duration-200">R</div>
+                        </div>
+                        <span class="text-[10px] font-mono text-zinc-400 mt-2 font-bold">MB (Base)</span>
+                    </div>
+                    <div class="flex flex-col items-center w-20 h-full justify-end">
+                        <div class="w-full bg-zinc-900 border border-zinc-800 rounded-md flex flex-col-reverse overflow-hidden h-52">
+                            <div id="m2-c" class="bg-[#f59e0b] w-full text-[10px] font-mono text-zinc-950 font-black flex items-center justify-center shadow-inner transition-all duration-200">C</div>
+                            <div id="m2-d" class="bg-[#10b981] w-full text-[10px] font-mono text-zinc-950 font-black flex items-center justify-center shadow-inner transition-all duration-200">D</div>
+                        </div>
+                        <span class="text-[10px] font-mono text-emerald-400 mt-2 font-bold">M2 (Supply)</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Увеличенная Трапеция (Trapezoid Matrix) - 3 колонки -->
+            <div class="bg-black/40 p-5 flex flex-col justify-between relative h-80 overflow-hidden md:col-span-3 w-full border border-zinc-800 rounded-lg">
+                <div class="absolute top-2.5 left-3 text-[9px] font-mono text-zinc-500 uppercase tracking-wider">Trapezoid Matrix (mb-ms.pdf)</div>
+                <div class="w-full h-64 flex items-center justify-center mt-6">
+                    <!-- Увеличен viewBox по вертикали для вмещения увеличенной на 40% трапеции -->
+                    <svg id="trap-svg" viewBox="0 0 460 210" class="w-full h-full overflow-visible">
+                        <!-- Основные полигоны графиков -->
+                        <polygon id="poly-cash" fill="rgba(245, 158, 11, 0.2)" stroke="#f59e0b" stroke-width="1.75" stroke-linejoin="round"/>
+                        <polygon id="poly-reserves" fill="rgba(59, 130, 246, 0.2)" stroke="#3b82f6" stroke-width="1.75" stroke-linejoin="round"/>
+                        <polygon id="poly-mult" fill="rgba(16, 185, 129, 0.2)" stroke="#10b981" stroke-width="1.75" stroke-linejoin="round"/>
+                        
+                        <!-- Внутренний англоязычный текст -->
+                        <text id="txt-cash" fill="#f59e0b" font-size="10px" font-mono font-weight="bold" text-anchor="middle">CURRENCY (C)</text>
+                        <text id="txt-reserves" fill="#60a5fa" font-size="10px" font-mono font-weight="bold" text-anchor="middle">RESERVES (R)</text>
+                        <text id="txt-mult" fill="#34d399" font-size="10px" font-mono font-weight="bold" text-anchor="middle">Multiplier</text>
+                        
+                        <!-- Текстовые метки под основанием -->
+                        <text id="lbl-txt-c" fill="#f59e0b" font-size="9px" font-family="monospace" font-weight="bold">C (Cash)</text>
+                        <text id="lbl-txt-d" fill="#34d399" font-size="9px" font-family="monospace" font-weight="bold" text-anchor="middle">D (Deposits Expansion)</text>
+                        
+                        <!-- Общие текстовые индикаторы границ -->
+                        <text id="lbl-top-title" fill="#a1a1aa" font-size="9px" font-family="monospace" font-weight="bold">MONETARY BASE (MB)</text>
+                        <text id="lbl-bot-title" fill="#10b981" font-size="9px" font-family="monospace" font-weight="bold" text-anchor="middle">MONEY SUPPLY (M2)</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- НИЖНИЙ РЯД: Панель управления и слайдеры перенесены под графики -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 bg-black/30 p-5 rounded-xl border border-zinc-800/60 items-center">
+            <div class="space-y-1 md:col-span-1">
+                <div class="text-[10px] font-mono text-zinc-500 uppercase tracking-wider font-bold">Simulation Values</div>
+                <div class="font-mono text-[11px] space-y-1 bg-zinc-950/50 p-2.5 rounded-lg border border-zinc-800/40">
+                    <div class="flex justify-between"><span class="text-zinc-400">Base (MB):</span> <span id="lbl-trap-mb" class="text-white font-bold">250B</span></div>
+                    <div class="flex justify-between"><span class="text-zinc-400">Supply (M2):</span> <span id="lbl-trap-m2" class="text-emerald-400 font-bold">500B</span></div>
+                </div>
+            </div>
+            <div class="space-y-2 md:col-span-1">
+                <label class="block text-xs font-mono text-zinc-400">Cash Component (C) [<span id="val-trap-c" class="text-[#f59e0b] font-bold">150</span> bln ₸]</label>
+                <input type="range" id="slide-trap-c" class="w-full text-indigo-500" min="100" max="350" value="150" oninput="updateTrapezoid()">
+            </div>
+            <div class="space-y-2 md:col-span-1">
+                <label class="block text-xs font-mono text-zinc-400">Reserves Component (R) [<span id="val-trap-r" class="text-[#3b82f6] font-bold">100</span> bln ₸]</label>
+                <input type="range" id="slide-trap-r" class="w-full" min="100" max="350" value="100" oninput="updateTrapezoid()">
+            </div>
+            <div class="space-y-2 md:col-span-1">
+                <label class="block text-xs font-mono text-zinc-400">Multiplier Power (m) [<span id="val-trap-m" class="text-[#10b981] font-bold">2.0</span>x]</label>
+                <input type="range" id="slide-trap-m" class="w-full" min="1.0" max="3.5" step="0.1" value="2.0" oninput="updateTrapezoid()">
+            </div>
+        </div>
+    </div>
+</div>
+                        <!-- LECTURE 4: BALANCE SHEETS -->
+<div id="lec4" class="tab-content space-y-6">
+    <!-- Блок теории (Остался без изменений) -->
+    <div class="tech-panel p-6 space-y-4">
+        <h2 class="text-xl font-bold text-white flex items-center gap-2"><i class="fas fa-balance-scale text-indigo-400"></i> Lecture 4: Balance Sheets & Open Market Operations (OMO)</h2>
+        <div class="text-zinc-300 text-xs leading-relaxed space-y-3">
+            <p>
+                Open Market Operations (OMO) serve as the primary vehicle to regulate systemic short-term interbank liquidity. A central bank purchase of government securities directly inflates the monetary base.
+            </p>
+            <p>
+                Through modern accounting principles, we track how central bank decisions generate exact <strong>offsetting adjustments</strong> on commercial banks' balances. To emphasize this double-entry harmony, study the synchronized balance sheets below.
+            </p>
+        </div>
+    </div>
+
+    <!-- НОВЫЙ ИНТЕРАКТИВНЫЙ БЛОК: MONETARY POLICY TOOLS -->
+    <div class="tech-panel p-6 space-y-6 border border-zinc-800/80 bg-zinc-950/40 rounded-xl">
+        <div class="space-y-2">
+            <h3 class="text-sm font-mono text-indigo-400 uppercase tracking-widest">Monetary Policy Tools</h3>
+            <p class="text-zinc-200 text-xs font-semibold leading-relaxed">
+                The most important role of the central bank is conducting monetary policy.<br>
+                Monetary policy influences the aggregate economy, and the central bank regulates economic activity through:
+            </p>
+        </div>
+
+        <!-- Схема из трех прямоугольников-вкладок в один ряд -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 w-full">
+            <!-- Вкладка 1: Синяя -->
+            <button onclick="switchPolicyTool('omo')" id="btn-tool-omo" class="flex flex-col items-center justify-center p-4 bg-blue-950/30 hover:bg-blue-900/30 border-2 border-blue-500/40 hover:border-blue-400 text-blue-400 rounded-xl transition duration-200 group text-center shadow-lg h-20">
+                <i class="fas fa-landmark mb-1 text-sm group-hover:scale-110 transition-transform"></i>
+                <span class="text-xs font-mono font-bold tracking-wide">Open Market Operations</span>
+            </button>
+            
+            <!-- Вкладка 2: Зеленая -->
+            <button onclick="switchPolicyTool('discount')" id="btn-tool-discount" class="flex flex-col items-center justify-center p-4 bg-emerald-950/20 hover:bg-emerald-900/20 border border-zinc-800 text-zinc-400 rounded-xl transition duration-200 group text-center h-20">
+                <i class="fas fa-percentage mb-1 text-sm group-hover:scale-110 transition-transform text-emerald-500/70"></i>
+                <span class="text-xs font-mono font-bold tracking-wide">Discount Lending</span>
+            </button>
+            
+            <!-- Вкладка 3: Красная -->
+            <button onclick="switchPolicyTool('reserve')" id="btn-tool-reserve" class="flex flex-col items-center justify-center p-4 bg-red-950/10 hover:bg-red-900/15 border border-zinc-800 text-zinc-400 rounded-xl transition duration-200 group text-center h-20">
+                <i class="fas fa-vault mb-1 text-sm group-hover:scale-110 transition-transform text-red-500/60"></i>
+                <span class="text-xs font-mono font-bold tracking-wide">Reserve Requirements</span>
+            </button>
+        </div>
+
+        <!-- Динамическое информационное окно под вкладками -->
+        <div class="p-4 bg-zinc-950/80 rounded-xl border border-zinc-800/80 min-h-[100px] flex items-center transition-all duration-300">
+            <div id="policy-tool-content" class="text-zinc-300 text-xs leading-relaxed font-mono w-full">
+                <!-- Контент по умолчанию (Open Market Operations) -->
+                Open market operations are the most important monetary policy tool, because they are the primary determinants of changes in interest rates and the monetary base, the main source of fluctuations in the money supply. Open market purchases expand reserves and the monetary base, thereby raising the money supply and lowering short-term interest rates. Open market sales shrink reserves and the monetary base, lowering the money supply and raising short-term interest rates. There are two types of open market operations: Dynamic open market operations are intended to change the level of reserves and the monetary base, and <span class="text-red-400 font-bold border-b border-red-500/30 pb-0.5">Defensive open market operations</span>.
+            </div>
+        </div>
+    </div>
+
+    <!-- Интерактивный Леджер Балансов (Ваш прежний неизмененный функционал) -->
+    <div class="tech-panel p-6">
+        <div class="flex justify-between items-center mb-4 border-b border-zinc-800 pb-3">
+            <h3 class="text-xs font-mono text-indigo-400 uppercase tracking-widest">Double-Entry Ledger: CB & Commercial Bank Balance Sheets</h3>
+            <div class="flex items-center gap-2 text-[10px] font-mono">
+                <span id="bal-led" class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span> Double-Entry Systems Consolidated
+            </div>
+        </div>
+        
+        <div class="flex gap-2.5 mb-6 flex-wrap">
+            <button class="bg-indigo-600 hover:bg-indigo-500 text-white px-3 py-2 rounded-lg text-[11px] font-mono transition border border-indigo-500/20 shadow-md shadow-indigo-950/40" onclick="execOMO('buy')">
+                <i class="fas fa-plus-circle mr-1"></i> Buy Bonds (+10M) • Injection
+            </button>
+            <button class="bg-amber-600 hover:bg-amber-500 text-zinc-950 font-bold px-3 py-2 rounded-lg text-[11px] font-mono transition shadow-md shadow-amber-950/40" onclick="execOMO('sell')">
+                <i class="fas fa-minus-circle mr-1"></i> Sell Bonds (-10M) • Drain
+            </button>
+            <button class="bg-emerald-700 hover:bg-emerald-600 text-white px-3 py-2 rounded-lg text-[11px] font-mono transition border border-emerald-600/20 shadow-md shadow-emerald-950/40" onclick="execOMO('lend')">
+                <i class="fas fa-vault mr-1"></i> Lending Facility (+15M)
+            </button>
+            <button class="bg-zinc-800 hover:bg-zinc-700 text-red-400 px-3 py-2 rounded-lg text-[11px] font-mono transition border border-zinc-700 ml-auto" onclick="execOMO('reset')">
+                <i class="fas fa-undo mr-1"></i> Reset Balances
+            </button>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 font-mono text-xs">
+            <!-- Центральный банк -->
+            <div class="border border-red-900/40 rounded-lg overflow-hidden">
+                <div class="bg-red-950/20 p-3 text-center font-bold border-b border-red-900/40 text-red-400 uppercase tracking-wider">Central Bank (Monetary Authority)</div>
+                <div class="grid grid-cols-2 divide-x divide-zinc-800 min-h-[140px] bg-black/40">
+                    <div class="p-4 flex flex-col justify-between">
+                        <div>
+                            <div class="font-bold text-zinc-500 border-b border-zinc-800/80 pb-1 mb-2 uppercase text-[9px]">Assets</div>
+                            <div class="flex justify-between"><span>Securities:</span> <span id="cb-sec" class="text-red-400 font-bold">$100M</span></div>
+                            <div class="flex justify-between"><span class="text-zinc-400">CB Loans:</span> <span id="cb-loans-val" class="text-red-400">$20M</span></div>
+                            <div class="flex justify-between text-zinc-600"><span>Gold Reserves:</span> <span>$20M</span></div>
+                        </div>
+                        <div class="border-t border-zinc-800/80 pt-2 font-bold text-white flex justify-between"><span>Total Assets:</span> <span id="cb-tot-a">$140M</span></div>
+                    </div>
+                    <div class="p-4 flex flex-col justify-between">
+                        <div>
+                            <div class="font-bold text-zinc-500 border-b border-zinc-800/80 pb-1 mb-2 uppercase text-[9px]">Liabilities</div>
+                            <div class="flex justify-between text-zinc-600"><span>Currency:</span> <span>$70M</span></div>
+                            <div class="flex justify-between"><span>Bank Reserves:</span> <span id="cb-res" class="text-red-400 font-bold">$50M</span></div>
+                        </div>
+                        <div class="border-t border-zinc-800/80 pt-2 font-bold text-white flex justify-between"><span>Total Liab:</span> <span id="cb-tot-l">$120M</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Коммерческие банки -->
+            <div class="border border-emerald-900/40 rounded-lg overflow-hidden">
+                <div class="bg-emerald-950/20 p-3 text-center font-bold border-b border-emerald-900/40 text-emerald-400 uppercase tracking-wider">Commercial Banking Sector</div>
+                <div class="grid grid-cols-2 divide-x divide-zinc-800 min-h-[140px] bg-black/40">
+                    <div class="p-4 flex flex-col justify-between">
+                        <div>
+                            <div class="font-bold text-zinc-500 border-b border-zinc-800/80 pb-1 mb-2 uppercase text-[9px]">Assets</div>
+                            <div class="flex justify-between"><span>Reserves @ CB:</span> <span id="com-res" class="text-emerald-400 font-bold">$50M</span></div>
+                            <div class="flex justify-between"><span>Securities:</span> <span id="com-sec" class="text-emerald-400 font-bold">$50M</span></div>
+                            <div class="flex justify-between text-zinc-600"><span>Private Loans:</span> <span>$150M</span></div>
+                        </div>
+                        <div class="border-t border-zinc-800/80 pt-2 font-bold text-white flex justify-between"><span>Total Assets:</span> <span id="com-tot-a">$250M</span></div>
+                    </div>
+                    <div class="p-4 flex flex-col justify-between">
+                        <div>
+                            <div class="font-bold text-zinc-500 border-b border-zinc-800/80 pb-1 mb-2 uppercase text-[9px]">Liabilities</div>
+                            <div class="flex justify-between text-zinc-600"><span>Demand Deposits:</span> <span>$200M</span></div>
+                            <div class="flex justify-between"><span class="text-zinc-400">Borrowings from CB:</span> <span id="com-borrow-val" class="text-emerald-400">$20M</span></div>
+                            <div class="flex justify-between text-zinc-600"><span>Equity/Capital:</span> <span>$50M</span></div>
+                        </div>
+                        <div class="border-t border-zinc-800/80 pt-2 font-bold text-white flex justify-between"><span>Total Liab:</span> <span id="com-tot-l">$270M</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+                        <!-- LECTURE 5: THE PHILLIPS CURVE -->
+                        <div id="lec5" class="tab-content space-y-6">
+                            <div class="tech-panel p-6 space-y-4">
+                                <h2 class="text-xl font-bold text-white flex items-center gap-2"><i class="fas fa-wave-square text-indigo-400"></i> Lecture 5: Inflation Dynamics & The Phillips Curve</h2>
+                                <div class="text-zinc-300 text-xs leading-relaxed space-y-3">
+                                    <p>
+                                        The Short-Run Phillips Curve (SRPC) demonstrates the classical trade-off between inflation ($\pi$) and unemployment ($u$). An expansion in aggregate demand pushes the economy beyond full capacity, accelerating wage inflation as labor markets tighten.
+                                    </p>
+                                    <p>
+                                        In the long run (LRPC), the trade-off dissolves. The curve becomes strictly vertical at the **Natural Rate of Unemployment ($u_n$, NAIRU)**. Attempts to artificially inflate the economy past this limit yield zero real employment gains, transferring solely into structural expected inflation.
+                                    </p>
+                                </div>
+                                <div class="math-block text-xs">
+                                    $$\pi = \pi^e - \alpha(u - u_n) + v \quad \text{where} \quad v \text{ represents exogenous supply shocks}$$
+                                </div>
+                            </div>
+
+                            <div class="tech-panel p-6">
+                                <h3 class="text-xs font-mono text-indigo-400 uppercase tracking-widest mb-4">Interactive Simulator: Aggregate Demand Shocks & SRPC Projection</h3>
+                                
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                                    <div class="space-y-4">
+                                        <div>
+                                            <label class="block text-[10px] font-mono text-zinc-400 mb-1">Aggregate Demand Shock (AD Shock)</label>
+                                            <input type="range" id="slide-ad" min="-5" max="5" step="0.5" value="0" oninput="updatePhillips()">
+                                        </div>
+                                        
+                                        <div class="p-4 bg-zinc-950 border border-zinc-800 rounded-lg font-mono text-xs space-y-2">
+                                            <div class="text-[10px] uppercase text-zinc-500 border-b border-zinc-800 pb-1">System State Indicators</div>
+                                            <div class="flex justify-between"><span>Unemployment Rate (u):</span> <span id="phil-u" class="text-blue-400 font-bold">5.0%</span></div>
+                                            <div class="flex justify-between"><span>Inflation Rate (&pi;):</span> <span id="phil-pi" class="text-rose-400 font-bold">2.0%</span></div>
+                                            <div class="mt-2 pt-2 border-t border-zinc-800 text-[9px] font-sans" id="phil-status">Equilibrium.</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="bg-black/40 p-5 rounded-xl border border-zinc-800 relative">
+                                        <div class="absolute top-2 left-4 text-[9px] font-mono text-zinc-500 uppercase">Macroeconomic Projections (SRPC & LRPC)</div>
+                                        <svg viewBox="0 0 300 240" class="w-full h-auto overflow-visible">
+                                            <line x1="40" y1="20" x2="40" y2="200" stroke="#4b5563" stroke-width="2"/>
+                                            <line x1="40" y1="200" x2="280" y2="200" stroke="#4b5563" stroke-width="2"/>
+                                            <text x="15" y="25" fill="#9ca3af" font-size="8px" font-family="monospace">Inflation (&pi;)</text>
+                                            <text x="235" y="215" fill="#9ca3af" font-size="8px" font-family="monospace">Unemployment (u)</text>
+                                            <line x1="160" y1="20" x2="160" y2="200" stroke="#4b5563" stroke-dasharray="4" stroke-width="1.5"/>
+                                            <text x="165" y="30" fill="#9ca3af" font-size="7px" font-family="monospace">LRPC (uₙ)</text>
+                                            <path d="M 60,40 Q 110,150 260,180" fill="none" stroke="#ef4444" stroke-width="2.5" id="srpc-visual-path"/>
+                                            <text x="245" y="165" fill="#ef4444" font-size="8px" font-family="monospace" font-weight="bold">SRPC</text>
+                                            <line id="proj-inflation" x1="40" y1="122" x2="160" y2="122" stroke="#64748b" stroke-dasharray="3,3" stroke-width="1.2"/>
+                                            <line id="proj-unemployment" x1="160" y1="200" x2="160" y2="122" stroke="#64748b" stroke-dasharray="3,3" stroke-width="1.2"/>
+                                            <circle id="phil-dot" cx="160" cy="122" r="6" fill="#ffffff" stroke="#ef4444" stroke-width="2.5" class="transition-all duration-150"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- LECTURE 6: IMPOSSIBLE TRILEMMA -->
+                        <div id="lec6" class="tab-content space-y-6">
+                            <div class="tech-panel p-6 space-y-4">
+                                <h2 class="text-xl font-bold text-white flex items-center gap-2"><i class="fas fa-shapes text-indigo-400"></i> Lecture 6: The Mundell-Fleming Impossible Trilemma</h2>
+                                <div class="text-zinc-300 text-xs leading-relaxed space-y-3">
+                                    <p>
+                                        The <strong>Impossible Trinity</strong> (Mundell-Fleming Trilemma) is a foundational open-macroeconomy restriction. It asserts that a sovereign country can never simultaneously secure all three of the following policy outcomes:
+                                    </p>
+                                    <ol class="list-decimal list-inside space-y-1.5 pl-2 text-zinc-400 text-xs">
+                                        <li><strong>Free Capital Mobility</strong> (unrestricted cross-border capital allocations)</li>
+                                        <li><strong>Exchange Rate Stability</strong> (hard-пегged or highly-managed exchange rates)</li>
+                                        <li><strong>Monetary Policy Independence</strong> (autonomous setting of policy interest rates)</li>
+                                    </ol>
+                                    <p>
+                                        Mathematically, under perfect capital mobility, the Uncovered Interest Parity (UIP) holds. If a central bank attempts to peg the exchange rate, it surrenders interest-rate control directly to the base nation.
+                                    </p>
+                                </div>
+                                <div class="math-block text-xs">
+                                    $$i_d = i_f + \frac{E^e_{t+1} - E_t}{E_t} + \rho \quad \text{where} \quad \rho \text{ represents the country risk premium}$$
+                                </div>
+                            </div>
+
+                            <div class="tech-panel p-6">
+                                <h3 class="text-xs font-mono text-indigo-400 uppercase tracking-widest mb-4">Interactive Simulator: Policy Stances & Trilemma Corner Solutions</h3>
+                                
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                                    <div class="space-y-4">
+                                        <p class="text-xs text-zinc-400 leading-relaxed">
+                                            Click directly on the corners of the equilateral triangle to activate different policy regimes. The interface will immediately analyze the selected structural trade-offs.
+                                        </p>
+                                        <div class="p-5 bg-zinc-950 border border-zinc-800 rounded-lg text-center h-44 flex flex-col justify-center">
+                                            <i class="fas fa-project-diagram text-3xl text-zinc-600 mb-3" id="tri-icon"></i>
+                                            <h4 class="text-sm font-bold text-white mb-1.5" id="tri-title">Awaiting Policy Stance Selection</h4>
+                                            <p class="text-[10px] text-zinc-400 leading-relaxed" id="tri-desc">Select an active corner of the equilateral triangle model to analyze structural dynamics.</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="flex items-center justify-center p-2 bg-black/20 rounded-xl border border-zinc-800">
+                                        <svg width="280" height="240" viewBox="0 0 280 240" class="overflow-visible">
+                                            <polygon points="140,40 240,200 40,200" fill="none" stroke="#3f3f46" stroke-width="2" stroke-linejoin="round"/>
+                                            <polygon id="tri-float" points="140,40 156.5,68.5 123.5,68.5" class="tri-corner fill-zinc-800 stroke-zinc-600" onclick="selectTrilemma('float')"/>
+                                            <text x="140" y="25" class="tri-text">Capital Mobility</text>
+                                            <polygon id="tri-fixed" points="240,200 207,200 223.5,171.5" class="tri-corner fill-zinc-800 stroke-zinc-600" onclick="selectTrilemma('fixed')"/>
+                                            <text x="245" y="215" class="tri-text">Fixed Peg</text>
+                                            <polygon id="tri-controls" points="40,200 73,200 56.5,171.5" class="tri-corner fill-zinc-800 stroke-zinc-600" onclick="selectTrilemma('controls')"/>
+                                            <text x="35" y="215" class="tri-text">Monetary Autonomy</text>
+                                            <text x="75" y="115" class="text-[8.5px] fill-zinc-500 font-bold" transform="rotate(-58 75 115)" text-anchor="middle">Independent MP</text>
+                                            <text x="205" y="115" class="text-[8.5px] fill-zinc-500 font-bold" transform="rotate(58 205 115)" text-anchor="middle">Free Capital Flow</text>
+                                            <text x="140" y="212" class="text-[8.5px] fill-zinc-500 font-bold" text-anchor="middle">Fixed Exchange Rate</text>
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- LECTURE 7: IMF QPM MODEL -->
+                        <div id="lec7" class="tab-content space-y-6">
+                            <div class="tech-panel p-6 space-y-5">
+                                <div class="border-b border-zinc-800 pb-3 flex justify-between items-center">
+                                    <h2 class="text-xl font-bold text-white flex items-center gap-2">
+                                        <i class="fas fa-layer-group text-indigo-400"></i> Lecture 7: The Quarterly Projection Model (QPM)
+                                    </h2>
+                                    <span class="text-[10px] font-mono bg-indigo-950/60 border border-indigo-800/40 px-2 py-0.5 rounded text-indigo-300">IMF Framework (2026)</span>
+                                </div>
+
+                                <div class="space-y-4 text-xs text-zinc-300 leading-relaxed">
+                                    <section class="space-y-2">
+                                        <h3 class="font-bold text-white text-sm border-l-2 border-indigo-500 pl-2 uppercase tracking-wide">1. What is the QPM?</h3>
+                                        <p>
+                                            The <strong>Quarterly Projection Model (QPM)</strong> is the core macroeconomic forecasting framework used by many inflation-targeting central banks and by the IMF within the Forecasting and Policy Analysis System (FPAS)[cite: 1]. The QPM is designed to answer a simple but important question: <em>What should the central bank do today to achieve its inflation target in the future?</em>[cite: 1]
+                                        </p>
+                                        <p>
+                                            The QPM is a <strong>semi-structural, New Keynesian, forward-looking gap model</strong>[cite: 1]. Unlike purely statistical forecasting models, the QPM incorporates economic theory and behavioral relationships among inflation, output, interest rates, and exchange rates[cite: 1].
+                                        </p>
+                                    </section>
+
+                                    <section class="space-y-2">
+                                        <h3 class="font-bold text-white text-sm border-l-2 border-indigo-500 pl-2 uppercase tracking-wide">2. Why Do Central Banks Need a QPM?</h3>
+                                        <p>
+                                            Monetary policy affects the economy with long and variable lags[cite: 1]. A change in the policy rate today affects financial markets immediately, investment after several months, aggregate demand after multiple quarters, and inflation only after a significant delay (typically <strong>4–8 quarters later</strong>)[cite: 1]. Thus central banks cannot focus only on current inflation; they must forecast future economic conditions[cite: 1].
+                                        </p>
+                                    </section>
+
+                                    <section class="space-y-2">
+                                        <h3 class="font-bold text-white text-sm border-l-2 border-indigo-500 pl-2 uppercase tracking-wide">3. QPM as a Gap Model</h3>
+                                        <p>
+                                            Instead of modeling macroeconomic levels directly, the framework focuses on structural deviations from equilibrium values[cite: 1]. The system tracks three core gaps:
+                                        </p>
+                                        <ul class="list-disc list-inside space-y-1 pl-2 text-zinc-400">
+                                            <li><strong>Output Gap ($\hat y_t$):</strong> Measures the deviation of actual output ($Y_t$) from potential output ($Y_t^*$)[cite: 1].</li>
+                                            <li><strong>Real Interest Rate Gap ($\hat r_t$):</strong> Deviation of actual real interest rate ($r_t$) from the neutral real interest rate ($r_t^*$)[cite: 1].</li>
+                                            <li><strong>Exchange Rate Gap ($\hat z_t$):</strong> Measures the deviation of the real exchange rate from its long-term structural trend[cite: 1].</li>
+                                        </ul>
+                                    </section>
+
+                                    <section class="space-y-3">
+                                        <h3 class="font-bold text-white text-sm border-l-2 border-indigo-500 pl-2 uppercase tracking-wide">4. Core Structure and Equations</h3>
+                                        <p class="text-zinc-400">
+                                            The IMF canonical QPM consists of four fundamental behavioral equations forming the backbone of the model[cite: 1]:
+                                        </p>
+                                        
+                                        <div class="space-y-2">
+                                            <div class="bg-black/60 p-3 rounded-lg border border-zinc-800">
+                                                <div class="font-mono text-indigo-400 font-bold mb-1">Aggregate Demand Equation (IS Curve)</div>
+                                                <div class="font-mono text-[11px] my-1">$$\hat y_t = \beta_1 \hat y_{t-1} - \beta_2 MCI_t + \beta_3 \hat y_t^{f} + \varepsilon_t^y$$</div>
+                                                <p class="text-[11px] text-zinc-400">The output gap depends on past output gaps, the Monetary Conditions Index ($MCI_t$), foreign output gaps ($\hat y_t^{f}$), and demand shocks ($\varepsilon_t^y$)[cite: 1]. Higher interest rates contract spending, lowering the aggregate gap[cite: 1].</p>
+                                            </div>
+
+                                            <div class="bg-black/60 p-3 rounded-lg border border-zinc-800">
+                                                <div class="font-mono text-indigo-400 font-bold mb-1">Phillips Curve</div>
+                                                <div class="font-mono text-[11px] my-1">$$\pi_t = \alpha_1 \pi_{t-1} + (1-\alpha_1)E_t(\pi_{t+1}) + \alpha_2 RMC_t + \varepsilon_t^{\pi}$$</div>
+                                                <p class="text-[11px] text-zinc-400">Models inflation as a function of past inflation, expected inflation ($E_t(\pi_{t+1})$), real marginal costs ($RMC_t$, tied to output gaps), and supply shocks[cite: 1]. Inflation rises when demand exceeds capacity or expectations shift[cite: 1].</p>
+                                            </div>
+
+                                            <div class="bg-black/60 p-3 rounded-lg border border-zinc-800">
+                                                <div class="font-mono text-indigo-400 font-bold mb-1">Uncovered Interest Parity (UIP)</div>
+                                                <div class="font-mono text-[11px] my-1">$$i_t = i_t^* + E_t(\Delta e_{t+1}) + prem_t$$</div>
+                                                <p class="text-[11px] text-zinc-400">Links domestic interest rates ($i_t$) and foreign interest rates ($i_t^*$), expected exchange rate depreciation ($E_t(\Delta e_{t+1})$), and risk premium ($prem_t$)[cite: 1]. If domestic rates expand, domestic assets become more attractive, stimulating capital inflows and appreciation[cite: 1].</p>
+                                            </div>
+
+                                            <div class="bg-black/60 p-3 rounded-lg border border-zinc-800">
+                                                <div class="font-mono text-indigo-400 font-bold mb-1">Monetary Policy Reaction Function (Taylor Rule)</div>
+                                                <div class="font-mono text-[11px] my-1">$$i_t = \gamma_1 i_{t-1} + (1-\gamma_1)[i_t^n + \gamma_2(\pi_t - \pi^*) + \gamma_3 \hat y_t] + \varepsilon_t^i$$</div>
+                                                <p class="text-[11px] text-zinc-400">A Taylor-type rule determining the policy interest rate[cite: 1]. If inflation exceeds target ($\pi^*$) or output gap is positive, the central bank tightens the policy rate ($i_t$) relative to its neutral level ($i_t^n$)[cite: 1].</p>
+                                            </div>
+                                        </div>
+                                    </section>
+
+                                    <section class="space-y-2">
+                                        <h3 class="font-bold text-white text-sm border-l-2 border-indigo-500 pl-2 uppercase tracking-wide">5. Policy Applications & Scenario Analysis</h3>
+                                        <p>
+                                            One major advantage of the QPM is scenario analysis[cite: 1]. The model allows central banks to simulate monetary policy shocks, external resource price adjustments, demand shifts, or risk premium changes[cite: 1]. This structural system assists policymakers to forecast inflation paths, evaluate interest-rate path options, and improve public communication transparency under strict inflation-targeting rules[cite: 1].
+                                        </p>
+                                    </section>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+            <!-- MODULE: VIDEOS -->
+            <section id="mod-videos" class="module-content hidden space-y-6">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-slate-800 pb-3 gap-4">
+                    <h2 class="text-lg font-black uppercase text-rose-400">Video Lectures & Analysis</h2>
+                    <span class="text-xs text-slate-400"><i class="fas fa-info-circle"></i> Нажмите на видео для просмотра на странице или по ссылке.</span>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    
+                    <!-- Video 1 -->
+                    <div class="bg-slate-900/40 border border-slate-800 p-4 rounded-xl space-y-3">
+                        <div class="aspect-video bg-black rounded-lg overflow-hidden border border-slate-700">
+                            <iframe class="w-full h-full" src="https://www.youtube.com/embed/wOfQPn9Jwpo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>
+                        <h4 class="font-bold text-white text-xs">The Fed Explains Monetary Policy</h4>
+                        <p class="text-[10px] text-slate-400 leading-relaxed">The Official Animated Guide to the Federal Reserve Bank of Atlanta.</p>
+                        <a href="https://www.youtube.com/watch?v=wOfQPn9Jwpo" target="_blank" class="block text-center bg-blue-600/20 hover:bg-blue-600/40 text-blue-400 text-[10px] font-bold py-2 rounded transition border border-blue-500/30">
+                            <i class="fas fa-external-link-alt"></i> Open on YouTube
+                        </a>
+                    </div>
+
+                    <!-- Video 2 -->
+                    <div class="bg-slate-900/40 border border-slate-800 p-4 rounded-xl space-y-3">
+                        <div class="aspect-video bg-black rounded-lg overflow-hidden border border-slate-700">
+                            <iframe class="w-full h-full" src="https://www.youtube.com/embed/IxxBuFTmtxs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>
+                        <h4 class="font-bold text-white text-xs">Federal Reserve: Just the Facts</h4>
+                        <p class="text-[10px] text-slate-400 leading-relaxed">Steve Ballmer explains the function and history of the Federal Reserve, and the impact of the key interest rate on the economy.</p>
+                        <a href="https://www.youtube.com/watch?v=IxxBuFTmtxs" target="_blank" class="block text-center bg-blue-600/20 hover:bg-blue-600/40 text-blue-400 text-[10px] font-bold py-2 rounded transition border border-blue-500/30">
+                            <i class="fas fa-external-link-alt"></i> Open on YouTube
+                        </a>
+                    </div>
+
+                    <!-- Video 3 -->
+                    <div class="bg-slate-900/40 border border-slate-800 p-4 rounded-xl space-y-3">
+                        <div class="aspect-video bg-black rounded-lg overflow-hidden border border-slate-700">
+                            <iframe class="w-full h-full" src="https://www.youtube.com/embed/oLbfAfCVG_4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>
+                        <h4 class="font-bold text-white text-xs">The Impossible Trinity</h4>
+                        <p class="text-[10px] text-slate-400 leading-relaxed">A clear 60-second explanation of the Impossible Trilemma concept from Open University.</p>
+                        <a href="https://www.youtube.com/watch?v=oLbfAfCVG_4" target="_blank" class="block text-center bg-blue-600/20 hover:bg-blue-600/40 text-blue-400 text-[10px] font-bold py-2 rounded transition border border-blue-500/30">
+                            <i class="fas fa-external-link-alt"></i> Open on YouTube
+                        </a>
+                    </div>
+
+                    <!-- Video 4 -->
+                    <div class="bg-slate-900/40 border border-slate-800 p-4 rounded-xl space-y-3">
+                        <div class="aspect-video bg-black rounded-lg overflow-hidden border border-slate-700">
+                            <iframe class="w-full h-full" src="https://www.youtube.com/embed/qrNYanEaxv4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>
+                        <h4 class="font-bold text-white text-xs">How Central Banks Control Inflation</h4>
+                        <p class="text-[10px] text-slate-400 leading-relaxed">A deep dive into the role of money, the credit multiplier, and inflation control tools.</p>
+                        <a href="https://www.youtube.com/watch?v=qrNYanEaxv4" target="_blank" class="block text-center bg-blue-600/20 hover:bg-blue-600/40 text-blue-400 text-[10px] font-bold py-2 rounded transition border border-blue-500/30">
+                            <i class="fas fa-external-link-alt"></i> Open on YouTube
+                        </a>
+                    </div>
+
+                    <!-- Video 5 -->
+                    <div class="bg-slate-900/40 border border-slate-800 p-4 rounded-xl space-y-3">
+                        <div class="aspect-video bg-black rounded-lg overflow-hidden border border-slate-700">
+                            <iframe class="w-full h-full" src="https://www.youtube.com/embed/ZjsKlXApNJU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>
+                        <h4 class="font-bold text-white text-xs">Money Multiplier Theory</h4>
+                        <p class="text-[10px] text-slate-400 leading-relaxed">How commercial banks create money supply through a fractional reserve system.</p>
+                        <a href="https://www.youtube.com/watch?v=ZjsKlXApNJU" target="_blank" class="block text-center bg-blue-600/20 hover:bg-blue-600/40 text-blue-400 text-[10px] font-bold py-2 rounded transition border border-blue-500/30">
+                            <i class="fas fa-external-link-alt"></i> Open on YouTube
+                        </a>
+                    </div>
+
+                    <!-- Video 6 -->
+                    <div class="bg-slate-900/40 border border-slate-800 p-4 rounded-xl space-y-3">
+                        <div class="aspect-video bg-black rounded-lg overflow-hidden border border-slate-700">
+                            <iframe class="w-full h-full" src="https://www.youtube.com/embed/NrVE6RCfLOA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>
+                        <h4 class="font-bold text-white text-xs">The Phillips Curve Explained Simply</h4>
+                        <p class="text-[10px] text-slate-400 leading-relaxed">The relationship between inflation and unemployment in the short and long term.</p>
+                        <a href="https://www.youtube.com/watch?v=NrVE6RCfLOA" target="_blank" class="block text-center bg-blue-600/20 hover:bg-blue-600/40 text-blue-400 text-[10px] font-bold py-2 rounded transition border border-blue-500/30">
+                            <i class="fas fa-external-link-alt"></i> Open on YouTube
+                        </a>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- MODULE: READINGS (Real Central Bank News) -->
+            <section id="mod-readings" class="module-content hidden space-y-6">
+                <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                    <h2 class="text-lg font-black uppercase text-blue-400">Current Monetary Policy News</h2>
+                    <span class="text-xs bg-slate-800 px-3 py-1 rounded text-slate-300"><i class="fas fa-lock-open mr-1"></i> Checked Links</span>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 text-sm text-slate-300">
+                    
+                    <!-- Article 1 -->
+                    <div class="bg-slate-900/60 border border-slate-700 p-5 rounded-xl flex flex-col justify-between hover:border-blue-500/50 transition">
+                        <div class="space-y-3">
+                            <div class="flex items-center gap-3 mb-2 border-b border-slate-800 pb-2">
+                                <i class="fas fa-newspaper text-2xl text-blue-400"></i>
+                                <h4 class="text-xs font-bold text-white uppercase tracking-wider">Euronews</h4>
+                            </div>
+                            <h5 class="text-sm font-bold text-blue-300">ECB interest rate decision analysis</h5>
+                            <p class="text-[11px] leading-relaxed text-slate-400">Analysis of the ECB's latest rate decisions and their impact on the Eurozone economy.</p>
+                        </div>
+                        <div class="mt-4 pt-3 flex gap-3">
+                            <a href="https://www.euronews.com/business/economy" target="_blank" class="bg-blue-600/20 hover:bg-blue-600/40 border border-blue-500/30 text-blue-400 px-4 py-2 rounded text-[10px] font-bold uppercase transition w-full text-center">
+                                <i class="fas fa-external-link-alt mr-1"></i> Read the article
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Article 2 -->
+                    <div class="bg-slate-900/60 border border-slate-700 p-5 rounded-xl flex flex-col justify-between hover:border-blue-500/50 transition">
+                        <div class="space-y-3">
+                            <div class="flex items-center gap-3 mb-2 border-b border-slate-800 pb-2">
+                                <i class="fas fa-newspaper text-2xl text-amber-500"></i>
+                                <h4 class="text-xs font-bold text-white uppercase tracking-wider">Reuters</h4>
+                            </div>
+                            <h5 class="text-sm font-bold text-amber-300">Fed officials on inflation path</h5>
+                            <p class="text-[11px] leading-relaxed text-slate-400">Comments from Federal Reserve officials on the trajectory of US inflation.</p>
+                        </div>
+                        <div class="mt-4 pt-3 flex gap-3">
+                            <a href="https://www.reuters.com/markets/macroeconomics/" target="_blank" class="bg-blue-600/20 hover:bg-blue-600/40 border border-blue-500/30 text-blue-400 px-4 py-2 rounded text-[10px] font-bold uppercase transition w-full text-center">
+                                <i class="fas fa-external-link-alt mr-1"></i> Read the article
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Article 3 -->
+                    <div class="bg-slate-900/60 border border-slate-700 p-5 rounded-xl flex flex-col justify-between hover:border-blue-500/50 transition">
+                        <div class="space-y-3">
+                            <div class="flex items-center gap-3 mb-2 border-b border-slate-800 pb-2">
+                                <i class="fas fa-newspaper text-2xl text-rose-400"></i>
+                                <h4 class="text-xs font-bold text-white uppercase tracking-wider">Financial Times</h4>
+                            </div>
+                            <h5 class="text-sm font-bold text-rose-300">The end of the tightening cycle?</h5>
+                            <p class="text-[11px] leading-relaxed text-slate-400">Global Macroeconomic Review: Has the Monetary Policy Tightening Cycle Come to an End?</p>
+                        </div>
+                        <div class="mt-4 pt-3 flex gap-3">
+                            <a href="https://www.ft.com/global-economy" target="_blank" class="bg-blue-600/20 hover:bg-blue-600/40 border border-blue-500/30 text-blue-400 px-4 py-2 rounded text-[10px] font-bold uppercase transition w-full text-center">
+                                <i class="fas fa-external-link-alt mr-1"></i> Read the article
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Article 4 -->
+                    <div class="bg-slate-900/60 border border-slate-700 p-5 rounded-xl flex flex-col justify-between hover:border-blue-500/50 transition">
+                        <div class="space-y-3">
+                            <div class="flex items-center gap-3 mb-2 border-b border-slate-800 pb-2">
+                                <i class="fas fa-newspaper text-2xl text-emerald-400"></i>
+                                <h4 class="text-xs font-bold text-white uppercase tracking-wider">Bloomberg</h4>
+                            </div>
+                            <h5 class="text-sm font-bold text-emerald-300">Central bank pivot scenarios</h5>
+                            <p class="text-[11px] leading-relaxed text-slate-400">Analysis of potential policy reversals by key global central banks.</p>
+                        </div>
+                        <div class="mt-4 pt-3 flex gap-3">
+                            <a href="https://www.bloomberg.com/economics" target="_blank" class="bg-blue-600/20 hover:bg-blue-600/40 border border-blue-500/30 text-blue-400 px-4 py-2 rounded text-[10px] font-bold uppercase transition w-full text-center">
+                                <i class="fas fa-external-link-alt mr-1"></i> Read the article
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Article 5 -->
+                    <div class="bg-slate-900/60 border border-slate-700 p-5 rounded-xl flex flex-col justify-between hover:border-blue-500/50 transition">
+                        <div class="space-y-3">
+                            <div class="flex items-center gap-3 mb-2 border-b border-slate-800 pb-2">
+                                <i class="fas fa-newspaper text-2xl text-red-500"></i>
+                                <h4 class="text-xs font-bold text-white uppercase tracking-wider">The Economist</h4>
+                            </div>
+                            <h5 class="text-sm font-bold text-red-300">Monetary policy in digital finance era</h5>
+                            <p class="text-[11px] leading-relaxed text-slate-400">How digital currencies (CBDCs) and fintech are changing approaches to monetary policy.</p>
+                        </div>
+                        <div class="mt-4 pt-3 flex gap-3">
+                            <a href="https://www.economist.com/finance-and-economics" target="_blank" class="bg-blue-600/20 hover:bg-blue-600/40 border border-blue-500/30 text-blue-400 px-4 py-2 rounded text-[10px] font-bold uppercase transition w-full text-center">
+                                <i class="fas fa-external-link-alt mr-1"></i> Read the article
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Article 6 -->
+                    <div class="bg-slate-900/60 border border-slate-700 p-5 rounded-xl flex flex-col justify-between hover:border-blue-500/50 transition">
+                        <div class="space-y-3">
+                            <div class="flex items-center gap-3 mb-2 border-b border-slate-800 pb-2">
+                                <i class="fas fa-newspaper text-2xl text-purple-400"></i>
+                                <h4 class="text-xs font-bold text-white uppercase tracking-wider">Project Syndicate</h4>
+                            </div>
+                            <h5 class="text-sm font-bold text-purple-300">Rethinking inflation targets</h5>
+                            <p class="text-[11px] leading-relaxed text-slate-400">Leading economists debate the need to revise the inflation target.</p>
+                        </div>
+                        <div class="mt-4 pt-3 flex gap-3">
+                            <a href="https://www.project-syndicate.org/macroeconomics" target="_blank" class="bg-blue-600/20 hover:bg-blue-600/40 border border-blue-500/30 text-blue-400 px-4 py-2 rounded text-[10px] font-bold uppercase transition w-full text-center">
+                                <i class="fas fa-external-link-alt mr-1"></i> Read the article
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- MODULE: TASKS -->
+            <section id="mod-tasks" class="module-content hidden space-y-6">
+                <h2 class="text-lg font-black uppercase text-emerald-400 border-b border-slate-800 pb-3">Interactive Task Solvers</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 text-xs text-slate-300">
+                    
+                    <!-- Task 1 -->
+                    <div class="bg-slate-900/60 border border-slate-700 p-5 rounded-xl space-y-3">
+                        <h4 class="font-bold text-white">Task 1: Equation of Exchange (M×V = P×Y)</h4>
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-center"><span>Money Supply (M):</span><input type="number" id="t1-m" value="1000" class="w-24 bg-slate-800 p-1.5 rounded text-center text-white" oninput="solveT1()"></div>
+                            <div class="flex justify-between items-center"><span>Velocity (V):</span><input type="number" id="t1-v" value="4" class="w-24 bg-slate-800 p-1.5 rounded text-center text-white" oninput="solveT1()"></div>
+                            <div class="flex justify-between items-center"><span>Price Level (P):</span><input type="number" id="t1-p" value="2" class="w-24 bg-slate-800 p-1.5 rounded text-center text-white" oninput="solveT1()"></div>
+                            <div class="flex justify-between items-center text-indigo-400 font-bold mt-2 pt-2 border-t border-slate-700"><span>Real Output (Y):</span><span id="t1-res">2000.0</span></div>
+                        </div>
+                    </div>
+
+                    <!-- Task 2 -->
+                    <div class="bg-slate-900/60 border border-slate-700 p-5 rounded-xl space-y-3">
+                        <h4 class="font-bold text-white">Task 2: Simple Deposit Multiplier</h4>
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-center"><span>Reserves Injection (ΔR):</span><input type="number" id="t2-r" value="100" class="w-24 bg-slate-800 p-1.5 rounded text-center text-white" oninput="solveT2()"></div>
+                            <div class="flex justify-between items-center"><span>Reserve Ratio (rr):</span><input type="number" id="t2-rr" value="0.10" step="0.01" class="w-24 bg-slate-800 p-1.5 rounded text-center text-white" oninput="solveT2()"></div>
+                            <div class="flex justify-between items-center text-indigo-400 font-bold mt-2 pt-2 border-t border-slate-700"><span>Deposit Change (ΔD):</span><span id="t2-res">1000.0</span></div>
+                        </div>
+                    </div>
+
+                    <!-- Task 3 -->
+                    <div class="bg-slate-900/60 border border-slate-700 p-5 rounded-xl space-y-3">
+                        <h4 class="font-bold text-white">Task 3: Full Money Multiplier</h4>
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-center"><span>Currency Ratio (c):</span><input type="number" id="t3-c" value="0.20" step="0.01" class="w-24 bg-slate-800 p-1.5 rounded text-center text-white" oninput="solveT3()"></div>
+                            <div class="flex justify-between items-center"><span>Excess Reserves (e):</span><input type="number" id="t3-e" value="0.05" step="0.01" class="w-24 bg-slate-800 p-1.5 rounded text-center text-white" oninput="solveT3()"></div>
+                            <div class="flex justify-between items-center"><span>Required Ratio (rr):</span><input type="number" id="t3-rr" value="0.10" step="0.01" class="w-24 bg-slate-800 p-1.5 rounded text-center text-white" oninput="solveT3()"></div>
+                            <div class="flex justify-between items-center text-indigo-400 font-bold mt-2 pt-2 border-t border-slate-700"><span>Multiplier (m):</span><span id="t3-res">3.43</span></div>
+                        </div>
+                    </div>
+
+                    <!-- Task 4 -->
+                    <div class="bg-slate-900/60 border border-slate-700 p-5 rounded-xl space-y-3">
+                        <h4 class="font-bold text-white">Task 4: Fisher Effect (Real Rate)</h4>
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-center"><span>Nominal Rate (i%):</span><input type="number" id="t4-i" value="8.0" step="0.5" class="w-24 bg-slate-800 p-1.5 rounded text-center text-white" oninput="solveT4()"></div>
+                            <div class="flex justify-between items-center"><span>Expected Inflation (π%):</span><input type="number" id="t4-p" value="3.5" step="0.5" class="w-24 bg-slate-800 p-1.5 rounded text-center text-white" oninput="solveT4()"></div>
+                            <div class="flex justify-between items-center text-indigo-400 font-bold mt-2 pt-2 border-t border-slate-700"><span>Real Rate (r%):</span><span id="t4-res">4.5%</span></div>
+                        </div>
+                    </div>
+
+                    <!-- Task 5 -->
+                    <div class="bg-slate-900/60 border border-slate-700 p-5 rounded-xl space-y-3">
+                        <h4 class="font-bold text-white">Task 5: Present Value (YTM Logic)</h4>
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-center"><span>Future CF ($):</span><input type="number" id="t5-cf" value="1100" class="w-24 bg-slate-800 p-1.5 rounded text-center text-white" oninput="solveT5()"></div>
+                            <div class="flex justify-between items-center"><span>Interest Rate (i):</span><input type="number" id="t5-i" value="0.10" step="0.01" class="w-24 bg-slate-800 p-1.5 rounded text-center text-white" oninput="solveT5()"></div>
+                            <div class="flex justify-between items-center"><span>Years (n):</span><input type="number" id="t5-n" value="1" class="w-24 bg-slate-800 p-1.5 rounded text-center text-white" oninput="solveT5()"></div>
+                            <div class="flex justify-between items-center text-indigo-400 font-bold mt-2 pt-2 border-t border-slate-700"><span>Present Value:</span><span>$</span><span id="t5-res">1000.00</span></div>
+                        </div>
+                    </div>
+
+                    <!-- Task 6 -->
+                    <div class="bg-slate-900/60 border border-slate-700 p-5 rounded-xl space-y-3">
+                        <h4 class="font-bold text-white">Task 6: Taylor Rule Target Rate</h4>
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-center"><span>Neutral Rate (r*):</span><input type="number" id="t6-r" value="2.0" step="0.5" class="w-24 bg-slate-800 p-1.5 rounded text-center text-white" oninput="solveT6()"></div>
+                            <div class="flex justify-between items-center"><span>Current Inflation (π):</span><input type="number" id="t6-pi" value="4.0" step="0.5" class="w-24 bg-slate-800 p-1.5 rounded text-center text-white" oninput="solveT6()"></div>
+                            <div class="flex justify-between items-center"><span>Target Inflation (π*):</span><input type="number" id="t6-targ" value="2.0" step="0.5" class="w-24 bg-slate-800 p-1.5 rounded text-center text-white" oninput="solveT6()"></div>
+                            <div class="flex justify-between items-center text-indigo-400 font-bold mt-2 pt-2 border-t border-slate-700"><span>Policy Rate (i):</span><span id="t6-res">7.0%</span></div>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- MODULE: GLOSSARY -->
+            <section id="mod-glossary" class="module-content hidden space-y-6">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-slate-800 pb-3">
+                    <h2 class="text-lg font-black uppercase text-purple-400">Academic Glossary & Search</h2>
+                </div>
+                
+                <div class="p-6 bg-indigo-950/20 border border-indigo-500/30 rounded-xl text-sm flex flex-col items-center justify-center space-y-4 text-center">
+                    <i class="fas fa-book-open text-5xl text-indigo-400 mb-2"></i>
+                    <h3 class="text-base font-bold text-white">Official The Economist Integration</h3>
+                    <p class="text-slate-300 max-w-xl leading-relaxed">This module links to the official <strong>The Economist (Economics A-to-Z)</strong> dictionary for precise academic definitions of macroeconomics terminology.</p>
+                    <a href="https://www.economist.com/economics-a-to-z" target="_blank" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 px-8 rounded-lg text-xs uppercase tracking-wider transition mt-2">
+                        <i class="fas fa-external-link-alt mr-2"></i> Search Economics A-Z
+                    </a>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="border-t border-slate-800/80 bg-slate-950/60 py-5 text-center text-xs text-slate-500 w-full mt-10">
+        <p>© 2026 Dmitriy Ogay • AlmaU Course Hub • Interactive Learning Architecture</p>
+    </footer>
+
+    <script>
+        // NAVIGATION LOGIC
+        function activateModule(moduleId) {
+            // Hide welcome message and all modules
+            document.getElementById('welcome-message').classList.add('hidden');
+            document.querySelectorAll('.module-content').forEach(el => el.classList.add('hidden'));
+            
+            // Remove active styling from all buttons
+            document.querySelectorAll('.tile-btn').forEach(btn => btn.classList.remove('active-tile'));
+            
+            // Show targeted module
+            const target = document.getElementById(moduleId);
+            if (target) {
+                target.classList.remove('hidden');
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+
+            // Highlight the clicked button
+            const btn = document.getElementById('btn-' + moduleId);
+            if (btn) {
+                btn.classList.add('active-tile');
+            }
+
+            // Default internal behaviors for integrated dashboard initialization
+            if (moduleId === 'mod-lectures') {
+                updateAggregates();
+                updateTrapezoid();
+                updateLedgers();
+                updatePhillips();
+            }
+        }
+
+        // --- INTEGRATED DASHBOARD LOGIC ENGINE ---
+        function switchTab(clickedButton, tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.nav-tab').forEach(el => el.classList.remove('active'));
+            
+            document.getElementById(tabId).classList.add('active');
+            clickedButton.classList.add('active');
+
+            if(tabId === 'lec1') updateAggregates();
+            if(tabId === 'lec2') updateMoneyMarket();
+            if(tabId === 'lec3') updateTrapezoid();
+            if(tabId === 'lec4') updateLedgers();
+            if(tabId === 'lec5') updatePhillips();
+        }
+
+        function updateAggregates() {
+            const m0 = parseInt(document.getElementById('slide-m0').value);
+            const dd = parseInt(document.getElementById('slide-dd').value);
+            const sd = parseInt(document.getElementById('slide-sd').value);
+            document.getElementById('val-m0').innerText = m0;
+            document.getElementById('val-dd').innerText = dd;
+            document.getElementById('val-sd').innerText = sd;
+            const m1 = m0 + dd; const m2 = m1 + sd;
+            document.getElementById('tot-m1').innerText = m1 + " bln ₸";
+            document.getElementById('tot-m2').innerText = m2 + " bln ₸";
+            document.getElementById('bar-m0').style.width = (m0 / m1 * 100) + "%";
+            document.getElementById('bar-dd').style.width = (dd / m1 * 100) + "%";
+            document.getElementById('bar-m1-in-m2').style.width = (m1 / m2 * 100) + "%";
+            document.getElementById('bar-sd').style.width = (sd / m2 * 100) + "%";
+        }
+
+        function updateMoneyMarket() {
+    const msPos = parseInt(document.getElementById('slide-ms-pos').value);
+    const mdShift = parseInt(document.getElementById('slide-md-shift').value);
+
+    document.getElementById('val-ms-pos').innerText = msPos;
+    
+    let shiftText = "Baseline";
+    if (mdShift > 0) shiftText = `Expansion (+${mdShift}B)`;
+    else if (mdShift < 0) shiftText = `Contraction (${mdShift}B)`;
+    document.getElementById('val-md-shift').innerText = shiftText;
+
+    // Рассчитываем физическую координату X для линии предложения денег
+    const msX = 40 + ((msPos - 200) / 600) * 240;
+    document.getElementById('ms-line').setAttribute('x1', msX);
+    document.getElementById('ms-line').setAttribute('x2', msX);
+
+    // Сдвиг кривой спроса
+    const dShiftCoeff = (mdShift / 200) * 40; 
+    const updatedPath = `M ${60 + dShiftCoeff},40 Q ${150 + dShiftCoeff},120 ${260 + dShiftCoeff},180`;
+    document.getElementById('md-curve').setAttribute('d', updatedPath);
+
+    // Стабильный геометрический поиск точки пересечения (t) на кривой Безье
+    const p0x = 60 + dShiftCoeff; 
+    const p1x = 150 + dShiftCoeff; 
+    const p2x = 260 + dShiftCoeff;
+    const p0y = 40; 
+    const p1y = 120; 
+    const p2y = 180;
+
+    // Решаем уравнение: (1-t)^2 * p0x + 2(1-t)t * p1x + t^2 * p2x = msX
+    const A = p0x - 2 * p1x + p2x; 
+    const B = 2 * (p1x - p0x); 
+    const C = p0x - msX;
+    
+    let t = (msX - p0x) / (p2x - p0x); // Линейное приближение на случай крайних положений
+    t = Math.max(0, Math.min(1, t)); // Защита от выхода за границы кривой
+
+    if (Math.abs(A) > 0.001) {
+        const disc = B * B - 4 * A * C;
+        if (disc >= 0) {
+            const t1 = (-B + Math.sqrt(disc)) / (2 * A);
+            const t2 = (-B - Math.sqrt(disc)) / (2 * A);
+            if (t1 >= 0 && t1 <= 1) t = t1;
+            else if (t2 >= 0 && t2 <= 1) t = t2;
+        }
+    }
+
+    // Вычисляем стабильную координату Y точки пересечения
+    const eqY = Math.pow(1 - t, 2) * p0y + 2 * (1 - t) * t * p1y + Math.pow(t, 2) * p2y;
+
+    // Обновляем маркеры на графике
+    document.getElementById('eq-dot').setAttribute('cx', msX);
+    document.getElementById('eq-dot').setAttribute('cy', eqY);
+    document.getElementById('helper-rate').setAttribute('x2', msX);
+    document.getElementById('helper-rate').setAttribute('y1', eqY);
+    document.getElementById('helper-rate').setAttribute('y2', eqY);
+
+    // Масштабируем процентную ставку строго в диапазоне от 5.0% (внизу графика) до 20.0% (вверху графика)
+    // Координата yTop = 40 (максимальная ставка 20%), yBottom = 180 (минимальная ставка 5%)
+    const minRate = 5.0;
+    const maxRate = 20.0;
+    const eqRate = maxRate - ((eqY - 40) / 140) * (maxRate - minRate);
+    
+    // Безопасное удержание значения в границах [5, 20]
+    const finalRate = Math.max(minRate, Math.min(maxRate, eqRate));
+    document.getElementById('eq-rate-val').innerText = finalRate.toFixed(1) + "%";
+}
+      function updateTrapezoid() {
+    const C = parseFloat(document.getElementById('slide-trap-c').value);
+    const R = parseFloat(document.getElementById('slide-trap-r').value);
+    const m = parseFloat(document.getElementById('slide-trap-m').value);
+
+    // Синхронизация циферблатов панели
+    document.getElementById('val-trap-c').innerText = C.toFixed(0);
+    document.getElementById('val-trap-r').innerText = R.toFixed(0);
+    document.getElementById('val-trap-m').innerText = m.toFixed(1);
+
+    const MB = C + R;
+    const M2 = C + (R * m); 
+
+    document.getElementById('lbl-trap-mb').innerText = MB.toFixed(0) + "B ₸";
+    document.getElementById('lbl-trap-m2').innerText = M2.toFixed(0) + "B ₸";
+
+    // --- СИНХРОНИЗАЦИЯ БАРЧАРТОВ ---
+    // Увеличена полезная высота столбцов для лучшей видимости компонентов
+    const scaleFactor = 190 / 1200; 
+
+    const heightC = C * scaleFactor;
+    const heightR = R * scaleFactor;
+    const heightD = (R * m) * scaleFactor;
+
+    document.getElementById('m-base-c').style.height = `${heightC}px`;
+    document.getElementById('m-base-r').style.height = `${heightR}px`;
+    document.getElementById('m2-c').style.height = `${heightC}px`; 
+    document.getElementById('m2-d').style.height = `${heightD}px`;
+
+    document.getElementById('m-base-c').style.fontSize = heightC < 14 ? '0px' : '10px';
+    document.getElementById('m-base-r').style.fontSize = heightR < 14 ? '0px' : '10px';
+    document.getElementById('m2-c').style.fontSize = heightC < 14 ? '0px' : '10px';
+    document.getElementById('m2-d').style.fontSize = heightD < 14 ? '0px' : '10px';
+
+
+    // --- СТРОГАЯ ГЕОМЕТРИЯ ТРАПЕЦИИ (УВЕЛИЧЕНИЕ ВЫСОТЫ БОКОВЫХ СТОРОН НА 40%) ---
+    // Прежняя рабочая высота была 90px (от 30 до 120).
+    // Новая высота боковых граней увеличена на 40% и составляет 126px (yTop = 24, yBottom = 150).
+    const yTop = 24;      
+    const yBottom = 150;  
+
+    // Координаты смещения для идеального наклона параллелограмма наличности C
+    const xStartTop = 110; 
+    const xStartBot = 40;  
+    
+    // Пересчитан горизонтальный масштаб под увеличенное поле (viewBox 460px по ширине)
+    // Гарантирует, что при C=350, R=350 и m=3.5 фигура не выйдет за границы черного поля!
+    const svgScale = 270 / 1225; 
+
+    const wC = C * svgScale;
+    const wR = R * svgScale;
+
+    // Расчет точек X для ВЕРХНЕЙ линии (Monetary Base MB)
+    const xTop0 = xStartTop;
+    const xTop1 = xTop0 + wC;
+    const xTop2 = xTop1 + wR;
+
+    // Расчет точек X для НИЖНЕЙ линии (Money Supply M2)
+    const xBot0 = xStartBot;
+    const xBot1 = xBot0 + wC; // Проекция наличных (строгий параллелограмм)
+    const xBotResEnd = xBot1 + wR; // Граница исходных резервов без эффекта расширения
+    const xBot2 = xBot1 + (wR * m); // Конечная точка расширенного основания M2
+
+    // Изменение полигонов SVG макета
+    // 1. CURRENCY (Чистый сбалансированный параллелограмм)
+    document.getElementById('poly-cash').setAttribute('points', 
+        `${xTop0},${yTop} ${xTop1},${yTop} ${xBot1},${yBottom} ${xBot0},${yBottom}`
+    );
+    // 2. RESERVES (Банковское резервное ядро)
+    document.getElementById('poly-reserves').setAttribute('points', 
+        `${xTop1},${yTop} ${xTop2},${yTop} ${xBotResEnd},${yBottom} ${xBot1},${yBottom}`
+    );
+    // 3. MULTIPLIER (Эффект расширения депозитной массы)
+    // При m=1.0 точки xBotResEnd и xBot2 сливаются, превращая треугольник в невидимую линию.
+    document.getElementById('poly-mult').setAttribute('points', 
+        `${xTop2},${yTop} ${xTop2},${yTop} ${xBot2},${yBottom} ${xBotResEnd},${yBottom}`
+    );
+
+    // Центрирование текстовых названий на английском языке внутри фигур
+    document.getElementById('txt-cash').setAttribute('x', (xTop0 + xTop1 + xBot0 + xBot1) / 4);
+    document.getElementById('txt-cash').setAttribute('y', (yTop + yBottom) / 2 + 3);
+
+    document.getElementById('txt-reserves').setAttribute('x', (xTop1 + xTop2 + xBot1 + xBotResEnd) / 4);
+    document.getElementById('txt-reserves').setAttribute('y', (yTop + yBottom) / 2 + 3);
+
+    // Центрирование метки Multiplier у основания правого треугольника
+    const multBaseCenter = (xBotResEnd + xBot2) / 2;
+    document.getElementById('txt-mult').setAttribute('x', multBaseCenter);
+    document.getElementById('txt-mult').setAttribute('y', yBottom - 6);
+    
+    // Скрытие текста мультипликатора при m=1 во избежание визуального наложения
+    document.getElementById('txt-mult').style.opacity = (m <= 1.05) ? '0' : '1';
+
+    // Размещение внешних информационных надписей осей
+    document.getElementById('lbl-top-title').setAttribute('x', xTop0);
+    document.getElementById('lbl-top-title').setAttribute('y', yTop - 8);
+
+    document.getElementById('lbl-bot-title').setAttribute('x', xBot2);
+    document.getElementById('lbl-bot-title').setAttribute('y', yBottom + 15);
+
+    document.getElementById('lbl-txt-c').setAttribute('x', xBot0);
+    document.getElementById('lbl-txt-c').setAttribute('y', yBottom + 15);
+    
+    document.getElementById('lbl-txt-d').setAttribute('x', (xBot1 + xBot2) / 2);
+    document.getElementById('lbl-txt-d').setAttribute('y', yBottom + 30);
+}
+        
+   function switchPolicyTool(toolType) {
+    const contentBox = document.getElementById('policy-tool-content');
+    const btnOmo = document.getElementById('btn-tool-omo');
+    const btnDiscount = document.getElementById('btn-tool-discount');
+    const btnReserve = document.getElementById('btn-tool-reserve');
+
+    // Сбрасываем дефолтные стили для всех кнопок до неактивного состояния
+    [btnOmo, btnDiscount, btnReserve].forEach(btn => {
+        btn.className = "flex flex-col items-center justify-center p-4 bg-zinc-900/40 hover:bg-zinc-800/40 border border-zinc-800 text-zinc-400 rounded-xl transition duration-200 group text-center h-20";
+        // Сбрасываем цвета иконок внутри кнопок
+        const icon = btn.querySelector('i');
+        icon.className = icon.className.replace(/text-(blue|emerald|red)-500.*/, '').trim();
+    });
+
+    // Наполняем контентом и подсвечиваем нужную вкладку
+    if (toolType === 'omo') {
+        btnOmo.className = "flex flex-col items-center justify-center p-4 bg-blue-950/30 hover:bg-blue-900/30 border-2 border-blue-500/50 text-blue-400 rounded-xl transition duration-200 group text-center shadow-lg h-20";
+        btnOmo.querySelector('i').classList.add('text-blue-500');
+        
+        contentBox.innerHTML = `Open market operations are the most important monetary policy tool, because they are the primary determinants of changes in interest rates and the monetary base, the main source of fluctuations in the money supply. Open market purchases expand reserves and the monetary base, thereby raising the money supply and lowering short-term interest rates. Open market sales shrink reserves and the monetary base, lowering the money supply and raising short-term interest rates. There are two types of open market operations: Dynamic open market operations are intended to change the level of reserves and the monetary base, and <span class="text-red-400 font-bold border-b border-red-500/20 pb-0.5">Defensive open market operations</span>.`;
+    } 
+    else if (toolType === 'discount') {
+        btnDiscount.className = "flex flex-col items-center justify-center p-4 bg-emerald-950/30 hover:bg-emerald-900/30 border-2 border-emerald-500/50 text-emerald-400 rounded-xl transition duration-200 group text-center shadow-lg h-20";
+        btnDiscount.querySelector('i').classList.add('text-emerald-500');
+
+        contentBox.innerHTML = `The Central Bank facility at which discount loans are made to banks is called the discount window. The easiest way to understand how the CB affects the volume of discount loans is by looking at how the discount window operates. The CB discount loans to banks are of two types: primary credit & secondary credit. Primary credit is the discount lending that plays the most important role in monetary policy. Healthy banks are allowed to borrow as much as they want from the primary credit facility, which is therefore referred to as a standing lending facility. The secondary is one of the most important roles, intended to be the <span class="text-emerald-400 font-bold border-b border-emerald-500/20 pb-0.5">Lender of Last Resort</span>.`;
+    } 
+    else if (toolType === 'reserve') {
+        btnReserve.className = "flex flex-col items-center justify-center p-4 bg-red-950/20 hover:bg-red-900/25 border-2 border-red-500/50 text-red-400 rounded-xl transition duration-200 group text-center shadow-lg h-20";
+        btnReserve.querySelector('i').classList.add('text-red-500');
+
+        contentBox.innerHTML = `Changes in reserve requirements affect the money supply by causing the money supply multiplier to change. A rise in reserve requirements reduces the amount of deposits that can be supported by a given level of the monetary base and will lead to a contraction of the money supply. A rise in reserve requirements also increases the demand for reserves and raises the <span class="text-emerald-400 font-bold border-b border-emerald-500/20 pb-0.5">“federal funds”</span> rate. Conversely, a decline in reserve requirements leads to an expansion of the money supply and a fall in the <span class="text-emerald-400 font-bold border-b border-emerald-500/20 pb-0.5">“federal funds”</span> rate.`;
+    }
+}
+        let cb_sec = 100; let cb_loans = 20; let cb_res = 50; const cb_curr = 70;
+        let com_res = 50; let com_sec = 50; const com_loans = 150; let com_borrow = 20; const com_dep = 200; const com_cap = 50;
+
+        function execOMO(action) {
+            if (action === 'buy') { cb_sec += 10; cb_res += 10; com_res += 10; com_sec -= 10; } 
+            else if (action === 'sell') { if(cb_sec >= 10 && cb_res >= 10 && com_res >= 10) { cb_sec -= 10; cb_res -= 10; com_res -= 10; com_sec += 10; } } 
+            else if (action === 'lend') { cb_loans += 15; cb_res += 15; com_res += 15; com_borrow += 15; } 
+            else if (action === 'reset') { cb_sec = 100; cb_loans = 20; cb_res = 50; com_res = 50; com_sec = 50; com_borrow = 20; }
+            updateLedgers();
+        }
+
+        function updateLedgers() {
+            document.getElementById('cb-sec').innerText = "$" + cb_sec + "M";
+            document.getElementById('cb-loans-val').innerText = "$" + cb_loans + "M";
+            document.getElementById('cb-res').innerText = "$" + cb_res + "M";
+            const cbTotA = cb_sec + cb_loans + 20; const cbTotL = cb_res + cb_curr;
+            document.getElementById('cb-tot-a').innerText = "$" + cbTotA + "M";
+            document.getElementById('cb-tot-l').innerText = "$" + cbTotL + "M";
+            document.getElementById('com-res').innerText = "$" + com_res + "M";
+            document.getElementById('com-sec').innerText = "$" + com_sec + "M";
+            document.getElementById('com-borrow-val').innerText = "$" + com_borrow + "M";
+            const comTotA = com_res + com_sec + com_loans; const comTotL = com_dep + com_cap + com_borrow;
+            document.getElementById('com-tot-a').innerText = "$" + comTotA + "M";
+            document.getElementById('com-tot-l').innerText = "$" + comTotL + "M";
+            const led = document.getElementById('bal-led');
+            led.className = (cbTotA === cbTotL && comTotA === comTotL) ? "w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" : "w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse";
+        }
+
+        function updatePhillips() {
+            const ad = parseFloat(document.getElementById('slide-ad').value);
+            const u = 5.0 - ad * 0.5; const pi = 2.0 + ad * 1.25;
+            document.getElementById('phil-u').innerText = u.toFixed(1) + "%";
+            document.getElementById('phil-pi').innerText = pi.toFixed(1) + "%";
+            const t = 0.5 - (ad / 10) * 0.8; 
+            const x = Math.pow(1-t, 2)*60 + 2*(1-t)*t*110 + Math.pow(t, 2)*260;
+            const y = Math.pow(1-t, 2)*40 + 2*(1-t)*t*150 + Math.pow(t, 2)*180;
+            document.getElementById('phil-dot').setAttribute('cx', x);
+            document.getElementById('phil-dot').setAttribute('cy', y);
+            document.getElementById('proj-inflation').setAttribute('y1', y);
+            document.getElementById('proj-inflation').setAttribute('x2', x);
+            document.getElementById('proj-inflation').setAttribute('y2', y);
+            document.getElementById('proj-unemployment').setAttribute('x1', x);
+            document.getElementById('proj-unemployment').setAttribute('x2', x);
+            document.getElementById('proj-unemployment').setAttribute('y2', y);
+            const status = document.getElementById('phil-status');
+            if(ad === 0) {
+                status.innerText = "Stable State: Actual unemployment matches the natural rate (NAIRU).";
+                status.className = "mt-2 pt-2 border-t border-zinc-800 text-[10px] text-zinc-500 font-sans";
+            } else if (ad > 0) {
+                status.innerText = "Overheated Demand: Overemployment drives inflation higher along the SRPC.";
+                status.className = "mt-2 pt-2 border-t border-zinc-800 text-[10px] text-red-500 font-sans";
+            } else {
+                status.innerText = "Recessionary Gap: Weak demand leads to unemployment expansion; prices cool.";
+                status.className = "mt-2 pt-2 border-t border-zinc-800 text-[10px] text-blue-500 font-sans";
+            }
+        }
+
+        function selectTrilemma(mode) {
+            document.querySelectorAll('.tri-corner').forEach(el => { el.classList.remove('tri-active-float', 'tri-active-fixed', 'tri-active-controls'); });
+            document.getElementById(`tri-${mode}`).classList.add(`tri-active-${mode}`);
+            const icon = document.getElementById('tri-icon'); const title = document.getElementById('tri-title'); const desc = document.getElementById('tri-desc');
+            icon.className = "fas fa-check-circle text-3xl text-indigo-500 mb-3";
+            if (mode === 'float') {
+                title.innerText = "Pure Floating Exchange Rate (Float)"; title.className = "text-sm font-bold text-blue-400 mb-1.5";
+                desc.innerText = "Priorities: Free Capital Flow + Monetary Autonomy. Examples: USA, Eurozone, Sweden. Exchange rate fluctuates freely.";
+            } else if (mode === 'fixed') {
+                title.innerText = "Hard Fixed Exchange Rate (Fixed Peg)"; title.className = "text-sm font-bold text-emerald-400 mb-1.5";
+                desc.innerText = "Priorities: Free Capital Flow + Stable Exchange Rate. Example: Hong Kong. Independent interest-rate setting is surrendered.";
+            } else if (mode === 'controls') {
+                title.innerText = "Capital Controls Regime"; title.className = "text-sm font-bold text-rose-400 mb-1.5";
+                desc.innerText = "Priorities: Stable Exchange Rate + Monetary Autonomy. Example: China. Cross-border capital transactions are restricted.";
+            }
+        }
+
+        // STATIC TASK SOLVERS (Kept from old layout to avoid structural compilation failure)
+        function solveT1() {
+            let m = parseFloat(document.getElementById('t1-m').value) || 0;
+            let v = parseFloat(document.getElementById('t1-v').value) || 0;
+            let p = parseFloat(document.getElementById('t1-p').value) || 1;
+            document.getElementById('t1-res').innerText = ((m * v) / p).toFixed(1);
+        }
+        function solveT2() {
+            let r = parseFloat(document.getElementById('t2-r').value) || 0;
+            let rr = parseFloat(document.getElementById('t2-rr').value) || 0.1;
+            document.getElementById('t2-res').innerText = (r / rr).toFixed(1);
+        }
+        function solveT3() {
+            let c = parseFloat(document.getElementById('t3-c').value) || 0;
+            let e = parseFloat(document.getElementById('t3-e').value) || 0;
+            let rr = parseFloat(document.getElementById('t3-rr').value) || 0.1;
+            document.getElementById('t3-res').innerText = ((1 + c) / (rr + e + c)).toFixed(2);
+        }
+        function solveT4() {
+            let i = parseFloat(document.getElementById('t4-i').value) || 0;
+            let p = parseFloat(document.getElementById('t4-p').value) || 0;
+            document.getElementById('t4-res').innerText = (i - p).toFixed(1) + '%';
+        }
+        function solveT5() {
+            let cf = parseFloat(document.getElementById('t5-cf').value) || 0;
+            let i = parseFloat(document.getElementById('t5-i').value) || 0.1;
+            let n = parseFloat(document.getElementById('t5-n').value) || 1;
+            document.getElementById('t5-res').innerText = (cf / Math.pow(1 + i, n)).toFixed(2);
+        }
+        function solveT6() {
+            let r = parseFloat(document.getElementById('t6-r').value) || 2;
+            let pi = parseFloat(document.getElementById('t6-pi').value) || 4;
+            let targ = parseFloat(document.getElementById('t6-targ').value) || 2;
+            let res = r + pi + 0.5 * (pi - targ);
+            document.getElementById('t6-res').innerText = res.toFixed(1) + '%';
+        }
+
+        window.onload = function() {
+            solveT1(); solveT2(); solveT3(); solveT4(); solveT5(); solveT6();
+            
+            if (window.renderMathInElement) {
+                renderMathInElement(document.body, {
+                    delimiters: [
+                        {left: '$$', right: '$$', display: true},
+                        {left: '$', right: '$', display: false}
+                    ]
+                });
+            }
+        }
+    </script>
+</body>
+</html>
