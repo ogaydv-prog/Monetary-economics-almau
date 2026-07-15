@@ -713,7 +713,7 @@ function runScaleStep(type, btnElement) {
                                 </p>
                             </div>
                         </div>
-<!-- START OF SAFE GLOBAL MONETARY DASHBOARD WITH LIVE SLIDERS -->
+<!-- START OF FULL UNABRIDGED GLOBAL MONETARY DASHBOARD -->
 <div class="global-dashboard-container" style="margin-top: 30px; margin-bottom: 30px; padding: 25px; border: 1px solid #1e293b; border-radius: 12px; background-color: #0b1329; color: #f8fafc; font-family: system-ui, -apple-system, sans-serif; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
     
     <div style="display: flex; flex-direction: column; justify-content: space-between; align-items: flex-start; gap: 15px; margin-bottom: 25px; border-bottom: 1px dashed #1e293b; padding-bottom: 20px;">
@@ -751,7 +751,7 @@ function runScaleStep(type, btnElement) {
             </div>
         </div>
 
-        <!-- Interactive Sliders operational Panel -->
+        <!-- Interactive Sliders Operational Panel -->
         <div style="background: rgba(30, 41, 59, 0.2); padding: 20px; border-radius: 10px; border: 1px solid #1e293b;">
             <div style="font-size: 0.8rem; font-weight: 700; text-transform: uppercase; color: #38bdf8; margin-bottom: 20px; letter-spacing: 0.05em;">
                 🎛️ System Operations Panel (Live Liquidity Tuning)
@@ -776,7 +776,7 @@ const cbMasterMatrix = {
     fed: {
         title: "🇺🇸 US Federal Reserve (FED) Architecture",
         vectors: "M1 | M2",
-        description: "Official data for June 2026. Since 2006, M3 is officially no longer published by the FED. M1 tracks currency and checking accounts, while M2 expands to retail money market funds[cite: 1, 2].",
+        description: "Official data for June 2026. Since 2006, M3 is officially no longer published by the FED[cite: 1, 2]. M1 tracks currency and checking accounts, while M2 expands to retail money market funds[cite: 1, 2].",
         color: "#3b82f6",
         currency: "$",
         maxScale: 30.0,
@@ -796,7 +796,7 @@ const cbMasterMatrix = {
     ecb: {
         title: "🇪🇺 European Central Bank (ECB) Framework",
         vectors: "M1 | M2 | M3",
-        description: "The ECB runs a strict classical three-tiered matrix[cite: 1, 2]. Data from Spring 2026 shows M1 at €11.3T, M2 at €16.3T, and the broad M3 aggregate at €16.8T[cite: 2].",
+        description: "The ECB runs a strict classical three-tiered matrix[cite: 1, 2]. Data from Spring 2026 shows M1 at €11.3T, M2 at €16.3T, and the broad M3 aggregate at €16.8T.",
         color: "#10b981",
         currency: "€",
         maxScale: 20.0,
@@ -833,31 +833,35 @@ const cbMasterMatrix = {
         }
     },
     rbi: {
-        title: "🇮🇳 Reserve Bank of India (RBI) Official Balance Sheet",
-        vectors: "M1 | M3 (Policy Target)",
-        description: "Official statement figures as of <strong>June 30, 2026</strong>[cite: 2]. M1 isolates highly liquid public currency and bank transactional nodes. M3 is the absolute analytical anchor for monetary steering by the Reserve Bank of India (Bharatiya Reserve Bank)[cite: 1, 2].",
+        title: "🇮🇳 Reserve Bank of India (RBI) Unabridged Balance Sheet",
+        vectors: "M1 | M2 | M3 (Policy Target) | M4",
+        description: "Official Reserve Money Statement figures as of <strong>June 30, 2026</strong>[cite: 2]. India utilizes the full international four-tier classification[cite: 2]. M1 represents physical currency loops and instant demand nodes. M2 incorporates post office savings. M3 is the absolute analytical policy anchor for macro-forecasting and inflation-targeting, while M4 captures long-term postal financial certificates[cite: 2].",
         color: "#eab308",
         currency: "₹",
         maxScale: 350.0,
         components: [
             { id: "cPublic", label: "Currency with the Public", val: 42.0 },
             { id: "dDeposits", label: "Demand Deposits with Banks", val: 36.9 },
-            { id: "tDeposits", label: "Time Deposits with Commercial Banks", val: 238.8 },
-            { id: "oDeposits", label: "Other Deposits with Reserve Bank (RBI)", val: 1.2 }
+            { id: "postSavings", label: "Post Office Savings Bank Deposits", val: 1.3 },
+            { id: "tDeposits", label: "Time Deposits with Commercial Banks", val: 238.8 }
         ],
         calculate: (comp) => {
-            let m1 = comp.cPublic + comp.dDeposits + comp.oDeposits;
+            let m1 = comp.cPublic + comp.dDeposits + 1.2; // 1.2T is fixed 'Other Deposits with RBI' from your spreadsheet for strict precision
+            let m2 = m1 + comp.postSavings;
             let m3 = m1 + comp.tDeposits;
+            let m4 = m3 + comp.postSavings; // In RBI standard math, M4 expands broad M3 with postal saving structures
             return [
-                { key: "M1 (Narrow Transactional Cluster)", value: m1, overrideColor: "#3b82f6" }, // СИНИЙ ДЛЯ M1 ИНДИИ
-                { key: "M3 (Broad Money - Core RBI Policy Target)", value: m3, overrideColor: "#ef4444" }  // КРАСНЫЙ ДЛЯ M3 ИНДИИ
+                { key: "M1 (Narrow Transactional Money Vector)", value: m1, overrideColor: "#3b82f6" }, // Синий
+                { key: "M2 (M1 + Post Office Savings Nodes)", value: m2, overrideColor: "#10b981" }, // Зеленый
+                { key: "M3 (Broad Money - Core RBI Policy Anchor)", value: m3, overrideColor: "#ef4444" }, // Красный
+                { key: "M4 (Absolute Systemic Liquidity Mass)", value: m4, overrideColor: "#8b5cf6" }  // Фиолетовый
             ];
         }
     },
     pboc: {
         title: "🇨🇳 People's Bank of China (PBOC) Blueprint",
         vectors: "M0 | M1 | M2",
-        description: "The PBOC architecture explicitly monitors credit expansion anchors as of June 2026[cite: 2]. M2 incorporates household term savings and corporate investment blocks[cite: 1, 2].",
+        description: "The Chinese model tightly tracks state and corporate industrial accounts[cite: 1, 2]. Tune corporate checking deposits versus personal long-term assets to watch the structural shift in M2[cite: 1, 2].",
         color: "#ef4444",
         currency: "¥",
         maxScale: 400.0,
@@ -886,7 +890,7 @@ const cbMasterMatrix = {
         maxScale: 50.0,
         components: [
             { id: "m0kzt", label: "Cash Outside Banking System (M0)", val: 4.2 },
-            { id: "tengeDemand", label: "Transferable Tenge Deposits", val: 7.3 },
+            { id: "tengeDemand", label: "Transferable Local Currency Tenge Deposits", val: 7.3 },
             { id: "tengeTimeFX", label: "Tenge Time + Transferable FX Deposits", val: 17.6 },
             { id: "otherFX", label: "Other Long-Term FX Deposits", val: 8.3 }
         ],
@@ -955,7 +959,6 @@ function handleSliderMovement(componentId, value) {
 
     const bank = cbMasterMatrix[activeBankKey];
     document.getElementById(`label-val-${componentId}`).innerText = `${bank.currency}${numericVal.toLocaleString()} T`;
-    document.getElementById(`label-val-${componentId}`).style.color = bank.color;
 
     executeVectorRecomputation();
 }
@@ -969,7 +972,7 @@ function executeVectorRecomputation() {
 
     calculatedAggregates.forEach(agg => {
         let widthPct = Math.min(100, Math.max(4, (agg.value / bank.maxScale) * 100));
-        let barColor = agg.overrideColor; // Берем цвет прямо из объекта агрегата страны! Это на 100% безопасно.
+        let barColor = agg.overrideColor; 
 
         const barWrapper = document.createElement("div");
         barWrapper.style.width = "100%";
@@ -987,12 +990,11 @@ function executeVectorRecomputation() {
     });
 }
 
-// Boot default node
 document.addEventListener("DOMContentLoaded", () => {
     switchCentralBank("fed");
 });
 </script>
-<!-- END OF SAFE GLOBAL MONETARY DASHBOARD WITH LIVE SLIDERS -->
+<!-- END OF FULL UNABRIDGED GLOBAL MONETARY DASHBOARD -->
                        <!-- LECTURE 2: INTEREST RATES -->
 <div id="lec2" class="tab-content space-y-6">
     <div class="tech-panel p-6 space-y-4">
