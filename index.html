@@ -419,7 +419,7 @@
                                     $$M1 = M0 + \text{Demand Deposits (Highly liquid checking accounts)}$$
                                     $$M2 = M1 + \text{Time \& Savings Deposits (Interest-bearing term deposits)}$$
                                 </div>
-                                <!-- START OF INTERACTIVE DYNAMIC RIDDLE WITH ANIMATED TIMELINE -->
+                               <!-- START OF EPIC RAMPING COUNTER RIDDLE WITH TIMELINE -->
 <div class="scale-riddle-wrapper" style="margin-top: 25px; font-family: system-ui, -apple-system, sans-serif;">
     
     <!-- Main Toggle Button (Spoiler) -->
@@ -430,23 +430,35 @@
     <!-- Hidden Dark Content Panel -->
     <div id="scale-riddle-panel" style="display: none; margin-top: 15px; padding: 25px; background-color: #0b1329; border: 1px solid #1e293b; border-radius: 12px; box-shadow: inset 0 2px 8px rgba(0,0,0,0.5);">
         
-        <!-- Big Launch Action Button -->
-        <div style="display: flex; justify-content: center; margin-bottom: 25px;">
-            <button id="start-riddle-btn" onclick="startEpicTimelineAnimation()" style="padding: 15px 35px; border-radius: 30px; border: none; background: linear-gradient(135deg, #3b82f6 0%, #ef4444 100%); color: white; font-weight: 800; font-size: 1.1rem; cursor: pointer; box-shadow: 0 0 20px rgba(239,68,68,0.3); transition: all 0.3s ease;">
-                🚀 Launch Scale Simulation
+        <!-- 3D Round Buttons Grid -->
+        <div style="display: flex; justify-content: center; gap: 30px; margin-bottom: 25px;">
+            <!-- Million -->
+            <button id="btn-million" onclick="runScaleStep('million', this)" style="width: 75px; height: 75px; border-radius: 50%; border: none; background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); color: white; font-weight: bold; font-size: 0.9rem; cursor: pointer; box-shadow: 0 6px 0 #1e40af, 0 8px 15px rgba(59,130,246,0.4); transition: all 0.1s ease; transform: translateY(0);">
+                1M
+            </button>
+            <!-- Billion -->
+            <button id="btn-billion" onclick="runScaleStep('billion', this)" style="width: 75px; height: 75px; border-radius: 50%; border: none; background: linear-gradient(135deg, #eab308 0%, #a16207 100%); color: #0f172a; font-weight: bold; font-size: 0.9rem; cursor: pointer; box-shadow: 0 6px 0 #854d0e, 0 8px 15px rgba(234,179,8,0.3); transition: all 0.1s ease; transform: translateY(0);">
+                1B
+            </button>
+            <!-- Trillion -->
+            <button id="btn-trillion" onclick="runScaleStep('trillion', this)" style="width: 75px; height: 75px; border-radius: 50%; border: none; background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%); color: white; font-weight: bold; font-size: 0.9rem; cursor: pointer; box-shadow: 0 6px 0 #991b1b, 0 8px 15px rgba(239,68,68,0.4); transition: all 0.1s ease; transform: translateY(0);">
+                1T
             </button>
         </div>
 
         <!-- Dynamic Output Display Box (Hidden initially) -->
         <div id="riddle-output-zone" style="visibility: hidden; opacity: 0; transition: opacity 0.4s ease; text-align: center; padding: 20px; background: rgba(30, 41, 59, 0.5); border-radius: 8px; border: 1px solid #1e293b;">
-            <div id="riddle-badge" style="display: inline-block; padding: 4px 12px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; border-radius: 20px; margin-bottom: 10px; background-color: rgba(59, 130, 246, 0.2); color: #60a5fa;">
-                Analyzing System Scale...
+            <div id="riddle-badge" style="display: inline-block; padding: 4px 12px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; border-radius: 20px; margin-bottom: 10px;">
+                System Initialized
             </div>
-            <div id="riddle-time-value" style="font-size: 2.2rem; font-weight: 800; color: #ffffff; margin-bottom: 8px; text-shadow: 0 2px 4px rgba(0,0,0,0.3);">
-                --
+            
+            <!-- THE LIVE COUNTING CONTAINER -->
+            <div id="riddle-time-value" style="font-size: 2.5rem; font-weight: 800; color: #ffffff; margin-bottom: 8px; text-shadow: 0 2px 4px rgba(0,0,0,0.3); font-family: monospace;">
+                0.0
             </div>
+            
             <p id="riddle-context-text" style="font-size: 0.95rem; color: #cbd5e1; max-width: 600px; margin: 0 auto 20px auto; line-height: 1.5; min-height: 45px;">
-                Ready to initialize.
+                Select a scale button to begin decoding vector coordinates.
             </p>
 
             <!-- Dynamic Timeline Component -->
@@ -476,7 +488,7 @@
 </div>
 
 <script>
-let animationTimers = [];
+let countInterval = null;
 
 function toggleScaleRiddle() {
     const panel = document.getElementById('scale-riddle-panel');
@@ -487,23 +499,19 @@ function toggleScaleRiddle() {
         panel.style.display = 'block';
         text.innerText = 'Hide Scale Riddle Panel';
         icon.innerText = '✨';
-        resetRiddleState(); // Ensure it opens clean
+        resetRiddleState(); 
     } else {
         panel.style.display = 'none';
         text.innerText = 'Click to Unlock: The Large Numbers Riddle';
         icon.innerText = '👁️‍🗨️';
-        resetRiddleState(); // Clear everything when closing
+        resetRiddleState(); 
     }
 }
 
 function resetRiddleState() {
-    // Clear any running animation timeouts
-    animationTimers.forEach(timer => clearTimeout(timer));
-    animationTimers = [];
+    if (countInterval) clearInterval(countInterval);
 
-    // Reset elements to default state
     const outputZone = document.getElementById('riddle-output-zone');
-    const startBtn = document.getElementById('start-riddle-btn');
     const progressBar = document.getElementById('timeline-progress-bar');
     const nodePin = document.getElementById('timeline-node-pin');
     const dynamicMarker = document.getElementById('timeline-dynamic-marker');
@@ -512,14 +520,9 @@ function resetRiddleState() {
     const contextText = document.getElementById('riddle-context-text');
     const badge = document.getElementById('riddle-badge');
 
-    startBtn.disabled = false;
-    startBtn.style.opacity = '1';
-    startBtn.innerText = '🚀 Launch Scale Simulation';
-
     outputZone.style.opacity = '0';
     outputZone.style.visibility = 'hidden';
 
-    // Reset timeline vectors
     progressBar.style.transition = 'none';
     progressBar.style.width = '0%';
     progressBar.style.backgroundColor = '#3b82f6';
@@ -534,14 +537,17 @@ function resetRiddleState() {
     dynamicMarker.innerText = '';
     
     leftLabel.innerText = 'Deep Past';
-    timeValue.innerText = '--';
-    contextText.innerText = 'Ready to initialize.';
+    timeValue.innerText = '0.0';
+    contextText.innerText = 'Select a scale button to begin decoding vector coordinates.';
 }
 
-function startEpicTimelineAnimation() {
-    resetRiddleState();
-    
-    const startBtn = document.getElementById('start-riddle-btn');
+function runScaleStep(type, btnElement) {
+    // Эффект нажатия 3D кнопки
+    btnElement.style.transform = 'translateY(4px)';
+    setTimeout(() => { btnElement.style.transform = 'translateY(0)'; }, 100);
+
+    if (countInterval) clearInterval(countInterval);
+
     const outputZone = document.getElementById('riddle-output-zone');
     const progressBar = document.getElementById('timeline-progress-bar');
     const nodePin = document.getElementById('timeline-node-pin');
@@ -551,47 +557,53 @@ function startEpicTimelineAnimation() {
     const contextText = document.getElementById('riddle-context-text');
     const badge = document.getElementById('riddle-badge');
 
-    startBtn.disabled = true;
-    startBtn.style.opacity = '0.3';
-    startBtn.innerText = 'Simulation Running...';
-
     outputZone.style.visibility = 'visible';
     outputZone.style.opacity = '1';
 
-    // --- PHASE 1: 1 MILLION (Slow, subtle crawl) ---
-    leftLabel.innerText = "Next Few Weeks";
-    badge.innerText = "Decoding Scale: 1 Million ($1,000,000)";
-    badge.style.backgroundColor = 'rgba(59, 130, 246, 0.2)';
-    badge.style.color = '#60a5fa';
-    
-    // Animate point to Million position (e.g., 5% of the bar)
-    progressBar.style.transition = 'width 2.5s linear';
-    nodePin.style.transition = 'right 2.5s linear';
-    dynamicMarker.style.transition = 'right 2.5s linear';
-    
-    progressBar.style.width = '8%';
-    nodePin.style.right = '8%';
-    dynamicMarker.style.right = '8%';
-    dynamicMarker.innerText = '-11.6 Days';
-    dynamicMarker.style.color = '#60a5fa';
+    let startTime = performance.now();
 
-    // Wait for crawl to finish, then reveal text
-    animationTimers.push(setTimeout(() => {
-        timeValue.style.color = '#60a5fa';
-        timeValue.innerText = "⏱️ 11.6 Days";
-        contextText.innerHTML = "A brief transaction interval. A million is just a minor micro-operation loop inside bank liquid reserves.";
-        nodePin.style.backgroundColor = '#3b82f6';
-        nodePin.style.boxShadow = '0 0 15px #3b82f6';
-    }, 2500));
+    if (type === 'million') {
+        badge.innerText = "Scale Vector: 1 Million ($1,000,000)";
+        badge.style.backgroundColor = 'rgba(59, 130, 246, 0.2)';
+        badge.style.color = '#60a5fa';
+        contextText.innerHTML = "A brief transaction interval. If a central bank updates its reserves by a million, it's a minor liquidity ripple.";
+        leftLabel.innerText = "Next Few Weeks";
+        
+        progressBar.style.transition = 'width 1.2s cubic-bezier(0.4, 0, 0.2, 1)';
+        nodePin.style.transition = 'right 1.2s cubic-bezier(0.4, 0, 0.2, 1)';
+        dynamicMarker.style.transition = 'right 1.2s cubic-bezier(0.4, 0, 0.2, 1)';
+        
+        progressBar.style.backgroundColor = '#3b82f6';
+        progressBar.style.width = '8%';
+        nodePin.style.right = '8%';
+        dynamicMarker.style.right = '8%';
+        dynamicMarker.style.color = '#60a5fa';
+        dynamicMarker.innerText = '-11.6 Days';
 
-    // --- PHASE 2: 1 BILLION (Accelerating movement) ---
-    animationTimers.push(setTimeout(() => {
-        leftLabel.innerText = "Past Decades (1980s)";
-        badge.innerText = "Decoding Scale: 1 Billion ($1,000,000,000)";
+        // Честный счетчик до 11.6
+        let duration = 1200; // 1.2 секунды
+        countInterval = setInterval(() => {
+            let elapsed = performance.now() - startTime;
+            let progress = Math.min(elapsed / duration, 1);
+            let current = progress * 11.6;
+            
+            timeValue.style.color = '#60a5fa';
+            timeValue.innerText = `⏱️ ${current.toFixed(1)} Days`;
+
+            if (progress === 1) {
+                clearInterval(countInterval);
+                nodePin.style.backgroundColor = '#3b82f6';
+                nodePin.style.boxShadow = '0 0 15px #3b82f6';
+            }
+        }, 16);
+
+    } else if (type === 'billion') {
+        badge.innerText = "Scale Vector: 1 Billion ($1,000,000,000)";
         badge.style.backgroundColor = 'rgba(234, 179, 8, 0.2)';
         badge.style.color = '#fde047';
-        
-        // Accelerate to Billion mark (e.g., 40% of the bar)
+        contextText.innerHTML = "<strong>Systemic Expansion:</strong> Going back 1 billion seconds takes us to 1994. Dial-up internet, pager networks, no smartphones. This is the volume of standard corporate market intervention.";
+        leftLabel.innerText = "Past Decades (1980s)";
+
         progressBar.style.transition = 'width 2.0s cubic-bezier(0.25, 1, 0.5, 1)';
         nodePin.style.transition = 'right 2.0s cubic-bezier(0.25, 1, 0.5, 1)';
         dynamicMarker.style.transition = 'right 2.0s cubic-bezier(0.25, 1, 0.5, 1)';
@@ -603,24 +615,30 @@ function startEpicTimelineAnimation() {
         dynamicMarker.style.color = '#fde047';
         dynamicMarker.innerText = 'Year 1994 (~32 yrs)';
 
-        setTimeout(() => {
+        // Честный счетчик до 31.7 лет
+        let duration = 2000; // 2 секунды
+        countInterval = setInterval(() => {
+            let elapsed = performance.now() - startTime;
+            let progress = Math.min(elapsed / duration, 1);
+            let current = progress * 31.7;
+            
             timeValue.style.color = '#fde047';
-            timeValue.innerText = "⏳ 31.7 YEARS";
-            contextText.innerHTML = "<strong>Systemic Leap:</strong> 1 Billion seconds ago, it was 1994. Dial-up internet was a luxury. The scale expands drastically.";
-            nodePin.style.backgroundColor = '#eab308';
-            nodePin.style.boxShadow = '0 0 15px #eab308';
-        }, 2000);
+            timeValue.innerText = `⏳ ${current.toFixed(1)} Years`;
 
-    }, 5500)); // 2.5s move + 3s hold
+            if (progress === 1) {
+                clearInterval(countInterval);
+                nodePin.style.backgroundColor = '#eab308';
+                nodePin.style.boxShadow = '0 0 15px #eab308';
+            }
+        }, 16);
 
-    // --- PHASE 3: 1 TRILLION (Hyper-sonic explosion to the left!) ---
-    animationTimers.push(setTimeout(() => {
-        leftLabel.innerText = "Stone Age (32,000 Years Ago)";
-        badge.innerText = "Decoding Scale: 1 Trillion ($1,000,000,000,000)";
+    } else if (type === 'trillion') {
+        badge.innerText = "Scale Vector: 1 Trillion ($1,000,000,000,000)";
         badge.style.backgroundColor = 'rgba(239, 68, 68, 0.2)';
         badge.style.color = '#fca5a5';
-        
-        // Fast exponential acceleration to the extreme left edge!
+        contextText.innerHTML = "<strong>Systemic Explosion:</strong> 31.7 thousand years ago, <strong>Mammoths and Neanderthals</strong> ruled the plains. When global liquidity shifts by trillions, this is the architectural magnitude of the assets.";
+        leftLabel.innerText = "Stone Age (32k Years Ago)";
+
         progressBar.style.transition = 'width 3.5s cubic-bezier(0.85, 0, 0.15, 1)';
         nodePin.style.transition = 'right 3.5s cubic-bezier(0.85, 0, 0.15, 1)';
         dynamicMarker.style.transition = 'right 3.5s cubic-bezier(0.85, 0, 0.15, 1)';
@@ -632,23 +650,29 @@ function startEpicTimelineAnimation() {
         dynamicMarker.style.color = '#fca5a5';
         dynamicMarker.innerText = '-31,709 Years';
 
-        setTimeout(() => {
-            timeValue.style.color = '#ef4444';
-            timeValue.innerText = "🌋 31,709 YEARS";
-            contextText.innerHTML = "<strong>Mind-Blowing Scale:</strong> 31,000 years ago, <strong>Mammoths and Neanderthals</strong> ruled the earth. Human civilization hadn't begun. When global bailouts reach trillions, this is the architectural magnitude of the data.";
-            nodePin.style.backgroundColor = '#ef4444';
-            nodePin.style.boxShadow = '0 0 25px #ef4444';
+        // Честный экспоненциально ускоряющийся счетчик до 31709 лет
+        let duration = 3500; // 3.5 секунды
+        countInterval = setInterval(() => {
+            let elapsed = performance.now() - startTime;
+            let progress = Math.min(elapsed / duration, 1);
             
-            // Re-enable button at the very end
-            startBtn.disabled = false;
-            startBtn.style.opacity = '1';
-            startBtn.innerText = '🔄 Re-run Simulation';
-        }, 3500);
+            // Магическая кубическая функция для эффекта взрывного ускорения цифр в конце!
+            let easeProgress = Math.pow(progress, 3);
+            let current = Math.floor(easeProgress * 31709);
+            
+            timeValue.style.color = '#ef4444';
+            timeValue.innerText = `🌋 ${current.toLocaleString()} Years`;
 
-    }, 10500)); // Previous phases combined
+            if (progress === 1) {
+                clearInterval(countInterval);
+                nodePin.style.backgroundColor = '#ef4444';
+                nodePin.style.boxShadow = '0 0 25px #ef4444';
+            }
+        }, 16);
+    }
 }
 </script>
-<!-- END OF INTERACTIVE DYNAMIC RIDDLE WITH ANIMATED TIMELINE -->
+<!-- END OF EPIC RAMPING COUNTER RIDDLE WITH TIMELINE -->
                             </div>
 
                             <div class="tech-panel p-6">
