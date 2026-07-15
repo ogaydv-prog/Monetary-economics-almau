@@ -419,6 +419,76 @@
                                     $$M1 = M0 + \text{Demand Deposits (Highly liquid checking accounts)}$$
                                     $$M2 = M1 + \text{Time \& Savings Deposits (Interest-bearing term deposits)}$$
                                 </div>
+                                <!-- START OF SCALE VISUALIZATION TOOL -->
+<div class="scale-tool-container" style="margin-top: 25px; padding: 20px; border: 1px solid #e2e8f0; border-radius: 8px; background-color: #f8fafc;">
+    <h4 style="margin-top: 0; color: #1e293b; font-size: 1.1rem; font-weight: 600; display: flex; align-items: center; gap: 8px;">
+        <i>⏱️</i> Scale Visualization: Million vs. Billion vs. Trillion
+    </h4>
+    <p style="font-size: 0.9rem; color: #64748b; margin-bottom: 15px;">
+        Central banks inject massive liquidity into markets. To truly comprehend these numbers, let's convert currency units into <strong>seconds of time</strong>. Select a scale to see the structural difference:
+    </p>
+
+    <!-- Buttons Grid -->
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 15px;">
+        <button onclick="visualizeScale('million', this)" style="padding: 10px; background-color: #3b82f6; color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; transition: all 0.2s;">
+            1 Million ($1,000,000)
+        </button>
+        <button onclick="visualizeScale('billion', this)" style="padding: 10px; background-color: #e2e8f0; color: #334155; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; transition: all 0.2s;">
+            1 Billion ($1,000,000,000)
+        </button>
+        <button onclick="visualizeScale('trillion', this)" style="padding: 10px; background-color: #e2e8f0; color: #334155; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; transition: all 0.2s;">
+            1 Trillion ($1,000,000,000,000)
+        </button>
+    </div>
+
+    <!-- Live Display Output -->
+    <div id="scale-output-box" style="padding: 15px; background-color: #ffffff; border-left: 4px solid #3b82f6; border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+        <div style="font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; color: #3b82f6; font-weight: 700; margin-bottom: 5px;">Time Equivalent</div>
+        <div id="scale-time-result" style="font-size: 1.4rem; font-weight: 700; color: #0f172a; margin-bottom: 5px;">
+            11.6 Days
+        </div>
+        <p id="scale-context-result" style="font-size: 0.9rem; color: #475569; margin: 0;">
+            A manageable interval. If a central bank prints a million dollars, it's a minor liquidity ripple.
+        </p>
+    </div>
+</div>
+
+<script>
+function visualizeScale(type, element) {
+    // Reset all buttons styling inside this grid
+    const buttons = element.parentElement.querySelectorAll('button');
+    buttons.forEach(btn => {
+        btn.style.backgroundColor = '#e2e8f0';
+        btn.style.color = '#334155';
+    });
+    
+    // Highlight active button
+    element.style.backgroundColor = '#3b82f6';
+    element.style.color = 'white';
+
+    const outputBox = document.getElementById('scale-output-box');
+    const timeResult = document.getElementById('scale-time-result');
+    const contextResult = document.getElementById('scale-context-result');
+
+    if (type === 'million') {
+        outputBox.style.borderLeftColor = '#3b82f6';
+        timeResult.style.color = '#0f172a';
+        timeResult.innerText = "11.6 Days";
+        contextResult.innerHTML = "A manageable interval. If a central bank updates its reserves by a million, it's just a minor micro-transaction in the global architecture.";
+    } else if (type === 'billion') {
+        outputBox.style.borderLeftColor = '#f59e0b';
+        timeResult.style.color = '#b45309';
+        timeResult.innerText = "31.7 YEARS";
+        contextResult.innerHTML = "<strong>Think about it:</strong> 1 billion seconds ago, it was the mid-1990s. The internet was just starting. This is the scale of a single systemic commercial bank operation.";
+    } else if (type === 'trillion') {
+        outputBox.style.borderLeftColor = '#ef4444';
+        timeResult.style.color = '#b91c1c';
+        timeResult.innerText = "31,709 YEARS";
+        contextResult.innerHTML = "<strong>Mind-blowing scale:</strong> 31k years ago, Neanderthals were still walking the Earth and mammoths existed. When the global economy talks about trillion-dollar bailouts or massive M2 shifts, this is the architectural magnitude of the data we process.";
+    }
+}
+</script>
+<!-- END OF SCALE VISUALIZATION TOOL -->
                             </div>
 
                             <div class="tech-panel p-6">
