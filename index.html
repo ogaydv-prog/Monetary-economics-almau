@@ -713,7 +713,295 @@ function runScaleStep(type, btnElement) {
                                 </p>
                             </div>
                         </div>
+<!-- START OF ULTIMATE GLOBAL MONETARY DASHBOARD WITH LIVE SLIDERS -->
+<div class="global-dashboard-container" style="margin-top: 30px; margin-bottom: 30px; padding: 25px; border: 1px solid #1e293b; border-radius: 12px; background-color: #0b1329; color: #f8fafc; font-family: system-ui, -apple-system, sans-serif; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
+    
+    <div style="display: flex; flex-direction: column; justify-content: space-between; align-items: flex-start; gap: 15px; margin-bottom: 25px; border-bottom: 1px dashed #1e293b; padding-bottom: 20px;">
+        <div>
+            <h3 style="margin: 0; font-size: 1.4rem; font-weight: 700; color: #38bdf8; display: flex; align-items: center; gap: 8px;">
+                🌐 Global Monetary Systems Interactive Lab
+            </h3>
+            <p style="margin: 5px 0 0 0; font-size: 0.9rem; color: #94a3b8;">
+                Select a Central Bank authority and manipulate liquidity vectors in real-time to watch aggregated system expansion.
+            </p>
+        </div>
+        
+        <!-- Select Central Bank Dropdown -->
+        <div style="width: 100%; max-width: 340px;">
+            <label for="cb-selector" style="display: block; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b; margin-bottom: 5px; font-weight: 700;">Select Central Bank Node:</label>
+            <select id="cb-selector" onchange="switchCentralBank(this.value)" style="width: 100%; padding: 11px 14px; background-color: #1e293b; color: #ffffff; border: 1px solid #334155; border-radius: 8px; font-weight: 600; font-size: 0.95rem; cursor: pointer; outline: none; transition: border-color 0.2s;">
+                <option value="fed">🇺🇸 US Federal Reserve (FED)</option>
+                <option value="ecb">🇪🇺 European Central Bank (ECB)</option>
+                <option value="boe">🇬🇧 Bank of England (BoE)</option>
+                <option value="rbi">🇮🇳 Reserve Bank of India (RBI)</option>
+                <option value="pboc">🇨🇳 People's Bank of China (PBOC)</option>
+                <option value="nbk">🇰🇿 National Bank of Kazakhstan (NBK)</option>
+            </select>
+        </div>
+    </div>
 
+    <!-- Main Layout Grid -->
+    <div style="display: grid; grid-template-columns: 1fr; gap: 25px;">
+        
+        <!-- Graph Render Zone -->
+        <div style="background: rgba(15, 23, 42, 0.6); padding: 20px; border-radius: 10px; border: 1px solid #1e293b;">
+            <div id="graph-title" style="font-size: 0.8rem; font-weight: 700; text-transform: uppercase; color: #64748b; margin-bottom: 20px; letter-spacing: 0.05em;">Liquidity Hierarchy Stack Visualizer</div>
+            <div id="dashboard-bars-container" style="display: flex; flex-direction: column; gap: 16px;">
+                <!-- Bars dynamically injected here -->
+            </div>
+        </div>
+
+        <!-- Interactive Sliders Operational Panel -->
+        <div style="background: rgba(30, 41, 59, 0.2); padding: 20px; border-radius: 10px; border: 1px solid #1e293b;">
+            <div style="font-size: 0.8rem; font-weight: 700; text-transform: uppercase; color: #38bdf8; margin-bottom: 20px; letter-spacing: 0.05em; display: flex; align-items: center; gap: 6px;">
+                <span>🎛️</span> System Operations Panel (Live Liquidity Tuning)
+            </div>
+            <div id="sliders-container" style="display: grid; grid-template-columns: 1fr; gap: 20px;">
+                <!-- Dynamic sliders dynamically injected here -->
+            </div>
+        </div>
+
+        <!-- Analytical Context Specs Box -->
+        <div id="cb-specs-box" style="padding: 20px; background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); border-left: 4px solid #3b82f6; border-radius: 4px 8px 8px 4px;">
+            <div id="cb-title-spec" style="font-size: 1.1rem; font-weight: 700; color: #ffffff; margin-bottom: 8px;">--</div>
+            <div id="cb-aggregates-list" style="font-size: 0.85rem; font-weight: bold; color: #38bdf8; margin-bottom: 12px; font-family: monospace;">--</div>
+            <p id="cb-description-spec" style="font-size: 0.92rem; color: #cbd5e1; margin: 0; line-height: 1.5;">--</p>
+        </div>
+
+    </div>
+</div>
+
+<script>
+// Ultimate Macro Data Engine mapped from Dmitry's matrix definitions
+const cbMasterMatrix = {
+    fed: {
+        title: "🇺🇸 US Federal Reserve (FED) Architecture",
+        vectors: "M1 | M2",
+        description: "Since 2006, M3 is officially no longer published by the FED. Use the sliders below to simulate open market currency injections or updates to retail savings accounts to view immediate impact on the M1/M2 delta.",
+        color: "#3b82f6",
+        currency: "$",
+        maxScale: 30.0, // Scale anchor in Trillions
+        components: [
+            { id: "cash", label: "Currency & Checking Deposits (Core M1)", val: 18.5 },
+            { id: "retail", label: "Small Time Deposits & Retail Money Funds", val: 3.5 }
+        ],
+        calculate: (comp) => {
+            let m1 = comp.cash;
+            let m2 = m1 + comp.retail;
+            return [
+                { key: "M1 (Narrow Transactional Money)", value: m1 },
+                { key: "M2 (Broad Monetary Mass Framework)", value: m2 }
+            ];
+        }
+    },
+    ecb: {
+        title: "🇪🇺 European Central Bank (ECB) Framework",
+        vectors: "M1 | M2 | M3",
+        description: "The ECB runs a strict classical three-tiered matrix[cite: 1, 2]. Adjust short-term liquid accounts versus longer-term term liabilities to observe how the Eurozone handles velocity shifts[cite: 1, 2].",
+        color: "#10b981",
+        currency: "€",
+        maxScale: 20.0,
+        components: [
+            { id: "overnight", label: "Currency & Overnight Deposits", val: 11.3 },
+            { id: "shortTerm", label: "Deposits up to 2 Years / Notice up to 3 Months", val: 5.0 },
+            { id: "marketPaper", label: "REPOs, Money Market Funds & Debt Instruments", val: 0.5 }
+        ],
+        calculate: (comp) => {
+            let m1 = comp.overnight;
+            let m2 = m1 + comp.shortTerm;
+            let m3 = m2 + comp.marketPaper;
+            return [
+                { key: "M1 (Overnight Nodes & Cash Base)", value: m1 },
+                { key: "M2 (M1 + Intermediate Term Assets)", value: m2 },
+                { key: "M3 (Broad Money: Full Liquidity Gauge)", value: m3 }
+            ];
+        }
+    },
+    boe: {
+        title: "🇬🇧 Bank of England (BoE) Matrix",
+        vectors: "M4 Structural Anchor",
+        description: "The UK model targets the M4 broad monetary mass as its primary systems indicator[cite: 1, 2]. Use the slider to track sterling-denominated liquid positions held by households and corporations[cite: 1, 2].",
+        color: "#8b5cf6",
+        currency: "£",
+        maxScale: 5.0,
+        components: [
+            { id: "m4mass", label: "Sterling-Denominated Private Sector Balances", val: 3.1 }
+        ],
+        calculate: (comp) => {
+            return [
+                { key: "M4 (Primary Broad Monetary Anchor Stack)", value: comp.m4mass }
+            ];
+        }
+    },
+    rbi: {
+        title: "🇮🇳 Reserve Bank of India (RBI) Architecture",
+        vectors: "M1 | M2 | M3 | M4",
+        description: "The Reserve Bank of India runs a comprehensive nested stack[cite: 1, 2]. Shift parameters to demonstrate how traditional Post Office savings separate narrow M1 velocity from core policy M3[cite: 1, 2].",
+        color: "#eab308",
+        currency: "₹",
+        maxScale: 300.0,
+        components: [
+            { id: "m1base", label: "Public Currency + Core Demand Deposits", val: 61.2 },
+            { id: "postOffice", label: "Post Office Savings Bank Deposits", val: 1.3 },
+            { id: "timeDep", label: "Commercial Bank Term & Savings Deposits", val: 180.3 },
+            { id: "totalPost", label: "Total Post Office Long Term Certificates", val: 1.3 }
+        ],
+        calculate: (comp) => {
+            let m1 = comp.m1base;
+            let m2 = m1 + comp.postOffice;
+            let m3 = m1 + comp.timeDep; // standard RBI macro logic: M3 = M1 + Time Deposits
+            let m4 = m3 + comp.totalPost;
+            return [
+                { key: "M1 (Narrow Transactional Cluster)", value: m1 },
+                { key: "M2 (M1 + Post Office Savings)", value: m2 },
+                { key: "M3 (Broad Money - Core Policy Target)", value: m3 },
+                { key: "M4 (Total System Monetary Mass Profile)", value: m4 }
+            ];
+        }
+    },
+    pboc: {
+        title: "🇨🇳 People's Bank of China (PBOC) Blueprint",
+        vectors: "M0 | M1 | M2",
+        description: "The Chinese model tightly tracks state and corporate industrial accounts[cite: 1, 2]. Tune corporate checking deposits versus personal long-term assets to watch the structural shift in M2[cite: 1, 2].",
+        color: "#ef4444",
+        currency: "¥",
+        maxScale: 400.0,
+        components: [
+            { id: "m0cash", label: "Currency in Public Circulation (M0)", val: 12.3 },
+            { id: "corpChecking", label: "Enterprise & Corporate Operational Checking", val: 54.5 },
+            { id: "householdTime", label: "Household Savings & Term Investment Assets", val: 237.7 }
+        ],
+        calculate: (comp) => {
+            let m0 = comp.m0cash;
+            let m1 = m0 + comp.corpChecking;
+            let m2 = m1 + comp.householdTime;
+            return [
+                { key: "M0 (Circulating Cash Infrastructure)", value: m0 },
+                { key: "M1 (M0 + Corporate Operational Liquidity)", value: m1 },
+                { key: "M2 (Broad Credit & Structural Anchor)", value: m2 }
+            ];
+        }
+    },
+    nbk: {
+        title: "🇰🇿 National Bank of Kazakhstan (NBK) Structure",
+        vectors: "M0 | M1 | M2 | M3",
+        description: "The NBK framework separates local KZT Tenge exposures from multi-currency systemic positions[cite: 1, 2]. Adjust foreign currency deposit ratios to watch how M3 expands over domestic M1[cite: 1, 2].",
+        color: "#06b6d4",
+        currency: "₸",
+        maxScale: 50.0,
+        components: [
+            { id: "m0kzt", label: "Cash Outside Banking System (M0)", val: 4.2 },
+            { id: "tengeDemand", label: "Transferable Local Currency Tenge Deposits", val: 7.3 },
+            { id: "tengeTimeFXTransfer", label: "Tenge Time Deposits + Transferable FX Deposits", val: 17.6 },
+            { id: "otherFX", label: "Other Frozen / Long-Term FX Deposits", val: 8.3 }
+        ],
+        calculate: (comp) => {
+            let m0 = comp.m0kzt;
+            let m1 = m0 + comp.tengeDemand;
+            let m2 = m1 + comp.tengeTimeFXTransfer;
+            let m3 = m2 + comp.otherFX;
+            return [
+                { key: "M0 (Cash Outside Banking Nodes)", value: m0 },
+                { key: "M1 (M0 + Transferable Tenge Deposits)", value: m1 },
+                { key: "M2 (M1 + Time Tenge + Transferable FX)", value: m2 },
+                { key: "M3 (Broad Absolute Money Matrix)", value: m3 }
+            ];
+        }
+    }
+};
+
+let activeBankKey = "fed";
+let dynamicWeights = {};
+
+function switchCentralBank(bankKey) {
+    activeBankKey = bankKey;
+    const bank = cbMasterMatrix[bankKey];
+    if (!bank) return;
+
+    // Reset default dynamic tracking variables
+    dynamicWeights = {};
+    bank.components.forEach(c => { dynamicWeights[c.id] = c.val; });
+
+    // Update Static Copy Blocks
+    document.getElementById("cb-title-spec").innerText = bank.title;
+    document.getElementById("cb-aggregates-list").innerText = "Active Vectors: " + bank.vectors;
+    document.getElementById("cb-description-spec").innerHTML = bank.description;
+    document.getElementById("cb-specs-box").style.borderLeftColor = bank.color;
+
+    // Render Dynamic Sliders Control Board
+    const slidersContainer = document.getElementById("sliders-container");
+    slidersContainer.innerHTML = "";
+
+    bank.components.forEach(c => {
+        const sliderGroup = document.createElement("div");
+        sliderGroup.style.display = "flex";
+        sliderGroup.style.flexDirection = "column";
+        sliderGroup.style.gap = "6px";
+
+        // Setup individual scaling bounds (allowing +/- 60% changes from current baseline)
+        let minVal = Math.max(0.1, Math.floor(c.val * 0.4));
+        let maxVal = Math.ceil(c.val * 1.6);
+        if(maxVal === minVal) maxVal += 10;
+
+        sliderGroup.innerHTML = `
+            <div style="display: flex; justify-content: space-between; font-size: 0.82rem; color: #cbd5e1;">
+                <span>${c.label}</span>
+                <span id="label-val-${c.id}" style="font-weight: bold; color: #38bdf8; font-family: monospace;">${bank.currency}${c.val.toLocaleString()} T</span>
+            </div>
+            <input type="range" min="${minVal}" max="${maxVal}" step="0.1" value="${c.val}" 
+                oninput="handleSliderMovement('${c.id}', this.value)" 
+                style="width: 100%; height: 6px; background: #1e293b; border-radius: 4px; appearance: none; cursor: pointer; outline: none;">
+        `;
+        slidersContainer.appendChild(sliderGroup);
+    });
+
+    // Execute Initial Vector Compilation Graph Draw
+    executeVectorRecomputation();
+}
+
+function handleSliderMovement(componentId, value) {
+    let numericVal = parseFloat(value);
+    dynamicWeights[componentId] = numericVal;
+
+    const bank = cbMasterMatrix[activeBankKey];
+    document.getElementById(`label-val-${componentId}`).innerText = `${bank.currency}${numericVal.toLocaleString()} T`;
+
+    executeVectorRecomputation();
+}
+
+function executeVectorRecomputation() {
+    const bank = cbMasterMatrix[activeBankKey];
+    const calculatedAggregates = bank.calculate(dynamicWeights);
+    
+    const container = document.getElementById("dashboard-bars-container");
+    container.innerHTML = ""; // Clear existing elements
+
+    calculatedAggregates.forEach(agg => {
+        // Compute dynamic proportional percentage bar widths against target bounds
+        let widthPct = Math.min(100, Math.max(4, (agg.value / bank.maxScale) * 100));
+
+        const barWrapper = document.createElement("div");
+        barWrapper.style.width = "100%";
+
+        barWrapper.innerHTML = `
+            <div style="display: flex; justify-content: space-between; font-size: 0.85rem; color: #cbd5e1; margin-bottom: 5px;">
+                <span style="font-weight: 500;">${agg.key}</span>
+                <span style="font-weight: 800; color: ${bank.color}; font-family: monospace;">${bank.currency}${agg.value.toLocaleString(undefined, {minimumFractionDigits: 1, maximumFractionDigits: 1})} T</span>
+            </div>
+            <div style="width: 100%; height: 26px; background-color: #1e293b; border-radius: 6px; overflow: hidden; border: 1px solid #334155; position: relative;">
+                <div style="width: ${widthPct}%; height: 100%; background: linear-gradient(90deg, ${bank.color}aa 0%, ${bank.color} 100%); border-radius: 4px; transition: width 0.1s ease-out; box-shadow: 0 0 12px ${bank.color}44;"></div>
+            </div>
+        `;
+        container.appendChild(barWrapper);
+    });
+}
+
+// Auto-boot system array parameters on mount
+document.addEventListener("DOMContentLoaded", () => {
+    switchCentralBank("fed");
+});
+</script>
+<!-- END OF GLOBAL MONETARY DASHBOARD WITH LIVE SLIDERS -->
                        <!-- LECTURE 2: INTEREST RATES -->
 <div id="lec2" class="tab-content space-y-6">
     <div class="tech-panel p-6 space-y-4">
