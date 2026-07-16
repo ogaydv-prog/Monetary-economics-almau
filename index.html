@@ -996,71 +996,415 @@ document.addEventListener("DOMContentLoaded", () => {
 <!-- END OF FULL UNABRIDGED GLOBAL MONETARY DASHBOARD -->
 </div>                        
                        <!-- LECTURE 2: INTEREST RATES -->
-<div id="lec2" class="tab-content space-y-6">
-    <div class="tech-panel p-6 space-y-4">
-        <h2 class="text-xl font-bold text-white flex items-center gap-2"><i class="fas fa-chart-line text-indigo-400"></i> Lecture 2: Interest Rates & Money Demand</h2>
-        <div class="text-zinc-300 text-xs leading-relaxed space-y-3">
-            <p>
-                Keynes' <strong>Liquidity Preference Theory</strong> asserts that individuals hold cash for three distinct reasons: 
-                1) <em>Transactions Motive</em> (day-to-day transactions), 
-                2) <em>Precautionary Motive</em> (unexpected future obligations), and 
-                3) <em>Speculative Motive</em> (holding cash to exploit fluctuations in bond prices and yields).
-            </p>
-            <p>
-                Because non-interest-bearing cash compete directly with interest-yielding bonds, money demand ($M^d$) has an <strong>inverse relationship</strong> with nominal interest rates ($i$). When interest rates rise, holding liquid cash yields a higher opportunity cost, leading actors to lock capital into bonds.
-            </p>
-            <p>
-                In the standard short-run model, the Money Supply ($M^s$) is strictly controlled by the Central Bank and is represented as a **vertical line**.
-            </p>
-        </div>
-        <div class="math-block text-xs">
-            $$M^d = L(i, Y) \quad \text{where} \quad \frac{\partial L}{\partial i} < 0, \ \frac{\partial L}{\partial Y} > 0$$
-            $$P_{bond} = \sum_{t=1}^{n} \frac{C}{(1+i)^t} + \frac{F}{(1+i)^n}$$
-        </div>
+/* Dashboard Main Title */
+.dashboard-main-title {
+  text-align: center;
+  font-size: 1.6rem;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: #f7fafc;
+  text-shadow: 0 0 12px rgba(49,130,206,0.3);
+  margin-top: 5px;
+  margin-bottom: 18px;
+  text-transform: uppercase;
+  border-bottom: 1px solid #2d3748;
+  padding-bottom: 12px;
+}
+
+/* Tabs Layout */
+.lt-tabs {
+  display: flex;
+  gap: 5px;
+  border-bottom: 2px solid #2d3748;
+  padding-bottom: 8px;
+  margin-bottom: 15px;
+}
+.lt-tab-btn {
+  flex: 1;
+  padding: 10px 5px;
+  background: #1a202c;
+  border: 1px solid #2d3748;
+  color: #a0aec0;
+  font-weight: 600;
+  font-size: 0.82rem;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+.lt-tab-btn.active, .lt-tab-btn:hover {
+  background: #3182ce;
+  color: #fff;
+  border-color: #3182ce;
+  box-shadow: 0 0 10px rgba(49,130,206,0.5);
+}
+.lt-tab-content {
+  display: none;
+}
+.lt-tab-content.active {
+  display: block;
+}
+
+/* Typography & Layout Panels */
+.section-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #f7fafc;
+  margin-top: 0;
+  margin-bottom: 10px;
+  border-left: 4px solid #3182ce;
+  padding-left: 10px;
+}
+.brief-summary {
+  background: #1a202c;
+  border-left: 3px solid #e53e3e;
+  padding: 10px 12px;
+  font-size: 0.85rem;
+  line-height: 1.4;
+  margin-bottom: 15px;
+  color: #cbd5e0;
+  border-radius: 0 6px 6px 0;
+}
+
+/* Dashboard Grid */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 15px;
+  background: #1a202c;
+  padding: 15px;
+  border-radius: 8px;
+  border: 1px solid #2d3748;
+}
+@media (max-width: 768px) {
+  .dashboard-grid { grid-template-columns: 1fr; }
+}
+
+.ctrl-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  justify-content: center;
+}
+
+/* Neon Equation Fisher */
+.fisher-equation-box {
+  background: #0d1117;
+  border: 1px solid #21262d;
+  border-radius: 8px;
+  padding: 15px;
+  text-align: center;
+  margin-bottom: 15px;
+}
+.eq-display {
+  font-size: 2.8rem;
+  font-weight: 800;
+  font-family: "Georgia", serif;
+  letter-spacing: 2px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+.eq-left {
+  color: #10b981; /* Более темный, благородный изумрудный цвет */
+  text-shadow: 0 0 8px rgba(16,185,129,0.5);
+  animation: glowGreen 3s infinite alternate;
+}
+.eq-right {
+  color: #ff3131;
+  text-shadow: 0 0 8px rgba(255,49,49,0.6);
+  animation: glowRed 3s infinite alternate;
+}
+.eq-sign {
+  color: #e2e8f0;
+  margin: 0 10px;
+}
+@keyframes glowGreen {
+  from { text-shadow: 0 0 4px rgba(16,185,129,0.3); }
+  to { text-shadow: 0 0 12px rgba(16,185,129,0.7); }
+}
+@keyframes glowRed {
+  from { text-shadow: 0 0 4px rgba(255,49,49,0.4); }
+  to { text-shadow: 0 0 12px rgba(255,49,49,0.8); }
+}
+
+/* Vintage Sliders Style with Red Stripe */
+.compact-slider {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.slider-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  color: #a0aec0;
+  font-weight: 600;
+}
+.slider-header .sv-val {
+  color: #3182ce;
+}
+.compact-slider input[type="range"] {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 10px;
+  /* Винтажная шкала с красной полосой по центру */
+  background: linear-gradient(to bottom, #0f141c 35%, #ff2a2a 45%, #ff2a2a 55%, #0f141c 65%);
+  border: 1px solid #4a5568;
+  border-radius: 4px;
+  outline: none;
+}
+.compact-slider input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px;
+  height: 22px;
+  border-radius: 2px;
+  /* Металлическая ручка прибора */
+  background: linear-gradient(to bottom, #cbd5e0, #718096);
+  border: 1px solid #1a202c;
+  cursor: pointer;
+  box-shadow: 0 0 6px rgba(255,255,255,0.3), inset 0 1px 0 rgba(255,255,255,0.5);
+}
+.compact-slider input[type="range"]::-moz-range-thumb {
+  width: 14px;
+  height: 22px;
+  border-radius: 2px;
+  background: linear-gradient(to bottom, #cbd5e0, #718096);
+  border: 1px solid #1a202c;
+  cursor: pointer;
+  box-shadow: 0 0 6px rgba(255,255,255,0.3);
+}
+
+/* Result Badge */
+.result-badge {
+  background: #2d3748;
+  border: 1px dashed #4a5568;
+  padding: 10px;
+  border-radius: 6px;
+  text-align: center;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+.result-badge span {
+  font-size: 1.25rem;
+  color: #31fa81;
+  text-shadow: 0 0 5px rgba(49,250,129,0.5);
+}
+
+/* Country Indicators (Faded by default, glows on match) */
+.country-panel {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 10px;
+  justify-content: center;
+}
+.country-tag {
+  background: #101520;
+  border: 1px solid #2d3748;
+  padding: 5px 8px;
+  border-radius: 4px;
+  font-size: 0.68rem;
+  color: #4a5568; /* Блеклый цвет по умолчанию */
+  font-weight: bold;
+  transition: all 0.3s ease;
+  opacity: 0.6;
+}
+.country-tag.active {
+  color: #fff;
+  border-color: #39ff14;
+  background: rgba(57,255,20,0.15);
+  box-shadow: 0 0 12px rgba(57,255,20,0.6);
+  opacity: 1; /* Полная яркость при достижении равновесия */
+}
+
+/* Canvas styling */
+.canvas-container {
+  position: relative;
+  background: #0d1117;
+  border: 1px solid #2d3748;
+  border-radius: 6px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5px;
+}
+canvas {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/* Comparison list for Friedman */
+.comparison-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.comparison-list li {
+  background: #1a202c;
+  padding: 8px 12px;
+  border-radius: 6px;
+  margin-bottom: 6px;
+  font-size: 0.8rem;
+  border-left: 3px solid #3182ce;
+  line-height: 1.4;
+}
+.comparison-list strong {
+  color: #f7fafc;
+}
+
+
+<div class="fisher-equation-box">
+  <div class="eq-display">
+    <span class="eq-left">M</span>
+    <span class="eq-left">V</span>
+    <span class="eq-sign">=</span>
+    <span class="eq-right">P</span>
+    <span class="eq-right">Y</span>
+  </div>
+  <div style="font-size: 0.75rem; color: #718096; margin-top: 5px;">
+    Left Side (Green): Money Circulation | Right Side (Red): Nominal Output
+  </div>
+</div>
+
+<div class="dashboard-grid">
+  <div class="ctrl-panel">
+    <div class="compact-slider">
+      <div class="slider-header">
+        <span>Money Supply (M)</span>
+        <span class="sv-val" id="f-m-val">2000</span>
+      </div>
+      <input type="range" id="f-m" min="1000" max="5000" value="2000" step="100" oninput="runFisherCalculation()">
+    </div>
+    
+    <div class="compact-slider">
+      <div class="slider-header">
+        <span>Velocity of Money (V)</span>
+        <span class="sv-val" id="f-v-val">5.0</span>
+      </div>
+      <input type="range" id="f-v" min="1" max="10" value="5" step="0.5" oninput="runFisherCalculation()">
     </div>
 
-    <div class="tech-panel p-6">
-        <h3 class="text-xs font-mono text-indigo-400 uppercase tracking-widest mb-4">Interactive Simulator: Money Market Equilibrium</h3>
-        
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-            <div class="space-y-6">
-                <div>
-                    <label class="block text-[10px] font-mono text-zinc-400 mb-1">Money Supply Target (Mˢ) [<span id="val-ms-pos" class="text-white font-bold">500</span> bln ₸]</label>
-                    <input type="range" id="slide-ms-pos" min="200" max="800" value="500" oninput="updateMoneyMarket()">
-                </div>
-                <div>
-                    <label class="block text-[10px] font-mono text-zinc-400 mb-1">Real Income Shift (Mᵈ) [<span id="val-md-shift" class="text-white font-bold">Baseline</span>]</label>
-                    <input type="range" id="slide-md-shift" min="-200" max="200" step="50" value="0" oninput="updateMoneyMarket()">
-                </div>
-                <div class="p-3 bg-zinc-950 rounded-lg border border-zinc-800 space-y-1">
-                    <div class="text-[10px] uppercase font-mono text-zinc-500">Real-Time Indicator</div>
-                    <div class="text-xs text-zinc-300">Equilibrium Rate ($i^*$): <span id="eq-rate-val" class="font-bold text-indigo-400">12.5%</span></div>
-                </div>
-            </div>
-            
-            <!-- Interactive Money Market Graph (SVG) -->
-            <div class="bg-black/40 p-4 rounded-xl border border-zinc-800 relative">
-                <div class="absolute top-2 left-4 text-[9px] font-mono text-zinc-500 uppercase">Money Market Model (Keynesian)</div>
-                <svg viewBox="0 0 300 240" class="w-full h-auto overflow-visible">
-                    <line x1="40" y1="20" x2="40" y2="200" stroke="#4b5563" stroke-width="2"/>
-                    <line x1="40" y1="200" x2="280" y2="200" stroke="#4b5563" stroke-width="2"/>
-                    
-                    <text x="25" y="25" fill="#9ca3af" font-size="9px" font-family="monospace">i (%)</text>
-                    <text x="270" y="215" fill="#9ca3af" font-size="9px" font-family="monospace">M</text>
-                    
-                    <path id="md-curve" d="M 60,40 Q 150,120 260,180" fill="none" stroke="#6366f1" stroke-width="2.5" class="transition-all duration-300"/>
-                    <text x="255" y="170" fill="#6366f1" font-size="8px" font-family="monospace" font-weight="bold">Mᵈ</text>
-                    
-                    <line id="ms-line" x1="160" y1="30" x2="160" y2="200" stroke="#10b981" stroke-width="2.5" class="transition-all duration-300"/>
-                    <text x="165" y="25" fill="#10b981" font-size="8px" font-family="monospace" font-weight="bold">Mˢ</text>
-                    
-                    <line id="helper-rate" x1="40" y1="120" x2="160" y2="120" stroke="#a855f7" stroke-dasharray="4" stroke-width="1.5" class="transition-all duration-300"/>
-                    <circle id="eq-dot" cx="160" cy="120" r="5" fill="#ffffff" stroke="#a855f7" stroke-width="2"/>
-                </svg>
-            </div>
-        </div>
+    <div class="compact-slider">
+      <div class="slider-header">
+        <span>Real Output / GDP (Y)</span>
+        <span class="sv-val" id="f-y-val">10000</span>
+      </div>
+      <input type="range" id="f-y" min="5000" max="15000" value="10000" step="500" oninput="runFisherCalculation()">
     </div>
+  </div>
+
+  <div style="display: flex; flex-direction: column; justify-content: center; gap: 10px;">
+    <div class="result-badge">
+      Calculated Price Level (P): <br>
+      <span id="f-res-p">1.00</span>
+    </div>
+    <div style="font-size: 0.75rem; color: #a0aec0; line-height: 1.3;">
+      <strong>Takeaway:</strong> If you double M from 2,000 to 4,000 keeping V and Y constant, the price level P doubles exactly. This illustrates the classical monetary neutrality.
+    </div>
+  </div>
 </div>
+
+
+<div class="dashboard-grid">
+  <div class="ctrl-panel">
+    <div class="compact-slider">
+      <div class="slider-header">
+        <span>Shift Money Supply (MS)</span>
+        <span class="sv-val" id="k-ms-val">250</span>
+      </div>
+      <!-- Увеличен диапазон до 500 для достижения низких ставок Китая и Европы -->
+      <input type="range" id="k-ms" min="100" max="500" value="250" step="10" oninput="runKeynesCalculation()">
+    </div>
+
+    <div class="compact-slider">
+      <div class="slider-header">
+        <span>Shift Money Demand (MD)</span>
+        <span class="sv-val" id="k-md-val">Base</span>
+      </div>
+      <input type="range" id="k-md" min="-50" max="50" value="0" step="5" oninput="runKeynesCalculation()">
+    </div>
+
+    <div class="result-badge" style="margin-top: 10px;">
+      Equilibrium Interest Rate (i*): <br>
+      <span id="k-res-i">12.0%</span>
+    </div>
+
+    <div class="country-panel">
+      <div class="country-tag" id="tag-kz">NBK Kazakhstan (17.00%)</div>
+      <div class="country-tag" id="tag-in">RBI India (5.25%)</div>
+      <div class="country-tag" id="tag-us">FED USA (3.75%)</div>
+      <div class="country-tag" id="tag-cn">PBC China (3.00%)</div>
+      <div class="country-tag" id="tag-eu">ECB (2.25%)</div>
+    </div>
+  </div>
+
+  <div class="canvas-container">
+    <canvas id="canvasKeynes" width="400" height="280"></canvas>
+  </div>
+</div>
+
+
+<div class="dashboard-grid">
+  <div class="ctrl-panel">
+    <div class="compact-slider">
+      <div class="slider-header">
+        <span>Interest Rate on Bonds (i)</span>
+        <span class="sv-val" id="b-i-val">8%</span>
+      </div>
+      <input type="range" id="b-i" min="2" max="24" value="8" step="1" oninput="runBaumolCalculation()">
+    </div>
+
+    <div class="compact-slider">
+      <div class="slider-header">
+        <span>Broker Cost per Trip (b)</span>
+        <span class="sv-val" id="b-b-val">50 ₸</span>
+      </div>
+      <input type="range" id="b-b" min="10" max="150" value="50" step="5" oninput="runBaumolCalculation()">
+    </div>
+
+    <div class="compact-slider">
+      <div class="slider-header">
+        <span>Annual Income / Spending (Y)</span>
+        <span class="sv-val" id="b-y-val">5000</span>
+      </div>
+      <input type="range" id="b-y" min="2000" max="10000" value="5000" step="500" oninput="runBaumolCalculation()">
+    </div>
+
+    <div class="result-badge">
+      Optimal Cash Withdrawal (C*): <br>
+      <span id="b-res-c">250.0 ₸</span>
+    </div>
+  </div>
+
+  <div class="canvas-container" style="flex-direction: column;">
+    <canvas id="canvasBaumol" width="400" height="250"></canvas>
+    <div style="display: flex; gap: 10px; font-size: 0.65rem; color: #a0aec0; margin-top: 5px;">
+      <span style="color: #ff9f43;">● Opportunity Cost</span>
+      <span style="color: #10ac84;">● Transaction Cost</span>
+      <span style="color: #5f27cd;">● Total Cost</span>
+    </div>
+  </div>
+</div>
+
+
+<div style="background: #1a202c; padding: 15px; border-radius: 8px; border: 1px solid #2d3748;">
+  <h4 style="margin-top:0; color:#3182ce; font-size: 0.95rem;">Key Conceptual Differences: Friedman vs. Keynes</h4>
+  <ul class="comparison-list">
+    <li>
+      <strong>Multiple Substitutes:</strong> Keynes grouped all non-money assets into "bonds". Friedman includes equities and physical goods (commodities), meaning changes in monetary policy have wider real asset channels.
+    </li>
+    <li>
+      <strong>Stability of Velocity:</strong> In Friedman's view, the demand for money is highly stable because Yₚ fluctuates far less than current income, leading to highly predictable velocity (V).
+    </li>
+    <li>
+      <strong>Insensitivity to Interest Rates:</strong> When interest rates (i) rise, banks increase their deposit rates (r_m). The spread remains relatively constant, keeping the demand for money highly stable.
+    </li>
+  </ul>
+</div>
+
 
                      <!-- LECTURE 3: MONEY MULTIPLIER -->
 <div id="lec3" class="tab-content space-y-6">
