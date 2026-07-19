@@ -140,6 +140,7 @@
         .tri-active-controls { fill: rgba(239, 68, 68, 0.8) !important; stroke: #f87171 !important; stroke-width: 2px; }
         .tri-text { font-size: 10px; font-weight: 800; fill: #a1a1aa; pointer-events: none; text-anchor: middle; }
     </style>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 </head>
 <body class="min-h-screen flex flex-col justify-between custom-scrollbar">
 
@@ -659,49 +660,62 @@ function runScaleStep(type, btnElement) {
 <!-- END OF ULTIMATE DYNAMIC TICKING COUNTER RIDDLE -->
                             </div>
 
-                            <div class="tech-panel p-6">
-                                <h3 class="text-xs font-mono text-indigo-400 uppercase tracking-widest mb-4">Interactive Simulator: Liquidity Aggregates Breakdown</h3>
-                                
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                                    <div class="space-y-4">
-                                        <div>
-                                            <label class="block text-[10px] font-mono text-zinc-400 mb-1">Currency in Circulation (M0) [<span id="val-m0" class="text-[#f59e0b] font-bold">100</span> bln ₸]</label>
-                                            <input type="range" id="slide-m0" min="50" max="500" value="100" oninput="updateAggregates()">
-                                        </div>
-                                        
-                                        <div>
-                                            <label class="block text-[10px] font-mono text-zinc-400 mb-1">Demand Deposits [<span id="val-dd" class="text-[#6366f1] font-bold">400</span> bln ₸]</label>
-                                            <input type="range" id="slide-dd" min="100" max="1000" value="400" oninput="updateAggregates()">
-                                        </div>
-                                        
-                                        <div>
-                                            <label class="block text-[10px] font-mono text-zinc-400 mb-1">Time & Savings Deposits [<span id="val-sd" class="text-[#10b981] font-bold">800</span> bln ₸]</label>
-                                            <input type="range" id="slide-sd" min="200" max="2000" value="800" oninput="updateAggregates()">
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="flex flex-col justify-center space-y-4 bg-black/60 p-5 rounded-lg border border-zinc-800/80">
-                                        <div>
-                                            <div class="flex justify-between text-[11px] font-mono mb-1.5"><span class="text-indigo-400 font-bold">M1 (Narrow Money)</span><span id="tot-m1" class="text-white">500B</span></div>
-                                            <div class="w-full bg-zinc-950 h-6 rounded-md overflow-hidden flex border border-zinc-800/80">
-                                                <div id="bar-m0" class="bg-[#f59e0b] anim-bar h-full"></div>
-                                                <div id="bar-dd" class="bg-[#6366f1] anim-bar h-full"></div>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <div class="flex justify-between text-[11px] font-mono mb-1.5"><span class="text-emerald-400 font-bold">M2 (Broad Money)</span><span id="tot-m2" class="text-white">1300B</span></div>
-                                            <div class="w-full bg-zinc-950 h-6 rounded-md overflow-hidden flex border border-zinc-800/80">
-                                                <div id="bar-m1-in-m2" class="bg-[#4f46e5] anim-bar h-full"></div>
-                                                <div id="bar-sd" class="bg-[#10b981] anim-bar h-full"></div>
-                                            </div>
-                                        </div>
-                                        <div class="text-[9px] text-zinc-500 font-mono mt-2 text-center border-t border-zinc-800/50 pt-2 flex justify-center gap-4">
-                                            <span><span class="inline-block w-2.5 h-2.5 bg-[#f59e0b] rounded-sm mr-1"></span> M0 (Cash)</span>
-                                            <span><span class="inline-block w-2.5 h-2.5 bg-[#6366f1] rounded-sm mr-1"></span> Demand Deposits</span>
-                                            <span><span class="inline-block w-2.5 h-2.5 bg-[#10b981] rounded-sm mr-1"></span> Time Deposits</span>
-                                        </div>
-                                    </div>
-                                </div>
+                          <!-- START OF INTERACTIVE SANKEY SIMULATOR -->
+<div class="tech-panel p-6">
+    <h3 class="text-xs font-mono text-indigo-400 uppercase tracking-widest mb-4">Interactive Simulator: Liquidity Aggregates Flow (Sankey Matrix)</h3>
+    
+    <div class="grid grid-cols-1 md:grid-cols-5 gap-8 items-center">
+        <!-- Левая колонка: Органы управления (Слайдеры) - Занимает 2 колоночных пространства -->
+        <div class="space-y-5 md:col-span-2 ctrl-panel">
+            
+            <!-- Слайдер M0 -->
+            <div class="compact-slider">
+                <div class="slider-header">
+                    <span class="text-[11px] font-mono text-zinc-400">Currency in Circulation (M0)</span>
+                    <span class="sv-val font-bold text-amber-500 font-mono" id="val-sankey-m0">100 bln ₸</span>
+                </div>
+                <input type="range" id="slide-sankey-m0" min="50" max="500" value="100" oninput="updateSankeyData()">
+            </div>
+            
+            <!-- Слайдер Demand Deposits -->
+            <div class="compact-slider">
+                <div class="slider-header">
+                    <span class="text-[11px] font-mono text-zinc-400">Demand Deposits (Checking)</span>
+                    <span class="sv-val font-bold text-indigo-400 font-mono" id="val-sankey-dd">400 bln ₸</span>
+                </div>
+                <input type="range" id="slide-sankey-dd" min="100" max="1000" value="400" oninput="updateSankeyData()">
+            </div>
+            
+            <!-- Слайдер Time Deposits -->
+            <div class="compact-slider">
+                <div class="slider-header">
+                    <span class="text-[11px] font-mono text-zinc-400">Time & Savings Deposits</span>
+                    <span class="sv-val font-bold text-emerald-400 font-mono" id="val-sankey-sd">800 bln ₸</span>
+                </div>
+                <input type="range" id="slide-sankey-sd" min="200" max="2000" value="800" oninput="updateSankeyData()">
+            </div>
+
+            <!-- Информационное табло итогов -->
+            <div class="bg-black/40 p-3 rounded-lg border border-zinc-800/60 font-mono text-[10px] space-y-1.5 mt-2">
+                <div class="flex justify-between">
+                    <span class="text-indigo-400 font-bold">M1 (Narrow Money):</span>
+                    <span id="lbl-sankey-m1" class="text-white font-bold">500 bln ₸</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-emerald-400 font-bold">M2 (Broad Money):</span>
+                    <span id="lbl-sankey-m2" class="text-white font-bold">1300 bln ₸</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Правая колонка: Отрендеренная диаграмма Сэнки - Занимает 3 колоночных пространства -->
+        <div class="md:col-span-3 bg-black/50 p-4 rounded-xl border border-zinc-800/80 relative" style="box-shadow: 0 0 20px rgba(99, 102, 241, 0.05);">
+            <div class="absolute top-2 left-4 text-[9px] font-mono text-zinc-500 uppercase tracking-wider z-10">Systemic Liquidity Frontier</div>
+            <div id="sankey_chart_container" class="w-full h-64 mt-2"></div>
+        </div>
+    </div>
+</div>
+<!-- END OF INTERACTIVE SANKEY SIMULATOR -->
                             </div>
 
                             <div class="bg-zinc-900/60 border border-zinc-800 p-5 rounded-xl space-y-3">
@@ -2471,21 +2485,94 @@ document.addEventListener("DOMContentLoaded", () => {
             if(tabId === 'lec5') updatePhillips();
         }
 
-        function updateAggregates() {
-            const m0 = parseInt(document.getElementById('slide-m0').value);
-            const dd = parseInt(document.getElementById('slide-dd').value);
-            const sd = parseInt(document.getElementById('slide-sd').value);
-            document.getElementById('val-m0').innerText = m0;
-            document.getElementById('val-dd').innerText = dd;
-            document.getElementById('val-sd').innerText = sd;
-            const m1 = m0 + dd; const m2 = m1 + sd;
-            document.getElementById('tot-m1').innerText = m1 + " bln ₸";
-            document.getElementById('tot-m2').innerText = m2 + " bln ₸";
-            document.getElementById('bar-m0').style.width = (m0 / m1 * 100) + "%";
-            document.getElementById('bar-dd').style.width = (dd / m1 * 100) + "%";
-            document.getElementById('bar-m1-in-m2').style.width = (m1 / m2 * 100) + "%";
-            document.getElementById('bar-sd').style.width = (sd / m2 * 100) + "%";
+       // --- ИНИЦИАЛИЗАЦИЯ И НАСТРОЙКА GOOGLE SANKEY ---
+google.charts.load('current', {'packages':['sankey']});
+google.charts.setOnLoadCallback(initSankeyChart);
+
+let sankeyChart = null;
+
+function initSankeyChart() {
+    const container = document.getElementById('sankey_chart_container');
+    if (container) {
+        sankeyChart = new google.visualization.Sankey(container);
+        updateSankeyData();
+    }
+}
+
+// Главная управляющая функция перерисовки и математического пересчета
+function updateSankeyData() {
+    // 1. Извлекаем значения из ползунков
+    const m0 = parseInt(document.getElementById('slide-sankey-m0').value);
+    const dd = parseInt(document.getElementById('slide-sankey-dd').value);
+    const sd = parseInt(document.getElementById('slide-sankey-sd').value);
+    
+    const m1 = m0 + dd;
+    const m2 = m1 + sd;
+
+    // 2. Апдейтим текстовые лейблы во всей структуре
+    document.getElementById('val-sankey-m0').innerText = m0 + " bln ₸";
+    document.getElementById('val-sankey-dd').innerText = dd + " bln ₸";
+    document.getElementById('val-sankey-sd').innerText = sd + " bln ₸";
+    document.getElementById('lbl-sankey-m1').innerText = m1 + " bln ₸";
+    document.getElementById('lbl-sankey-m2').innerText = m2 + " bln ₸";
+
+    // Сохраняем обратную совместимость, если в коде вызываются старые ID для других вкладок
+    const oldM0 = document.getElementById('val-m0'); if(oldM0) oldM0.innerText = m0;
+    const oldDD = document.getElementById('val-dd'); if(oldDD) oldDD.innerText = dd;
+    const oldSD = document.getElementById('val-sd'); if(oldSD) oldSD.innerText = sd;
+
+    if (!sankeyChart) return;
+
+    // 3. Формируем матрицу потоков данных для Сэнки
+    const data = new google.visualization.DataTable();
+    data.addColumn('string', 'From');
+    data.addColumn('string', 'To');
+    data.addColumn('number', 'Volume');
+    data.addRows([
+        [ 'M0 (Cash Outside Banks)', 'M1 (Narrow Money Aggregate)', m0 ],
+        [ 'Demand Deposits', 'M1 (Narrow Money Aggregate)', dd ],
+        [ 'M1 (Narrow Money Aggregate)', 'M2 (Broad Money Mass)', m1 ],
+        [ 'Time & Savings Deposits', 'M2 (Broad Money Mass)', sd ]
+    ]);
+
+    // 4. Настраиваем кастомный Dark Neon дизайн (шрифты, цвета узлов и соединительных линий)
+    const colors = ['#f59e0b', '#6366f1', '#4f46e5', '#10b981', '#10b981']; // Цвета узлов под тему
+    const options = {
+        sankey: {
+            node: {
+                colors: colors,
+                label: { 
+                    fontName: 'JetBrains Mono',
+                    fontSize: 10,
+                    color: '#e2e8f0',
+                    bold: true 
+                },
+                nodePadding: 30,
+                width: 12,
+                interactivity: true
+            },
+            link: {
+                colorMode: 'gradient', // Плавное перетекание цвета из одного в другой
+                colors: colors
+            }
         }
+    };
+
+    // 5. Отрисовываем
+    sankeyChart.draw(data, options);
+}
+
+// Заменяем старое имя функции на новую обертку, чтобы вкладки на твоем хабе не ломались при переключении
+function updateAggregates() {
+    updateSankeyData();
+}
+
+// Перерисовка при изменении размеров экрана (чтобы SVG не сжимался)
+window.addEventListener('resize', () => {
+    if (typeof updateSankeyData === 'function' && document.getElementById('sankey_chart_container')) {
+        updateSankeyData();
+    }
+});
 
         function updateMoneyMarket() {
     const msPos = parseInt(document.getElementById('slide-ms-pos').value);
