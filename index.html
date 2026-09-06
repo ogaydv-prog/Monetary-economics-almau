@@ -222,10 +222,10 @@
 
     <!-- Заголовок курса -->
     <header>
-        <h1>MONETARY ECONOMICS</h1>
+       <h1 style="font-size: 44px !important; font-weight: 900 !important; line-height: 1.2 !important; color: #001e50;">MONETARY ECONOMICS</h1>
         <div style="max-width: 800px; margin: 0 auto; line-height: 1.6;">
             <p class="subtitle">
-                Интерактивный образовательный портал <span style="color: #cbd5e1; font-weight: 300; margin: 0 6px;">|</span> Школа цифровых технологий и экономики
+               Interactive learning hub <span style="color: #cbd5e1; font-weight: 300; margin: 0 6px;">|</span> School of Digital Technologies and Economics
             </p>
             <p style="color: #718096; font-size: 14px; font-weight: 500; margin-top: 4px; text-align: center;">
                 AlmaU 2026 • Course designed by Professor of Practice Dmitriy Ogay
@@ -1395,7 +1395,7 @@ document.addEventListener("DOMContentLoaded", () => {
           </div>
 
           <div class="country-panel">
-            <div class="country-tag" id="tag-kz">NBK Kazakhstan (16.75%)</div>
+            <div class="country-tag" id="tag-kz">NBK Kazakhstan (16.25%)</div>
             <div class="country-tag" id="tag-in">RBI India (5.25%)</div>
             <div class="country-tag" id="tag-us">FED USA (3.75%)</div>
             <div class="country-tag" id="tag-cn">PBC China (3.00%)</div>
@@ -2451,17 +2451,23 @@ changes for a given change in the monetary base MB. This multiplier tells us wha
         </main>
     </div>
 
-    <!-- FOOTER -->
-    <footer class="border-t border-slate-800/80 bg-slate-950/60 py-5 text-center text-xs text-slate-500 w-full mt-10">
-        <p>© 2026 Dmitriy Ogay • AlmaU Course Hub • Interactive Learning Architecture</p>
-    </footer>
-
+   <!-- FOOTER -->
+<footer class="py-6 text-center text-xs w-full mt-10" style="background: transparent; border: none;">
+    <p style="color: #001e50; font-weight: 600;">© 2026 Dmitriy Ogay • AlmaU Course Hub • Interactive Learning Architecture</p>
+</footer>
     <script>
         // NAVIGATION LOGIC
-        function activateModule(moduleId) {
-            // Hide welcome message and all modules
-            document.getElementById('welcome-message').classList.add('hidden');
-            document.querySelectorAll('.module-content').forEach(el => el.classList.add('hidden'));
+      function activateModule(moduleId) {
+    // Hide welcome message and all modules
+    document.getElementById('welcome-message').classList.add('hidden');
+    document.querySelectorAll('.module-content').forEach(el => el.classList.add('hidden'));
+    
+    // Устанавливаем глубокий тёмный фон терминала для открытого модуля
+    const viewport = document.getElementById('viewport');
+    if (viewport) {
+        viewport.style.backgroundColor = '#0b1329';
+        viewport.style.borderColor = '#1e293b';
+    }
             
             // Remove active styling from all buttons
             document.querySelectorAll('.tile-btn').forEach(btn => btn.classList.remove('active-tile'));
