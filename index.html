@@ -6,7 +6,11 @@
     <title>Monetary Economics Hub • AlmaU</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome for fallback icons and interactive elements -->
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <!-- KaTeX for high-quality mathematical notation -->
@@ -15,78 +19,122 @@
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
     
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@300;400;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap');
-        
-        body {
-            background: radial-gradient(circle at top right, #0f172a 0%, #020617 100%);
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
             font-family: 'Inter', system-ui, -apple-system, sans-serif;
-            color: #f1f5f9;
         }
 
-        .neon-card {
-            background: rgba(15, 23, 42, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(16px);
-        }
-
-        /* Portrait tile containers: white background, fully embracing vertical ratios */
-        .tile-btn {
+        body {
             background-color: #ffffff;
-            border-radius: 1rem;
-            overflow: hidden;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            cursor: pointer;
-            border: 3px solid transparent;
-            aspect-ratio: 3 / 4.2;
+            color: #333333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 15px 20px;
             position: relative;
         }
-        
-        .tile-btn:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px -5px rgba(99, 102, 241, 0.4);
-            border-color: #6366f1;
+
+        .top-left-logo {
+            position: absolute;
+            top: 25px;
+            left: 30px;
+            width: 55px;
+            height: 55px;
+            object-fit: contain;
         }
 
-        /* Specific red border for the Syllabus card */
-        .tile-btn-red {
-            border-color: #ef4444;
+        header {
+            text-align: center;
+            margin-top: 10px;
+            margin-bottom: 25px;
         }
-        .tile-btn-red:hover {
-            border-color: #dc2626;
-            box-shadow: 0 15px 30px -5px rgba(239, 68, 68, 0.4);
+
+        /* --- ЗАГОЛОВКОВОЕ ОФОРМЛЕНИЕ: ТУТ МЕНЯЕТСЯ ЖИРНОСТЬ И ВЫСОТА --- */
+        h1 {
+            font-size: 33px; /* <-- РАЗМЕР ШРИФТА ЗАГОЛОВКА */
+            font-weight: 800; /* <-- ЖИРНОСТЬ ШРИФТА (от 100 до 900) */
+            color: #001e50;
+            margin-bottom: 8px;
+            margin-top: 15px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .subtitle {
+            font-size: 15px;
+            color: #555555;
+            max-width: 750px;
+            line-height: 1.5;
+            margin: 0 auto;
+            font-weight: 500;
+        }
+
+        /* Сетка для 10 карточек ровно по 5 в ряд */
+        .grid-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            max-width: 1150px;
+            width: 100%;
+            justify-content: center;
+            align-items: center;
+            padding-bottom: 30px;
+        }
+
+        /* Карточка с точным размером и пропорциями */
+        .card-btn {
+            display: inline-block;
+            background: #ffffff;
+            border: 2px solid #e2e8f0;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            width: 195px;
+            height: 255px;
+            position: relative;
+            padding: 0;
+            cursor: pointer;
+            text-align: left;
+        }
+
+        .card-btn img {
+            width: 100%;
+            height: 100%;
+            object-fit: fill;
+            display: block;
+            transition: transform 0.3s ease;
+        }
+
+        .card-btn:hover {
+            transform: translateY(-8px) scale(1.03);
+            border-color: #001e50;
+            box-shadow: 0 16px 30px rgba(0, 30, 80, 0.18);
+        }
+
+        .card-btn:hover img {
+            transform: scale(1.02);
         }
 
         .active-tile {
-            border-color: #4f46e5 !important;
-            box-shadow: 0 0 25px rgba(79, 70, 229, 0.4) !important;
+            border-color: #6366f1 !important;
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.3) !important;
         }
 
         .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(0, 0, 0, 0.15); border-radius: 4px; }
         
-        .active-lecture-tab {
-            background: rgba(99, 102, 241, 0.15) !important;
-            border-color: rgba(99, 102, 241, 0.4) !important;
-            color: #ffffff !important;
-        }
-
-        /* --- INTEGRATED DASHBOARD STYLES --- */
-        .neon-text-red { text-shadow: 0 0 10px rgba(239, 68, 68, 0.4); }
-        .neon-text-blue { text-shadow: 0 0 10px rgba(99, 102, 241, 0.4); }
-        
+        /* --- STYLES FOR INNER INTERACTIVE DASHBOARD --- */
         .tech-panel { 
             background-color: #121215; 
             border: 1px solid #27272a; 
             position: relative; 
             border-radius: 0.75rem; 
             box-shadow: 0 4px 20px -2px rgba(0,0,0,0.5);
-        }
-        .tech-panel::after { 
-            content: ''; 
-            position: absolute; 
-            top: 0; left: 0; right: 0; 
-            height: 1px; 
-            background: linear-gradient(90deg, transparent, #3f3f46, transparent); 
+            color: #f1f5f9;
         }
         
         .math-block { 
@@ -96,6 +144,7 @@
             padding: 1.25rem; 
             border-radius: 0 0.75rem 0.75rem 0; 
             box-shadow: inset 0 2px 8px rgba(0,0,0,0.8);
+            color: #f1f5f9;
         }
 
         input[type=range] { -webkit-appearance: none; width: 100%; background: transparent; margin: 12px 0; }
@@ -109,9 +158,6 @@
             border: 1px solid #09090b; cursor: pointer; -webkit-appearance: none; margin-top: -10px;
             box-shadow: 0 0 8px rgba(99, 102, 241, 0.6); 
             transition: all 0.1s ease;
-        }
-        input[type=range]:active::-webkit-slider-thumb { 
-            box-shadow: 0 0 14px rgba(99, 102, 241, 0.9); 
         }
 
         .nav-tab { 
@@ -133,162 +179,126 @@
         .tab-content.active { display: block; animation: paneReveal 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
         @keyframes paneReveal { from { opacity: 0; transform: scale(0.995) translateY(6px); } to { opacity: 1; transform: scale(1) translateY(0); } }
 
-        .tri-corner { cursor: pointer; transition: all 0.3s ease; }
-        .tri-corner:hover { filter: drop-shadow(0 0 8px rgba(255,255,255,0.25)); }
-        .tri-active-float { fill: rgba(59, 130, 246, 0.8) !important; stroke: #60a5fa !important; stroke-width: 2px; }
-        .tri-active-fixed { fill: rgba(16, 185, 129, 0.8) !important; stroke: #34d399 !important; stroke-width: 2px; }
-        .tri-active-controls { fill: rgba(239, 68, 68, 0.8) !important; stroke: #f87171 !important; stroke-width: 2px; }
-        .tri-text { font-size: 10px; font-weight: 800; fill: #a1a1aa; pointer-events: none; text-anchor: middle; }
+        /* --- СТИЛИ ПОДСВЕТКИ ВЕРШИН ТРИЛЕММЫ (LECTURE 6) --- */
+        .tri-corner {
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .tri-corner:hover {
+            fill: #6366f1 !important;
+            stroke: #818cf8 !important;
+            filter: drop-shadow(0 0 10px rgba(99, 102, 241, 0.9));
+        }
+        .tri-text {
+            font-size: 10px;
+            font-family: monospace;
+            font-weight: bold;
+            fill: #a1a1aa;
+            text-anchor: middle;
+            pointer-events: none;
+        }
+        .tri-active-float {
+            fill: #3b82f6 !important;
+            stroke: #60a5fa !important;
+            filter: drop-shadow(0 0 14px #3b82f6);
+        }
+        .tri-active-fixed {
+            fill: #10b981 !important;
+            stroke: #34d399 !important;
+            filter: drop-shadow(0 0 14px #10b981);
+        }
+        .tri-active-controls {
+            fill: #ef4444 !important;
+            stroke: #fca5a5 !important;
+            filter: drop-shadow(0 0 14px #ef4444);
+        }
     </style>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 </head>
-<body class="min-h-screen flex flex-col justify-between custom-scrollbar">
+<body class="custom-scrollbar">
 
-    <div class="w-full max-w-[1500px] mx-auto p-4 md:p-8 space-y-8">
+    <!-- Логотип AlmaU в верхнем левом углу -->
+    <img src="https://ogaydv-prog.github.io/Economics-se/almau.jpg" alt="AlmaU Logo" class="top-left-logo">
+
+    <!-- Заголовок курса -->
+    <header>
+        <h1>MONETARY ECONOMICS</h1>
+        <div style="max-width: 800px; margin: 0 auto; line-height: 1.6;">
+            <p class="subtitle">
+                Интерактивный образовательный портал <span style="color: #cbd5e1; font-weight: 300; margin: 0 6px;">|</span> Школа цифровых технологий и экономики
+            </p>
+            <p style="color: #718096; font-size: 14px; font-weight: 500; margin-top: 4px; text-align: center;">
+                AlmaU 2026 • Course designed by Professor of Practice Dmitriy Ogay
+            </p>
+        </div>
+    </header>
+
+    <!-- Сетка из 10 карточек (5 в ряд) -->
+    <main class="grid-container">
         
-        <!-- HEADER -->
-        <header class="neon-card rounded-2xl border-t-2 border-t-indigo-500/50 relative overflow-hidden">
-            <div class="p-6 md:p-8 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
-                <div class="flex items-center gap-4">
-                    <div class="border-r border-slate-800 pr-6 hidden sm:block">
-                        <span class="text-indigo-400 font-extrabold tracking-widest text-sm uppercase block">Almaty Management University</span>
-                        <span class="text-[10px] text-slate-500 uppercase font-black tracking-widest block">School of Digital Technologies & Economics</span>
-                    </div>
-                    <div>
-                        <h1 class="text-xl md:text-2xl font-black tracking-tight text-white uppercase flex items-center gap-2">
-                            <i class="fas fa-university text-indigo-500"></i> Monetary Economics
-                        </h1>
-                        <p class="text-xs text-slate-400 mt-1">Interactive Learning Hub • Course designed by Professor of Practice Dmitriy Ogay</p>
-                    </div>
-                </div>
-            </div>
-        </header>
+        <!-- 1. SYLLABUS -->
+        <button onclick="window.open('https://drive.google.com/file/d/14Hxqctzb3ELzkCD9SUnZDxDiojD3AVNh/view?usp=drive_link', '_blank')" class="card-btn" title="Syllabus">
+            <img src="https://raw.githubusercontent.com/ogaydv-prog/Monetary-economics-almau/main/pic-me2026.png" alt="Syllabus">
+        </button>
 
-        <!-- GRID OF 10 BUTTONS (Using exact images from user) -->
-        <section class="grid grid-cols-2 md:grid-cols-5 gap-5">
-            
-            <!-- 1. SYLLABUS -->
-            <button id="btn-mod-syllabus" onclick="window.open('https://drive.google.com/file/d/14Hxqctzb3ELzkCD9SUnZDxDiojD3AVNh/view?usp=drive_link', '_blank')" class="tile-btn tile-btn-red focus:outline-none group">
-                <img src="https://raw.githubusercontent.com/ogaydv-prog/Monetary-economics-almau/main/pic-me2026.png" 
-                     class="w-full h-full object-contain" alt="Syllabus"
-                     onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
-                <div class="hidden absolute inset-0 bg-red-950/20 flex flex-col items-center justify-center p-4 text-center">
-                    <i class="fas fa-file-pdf text-3xl text-red-500 mb-2"></i>
-                    <span class="text-xs font-bold text-slate-900">Syllabus</span>
-                </div>
-            </button>
+        <!-- 2. LECTURES -->
+        <button id="btn-mod-lectures" onclick="activateModule('mod-lectures')" class="card-btn" title="Lectures">
+            <img src="https://raw.githubusercontent.com/ogaydv-prog/Monetary-economics-almau/main/pic-lectures.png" alt="Lectures">
+        </button>
 
-            <!-- 2. LECTURES -->
-            <button id="btn-mod-lectures" onclick="activateModule('mod-lectures')" class="tile-btn focus:outline-none group">
-                <img src="https://raw.githubusercontent.com/ogaydv-prog/Monetary-economics-almau/main/pic-lectures.png" 
-                     class="w-full h-full object-contain" alt="Lectures"
-                     onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
-                <div class="hidden absolute inset-0 bg-slate-100 flex flex-col items-center justify-center p-4 text-center">
-                    <i class="fas fa-book-open text-3xl text-indigo-500 mb-2"></i>
-                    <span class="text-xs font-bold text-slate-900">Lectures</span>
-                </div>
-            </button>
+        <!-- 3. CANVA SLIDES -->
+        <button onclick="window.open('https://www.canva.com/design/DAHOfdoZUdY/iuHXiukIJDZ9NdFe9MvG_w/view?utm_content=DAHOfdoZUdY&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h582a2c5837', '_blank')" class="card-btn" title="Canva Presentation">
+            <img src="https://raw.githubusercontent.com/ogaydv-prog/Monetary-economics-almau/main/pic-preza-me.png" alt="Presentation">
+        </button>
 
-            <!-- 3. CANVA SLIDES -->
-            <button onclick="window.open('https://www.canva.com/design/DAHOfdoZUdY/iuHXiukIJDZ9NdFe9MvG_w/view?utm_content=DAHOfdoZUdY&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h582a2c5837', '_blank')" class="tile-btn focus:outline-none group">
-                <img src="https://raw.githubusercontent.com/ogaydv-prog/Monetary-economics-almau/main/pic-preza-me.png" 
-                     class="w-full h-full object-contain" alt="Canva Slides"
-                     onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
-                <div class="hidden absolute inset-0 bg-slate-100 flex flex-col items-center justify-center p-4 text-center">
-                    <i class="fas fa-desktop text-3xl text-teal-500 mb-2"></i>
-                    <span class="text-xs font-bold text-slate-900">Canva</span>
-                </div>
-            </button>
+        <!-- 4. TEXTBOOK -->
+        <button onclick="window.open('https://drive.google.com/file/d/1ZXRwoW8oaIPug96FAlymu3lGkNt1cSak/view?usp=sharing', '_blank')" class="card-btn" title="Textbook">
+            <img src="https://raw.githubusercontent.com/ogaydv-prog/Monetary-economics-almau/main/pic-book.png" alt="Textbook">
+        </button>
 
-            <!-- 4. TEXTBOOK -->
-           <button onclick="window.open('https://drive.google.com/file/d/1ZXRwoW8oaIPug96FAlymu3lGkNt1cSak/view?usp=sharing', '_blank')" class="tile-btn focus:outline-none group">
-                <img src="https://raw.githubusercontent.com/ogaydv-prog/Monetary-economics-almau/main/pic-book.png" 
-                     class="w-full h-full object-contain" alt="Textbook"
-                     onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
-                <div class="hidden absolute inset-0 bg-slate-100 flex flex-col items-center justify-center p-4 text-center">
-                    <i class="fas fa-book text-3xl text-amber-500 mb-2"></i>
-                    <span class="text-xs font-bold text-slate-900">Textbook</span>
-                </div>
-            </button>
+        <!-- 5. VIDEOS -->
+        <button id="btn-mod-videos" onclick="activateModule('mod-videos')" class="card-btn" title="Video Materials">
+            <img src="https://raw.githubusercontent.com/ogaydv-prog/Monetary-economics-almau/main/pic-videos.png" alt="Videos">
+        </button>
 
-            <!-- 5. VIDEOS -->
-            <button id="btn-mod-videos" onclick="activateModule('mod-videos')" class="tile-btn focus:outline-none group">
-                <img src="https://raw.githubusercontent.com/ogaydv-prog/Monetary-economics-almau/main/pic-videos.png" 
-                     class="w-full h-full object-contain" alt="Videos"
-                     onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
-                <div class="hidden absolute inset-0 bg-slate-100 flex flex-col items-center justify-center p-4 text-center">
-                    <i class="fab fa-youtube text-3xl text-rose-500 mb-2"></i>
-                    <span class="text-xs font-bold text-slate-900">Videos</span>
-                </div>
-            </button>
+        <!-- 6. READINGS -->
+        <button id="btn-mod-readings" onclick="activateModule('mod-readings')" class="card-btn" title="Readings & News">
+            <img src="https://raw.githubusercontent.com/ogaydv-prog/Monetary-economics-almau/main/pic-reading.png" alt="Readings">
+        </button>
 
-            <!-- 6. READINGS (News) -->
-            <button id="btn-mod-readings" onclick="activateModule('mod-readings')" class="tile-btn focus:outline-none group">
-                <img src="https://raw.githubusercontent.com/ogaydv-prog/Monetary-economics-almau/main/pic-reading.png" 
-                     class="w-full h-full object-contain" alt="Readings"
-                     onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
-                <div class="hidden absolute inset-0 bg-slate-100 flex flex-col items-center justify-center p-4 text-center">
-                    <i class="fas fa-glasses text-3xl text-blue-500 mb-2"></i>
-                    <span class="text-xs font-bold text-slate-900">News</span>
-                </div>
-            </button>
+        <!-- 7. TASKS -->
+        <button id="btn-mod-tasks" onclick="activateModule('mod-tasks')" class="card-btn" title="Tasks">
+            <img src="https://raw.githubusercontent.com/ogaydv-prog/Monetary-economics-almau/main/pic-tasks.png" alt="Tasks">
+        </button>
 
-            <!-- 7. TASKS -->
-            <button id="btn-mod-tasks" onclick="activateModule('mod-tasks')" class="tile-btn focus:outline-none group">
-                <img src="https://raw.githubusercontent.com/ogaydv-prog/Monetary-economics-almau/main/pic-tasks.png" 
-                     class="w-full h-full object-contain" alt="Tasks"
-                     onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
-                <div class="hidden absolute inset-0 bg-slate-100 flex flex-col items-center justify-center p-4 text-center">
-                    <i class="fas fa-tasks text-3xl text-emerald-500 mb-2"></i>
-                    <span class="text-xs font-bold text-slate-900">Tasks</span>
-                </div>
-            </button>
+        <!-- 8. GLOSSARY -->
+        <button id="btn-mod-glossary" onclick="activateModule('mod-glossary')" class="card-btn" title="Glossary">
+            <img src="https://raw.githubusercontent.com/ogaydv-prog/Monetary-economics-almau/main/pic-glossary.png" alt="Glossary">
+        </button>
 
-            <!-- 8. GLOSSARY -->
-            <button id="btn-mod-glossary" onclick="activateModule('mod-glossary')" class="tile-btn focus:outline-none group">
-                <img src="https://raw.githubusercontent.com/ogaydv-prog/Monetary-economics-almau/main/pic-glossary.png" 
-                     class="w-full h-full object-contain" alt="Glossary"
-                     onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
-                <div class="hidden absolute inset-0 bg-slate-100 flex flex-col items-center justify-center p-4 text-center">
-                    <i class="fas fa-book-atlas text-3xl text-purple-500 mb-2"></i>
-                    <span class="text-xs font-bold text-slate-900">Glossary</span>
-                </div>
-            </button>
+        <!-- 9. QPM SIMULATOR -->
+        <button onclick="window.open('qpm-kz-en.html', '_blank')" class="card-btn" title="QPM Simulator">
+            <img src="https://raw.githubusercontent.com/ogaydv-prog/Monetary-economics-almau/main/pic-sim-qpm.png" alt="Simulations">
+        </button>
 
-            <!-- 9. QPM SIMULATOR -->
-            <button onclick="window.open('qpm-kz-en.html', '_blank')" class="tile-btn focus:outline-none group">
-                <img src="https://raw.githubusercontent.com/ogaydv-prog/Monetary-economics-almau/main/pic-sim-qpm.png" 
-                     class="w-full h-full object-contain" alt="QPM Simulator"
-                     onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
-                <div class="hidden absolute inset-0 bg-slate-100 flex flex-col items-center justify-center p-4 text-center">
-                    <i class="fas fa-project-diagram text-3xl text-indigo-500 mb-2"></i>
-                    <span class="text-xs font-bold text-slate-900">QPM Sim</span>
-                </div>
-            </button>
+        <!-- 10. FINAL EXAM -->
+        <button onclick="window.open('me-exam-final.html', '_blank')" class="card-btn" title="Final Exam">
+            <img src="https://raw.githubusercontent.com/ogaydv-prog/Monetary-economics-almau/main/pic-exam-me.png" alt="Final Exam">
+        </button>
 
-            <!-- 10. FINAL EXAM -->
-            <button onclick="window.open('me-exam-final.html', '_blank')" class="tile-btn focus:outline-none group">
-                <img src="https://raw.githubusercontent.com/ogaydv-prog/Monetary-economics-almau/main/pic-exam-me.png" 
-                     class="w-full h-full object-contain" alt="Final Exam"
-                     onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
-                <div class="hidden absolute inset-0 bg-slate-100 flex flex-col items-center justify-center p-4 text-center">
-                    <i class="fas fa-graduation-cap text-3xl text-emerald-500 mb-2"></i>
-                    <span class="text-xs font-bold text-slate-900">Exam</span>
-                </div>
-            </button>
+    </main>
 
-        </section>
-
-        <!-- MAIN VIEWPORT FOR INTERNAL CONTENT -->
-        <main id="viewport" class="neon-card p-6 md:p-8 rounded-2xl min-h-[500px] mt-4 border-t-4 border-indigo-500/50">
+    <!-- ИНТЕРАКТИВНАЯ ОБЛАСТЬ ДЛЯ КОНТЕНТА МОДУЛЕЙ -->
+    <div class="w-full max-w-[1150px] mx-auto px-2">
+        <main id="viewport" class="bg-slate-900 text-white p-6 md:p-8 rounded-2xl min-h-[400px] shadow-xl border border-slate-800">
             
             <!-- WELCOME SCREEN -->
-            <div id="welcome-message" class="flex flex-col items-center justify-center text-center h-[400px] space-y-4">
+            <div id="welcome-message" class="flex flex-col items-center justify-center text-center h-[300px] space-y-4">
                 <div class="p-4 bg-indigo-500/10 rounded-full border border-indigo-500/20 text-indigo-400">
                     <i class="fas fa-university text-4xl"></i>
                 </div>
                 <h2 class="text-xl font-bold uppercase text-white tracking-wide">Monetary Economics: Interactive Hub</h2>
-                <p class="text-xs text-slate-400 max-w-lg leading-relaxed">Select a module from the grid above to access the syllabus, lecture notes, interactive tasks, or external simulators.</p>
+                <p class="text-xs text-slate-400 max-w-lg leading-relaxed">Выберите необходимый раздел в сетке карточек выше для просмотра материалов, симуляций и интерактивных заданий.</p>
             </div>
 
             <!-- MODULE: SYLLABUS -->
