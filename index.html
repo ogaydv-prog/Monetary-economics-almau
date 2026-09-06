@@ -1525,7 +1525,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // Интерактивное зажигание стран при совпадении с равновесной ставкой (±0.35%)
         const threshold = 0.35;
-        document.getElementById('tag-kz').className = (Math.abs(rate - 17.0) <= threshold) ? "country-tag active" : "country-tag";
+        document.getElementById('tag-kz').className = (Math.abs(rate - 16.250) <= threshold) ? "country-tag active" : "country-tag";
         document.getElementById('tag-in').className = (Math.abs(rate - 5.25) <= threshold) ? "country-tag active" : "country-tag";
         document.getElementById('tag-us').className = (Math.abs(rate - 3.75) <= threshold) ? "country-tag active" : "country-tag";
         document.getElementById('tag-cn').className = (Math.abs(rate - 3.0) <= threshold) ? "country-tag active" : "country-tag";
