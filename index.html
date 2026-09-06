@@ -2457,43 +2457,49 @@ changes for a given change in the monetary base MB. This multiplier tells us wha
 </footer>
     <script>
         // NAVIGATION LOGIC
-      function activateModule(moduleId) {
-    // Hide welcome message and all modules
-    document.getElementById('welcome-message').classList.add('hidden');
-    document.querySelectorAll('.module-content').forEach(el => el.classList.add('hidden'));
-    
-    // Устанавливаем глубокий тёмный фон терминала для открытого модуля
+   // ✅ ВСТАВИТЬ ВМЕСТО ВЫРЕЗАННОГО:
+function activateModule(moduleId) {
+    // 1. Снимаем скрытие с главного контейнера
     const viewport = document.getElementById('viewport');
     if (viewport) {
+        viewport.classList.remove('hidden');
         viewport.style.backgroundColor = '#0b1329';
         viewport.style.borderColor = '#1e293b';
     }
-            
-            // Remove active styling from all buttons
-            document.querySelectorAll('.tile-btn').forEach(btn => btn.classList.remove('active-tile'));
-            
-            // Show targeted module
-            const target = document.getElementById(moduleId);
-            if (target) {
-                target.classList.remove('hidden');
-                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
 
-            // Highlight the clicked button
-            const btn = document.getElementById('btn-' + moduleId);
-            if (btn) {
-                btn.classList.add('active-tile');
-            }
+    // 2. Скрываем приветственный экран и другие модули
+    const welcome = document.getElementById('welcome-message');
+    if (welcome) welcome.classList.add('hidden');
 
-            // Default internal behaviors for integrated dashboard initialization
-            if (moduleId === 'mod-lectures') {
-                updateAggregates();
-                updateTrapezoid();
-                updateLedgers();
-                updatePhillips();
-            }
+    document.querySelectorAll('.module-content').forEach(el => el.classList.add('hidden'));
+    document.querySelectorAll('.card-btn').forEach(btn => btn.classList.remove('active-tile'));
+
+    // 3. Показываем выбранный модуль
+    const target = document.getElementById(moduleId);
+    if (target) {
+        target.classList.remove('hidden');
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    // 4. Подсвечиваем активную карточку
+    const btn = document.getElementById('btn-' + moduleId);
+    if (btn) {
+        btn.classList.add('active-tile');
+    }
+
+    // 5. Автоматически активируем первую лекцию и пересчитываем графики
+    if (moduleId === 'mod-lectures') {
+        const firstTabBtn = document.querySelector('.nav-tab');
+        if (firstTabBtn) {
+            switchTab(firstTabBtn, 'lec1');
         }
-
+    } else {
+        updateAggregates();
+        updateTrapezoid();
+        updateLedgers();
+        updatePhillips();
+    }
+}
         // --- INTEGRATED DASHBOARD LOGIC ENGINE ---
         function switchTab(clickedButton, tabId) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
