@@ -3,66 +3,74 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- === MOBILE ADAPTATION BLOCK (AlmaU 2026) === -->
 <style>
-  /* Адаптация для экранов меньше 768px (смартфоны и узкие планшеты) */
+  /* Адаптация для мобильных экранов (до 768px) */
   @media (max-width: 768px) {
-    /* 1. Шапка и заголовок */
-    header, .header-container {
-      flex-direction: column !important;
-      text-align: center !important;
+    /* 1. Шапка и заголовок по центру */
+    body {
       padding: 10px !important;
     }
-    h1, .main-title {
-      font-size: 1.5rem !important;
-      line-height: 1.2 !important;
-    }
-    
-    /* 2. Сетка основных карточек разделов */
-    .grid, .card-grid, .nav-grid, #modules-grid {
-      display: grid !important;
-      grid-template-columns: 1fr !important; /* Строго 1 колонка */
-      gap: 12px !important;
-      padding: 8px !important;
-    }
-    
-    .card, .module-card {
-      width: 100% !important;
-      max-width: 100% !important;
-      box-sizing: border-box !important;
+
+    .top-left-logo {
+      position: static !important;
+      display: block !important;
+      margin: 10px auto 5px auto !important;
+      width: 50px !important;
+      height: 50px !important;
     }
 
-    /* 3. Двухколоночные блоки и симуляторы (Sankey, Keynes, Baumol-Tobin, Phillips) */
+    header {
+      margin-top: 5px !important;
+      margin-bottom: 20px !important;
+      text-align: center !important;
+    }
+
+    header h1 {
+      font-size: 1.8rem !important;
+      line-height: 1.2 !important;
+      margin-top: 5px !important;
+      text-align: center !important;
+    }
+
+    .subtitle {
+      font-size: 13px !important;
+      text-align: center !important;
+    }
+
+    /* 2. Сетка карточек: строго 2 колонки */
+    .grid-container {
+      display: grid !important;
+      grid-template-columns: repeat(2, 1fr) !important; /* Ровно 2 колонки */
+      gap: 10px !important;
+      padding-bottom: 20px !important;
+      max-width: 100% !important;
+    }
+
+    .card-btn {
+      width: 100% !important;
+      height: auto !important;
+      aspect-ratio: 195 / 255 !important; /* Сохраняет идеальные пропорции карточки */
+      border-radius: 12px !important;
+    }
+
+    /* 3. Интерактивные симуляторы и блоки */
     .flex-row, .row, .simulator-container, .split-view {
       flex-direction: column !important;
       width: 100% !important;
     }
-    
+
     .sidebar, .controls-panel, .chart-panel {
       width: 100% !important;
       max-width: 100% !important;
       margin-bottom: 15px !important;
     }
 
-    /* 4. Графики, Canvas и SVG-трапеции */
     canvas, svg, .chart-container {
       max-width: 100% !important;
       height: auto !important;
     }
 
-    /* 5. Кнопки управления и 3D-загадки (Large Numbers Riddle) */
-    .btn-group, .tools-buttons {
-      flex-direction: column !important;
-      width: 100% !important;
-    }
-    .btn, button, .riddle-btn {
-      width: 100% !important;
-      margin: 4px 0 !important;
-      padding: 12px 16px !important; /* Удобный размер для нажатия пальцем */
-      font-size: 0.95rem !important;
-    }
-
-    /* 6. Таблицы и KaTeX формулы (защита от вылезания за край) */
+    /* 4. Таблицы и KaTeX формулы */
     table, .table-container, .katex-display {
       display: block !important;
       overflow-x: auto !important;
@@ -71,7 +79,6 @@
     }
   }
 </style>
-<!-- === END MOBILE ADAPTATION BLOCK === -->
     <title>Monetary Economics Hub • AlmaU</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -2992,18 +2999,21 @@ window.addEventListener('resize', () => {
             document.getElementById('t6-res').innerText = res.toFixed(1) + '%';
         }
 
-        window.onload = function() {
+     window.onload = function() {
             solveT1(); solveT2(); solveT3(); solveT4(); solveT5(); solveT6();
             
             if (window.renderMathInElement) {
                 renderMathInElement(document.body, {
                     delimiters: [
                         {left: '$$', right: '$$', display: true},
-                        {left: '$', right: '$', display: false}
-                    ]
+                        {left: '$', right: '$', display: false},
+                        {left: '\\(', right: '\\)', display: false},
+                        {left: '\\[', right: '\\]', display: true}
+                    ],
+                    throwOnError: false
                 });
             }
-        }
+        };
     </script>
 </body>
 </html>
